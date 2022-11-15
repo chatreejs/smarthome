@@ -2,11 +2,14 @@
   "name": "smarthome",
   "version": "0.0.0",
   "scripts": {
+    "prepare": "husky install",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "format:check": "prettier --check 'src/{app,environents}/**/*{.ts,.html,.scss}'",
+    "format:write": "prettier --write 'src/{app,environents}/**/*{.ts,.html,.scss}'"
   },
   "private": true,
   "dependencies": {
@@ -26,13 +29,17 @@
     "@angular-devkit/build-angular": "^14.2.9",
     "@angular/cli": "~14.2.9",
     "@angular/compiler-cli": "^14.2.0",
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
     "@types/jasmine": "~4.0.0",
+    "husky": "^8.0.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "prettier": "2.7.1",
     "typescript": "~4.7.2"
   }
 }
