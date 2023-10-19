@@ -2,7 +2,7 @@ import { httpClient } from "../../../api/HttpClient";
 
 const DeleteMultipleFood = async (ids: number[]) => {
   return httpClient
-    .delete(`${process.env.REACT_APP_BASE_API}/foods`, {
+    .delete(`${import.meta.env.VITE_APP_BASE_API}/foods`, {
       data: {
         ids: ids.join(","),
       },
