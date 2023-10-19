@@ -1,4 +1,4 @@
-import { FoodStatus } from "..";
+import { FoodStatus } from '..';
 
 export class Food {
   key: React.Key;
@@ -16,7 +16,7 @@ export class Food {
     quantity: number,
     unit: string,
     buyDate: Date,
-    expiryDate: Date
+    expiryDate: Date,
   ) {
     this.key = id;
     this.id = id;

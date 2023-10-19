@@ -1,5 +1,5 @@
-import { Food } from "..";
-import { httpClient } from "../../../api/HttpClient";
+import { Food } from '..';
+import { httpClient } from '../../../api/HttpClient';
 
 const SearchFood = async (): Promise<Food[]> => {
   return httpClient
@@ -13,7 +13,7 @@ const SearchFood = async (): Promise<Food[]> => {
             food.quantity,
             food.unit,
             food.buyDate,
-            food.expiryDate
+            food.expiryDate,
           );
         });
       }

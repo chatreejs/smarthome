@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const FoodDetail = () => {
   const { foodId } = useParams();
@@ -7,11 +7,11 @@ const FoodDetail = () => {
 
   useEffect(() => {
     const loadFoodData = () => {
-      console.log("loadFoodData id: ", foodId);
+      console.log('loadFoodData id: ', foodId);
       setFoodData({
         id: foodId,
-        name: "Food Name",
-        description: "Food Description",
+        name: 'Food Name',
+        description: 'Food Description',
       });
     };
 

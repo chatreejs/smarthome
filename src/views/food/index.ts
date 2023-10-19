@@ -1,2 +1,2 @@
-export * from "./models/Food.model";
-export * from "./models/FoodStatus.enum";
+export * from './models/Food.model';
+export * from './models/FoodStatus.enum';
