@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <Layouts>
-      <Sider breakpoint='lg' collapsedWidth='0'>
+      <Sider breakpoint="lg" collapsedWidth="0" width={300}>
         <DemoLogo />
         <SideMenu />
       </Sider>
@@ -46,11 +46,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </ContentWrapper>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          SmartHome ©2023 made with ❤️ by{" "}
+          Smarthome ©2023 made with ❤️ by{" "}
           <a
-            href='https://github.com/chatreejs'
-            target='_blank'
-            rel='noopener noreferrer'
+            href="https://github.com/chatreejs"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Chatree.js
           </a>
