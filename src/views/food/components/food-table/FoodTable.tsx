@@ -12,6 +12,7 @@ import { ColumnsType } from "antd/es/table";
 
 import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Food, FoodStatus } from "../..";
@@ -32,7 +33,7 @@ const columns: ColumnsType<Food> = [
     title: "สถานะ",
     render: (food: Food) => {
       if (food.status === FoodStatus.EXPIRED) {
-        return <Tag color='red'>หมดอายุ</Tag>;
+        return <Tag color="red">หมดอายุ</Tag>;
       }
     },
   },
@@ -46,11 +47,15 @@ const columns: ColumnsType<Food> = [
   },
   {
     title: "วันที่ซื้อ",
-    render: (food: Food) => <span>{food.buyDate.toLocaleDateString()}</span>,
+    render: (food: Food) => (
+      <span>{moment(food.buyDate).locale("th").format("DD MMMM yyyy")}</span>
+    ),
   },
   {
     title: "วันหมดอายุ",
-    render: (food: Food) => <span>{food.expiryDate.toLocaleDateString()}</span>,
+    render: (food: Food) => (
+      <span>{moment(food.expiryDate).locale("th").format("DD MMMM yyyy")}</span>
+    ),
   },
 ];
 
@@ -115,27 +120,27 @@ const FoodTable = () => {
     <>
       {contextHolder}
       <Title level={2}>รายการอาหาร</Title>
-      <Row gutter={8} className='action-bar'>
+      <Row gutter={8} className="action-bar">
         <Col>
           <Button
-            type='primary'
-            className='action-btn'
+            type="primary"
+            className="action-btn"
             onClick={navigateToCreateFood}
           >
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: "0.25rem" }} />
             เพิ่มอาหาร
           </Button>
           <Popconfirm
-            title='ยืนยันการลบ'
+            title="ยืนยันการลบ"
             description={`คุณต้องการลบรายการอาหารจำนวน ${selectedFoods.length} รายการใช่หรือไม่?`}
             onConfirm={onConfirmDelete}
-            okText='ยืนยัน'
-            cancelText='ยกเลิก'
+            okText="ยืนยัน"
+            cancelText="ยกเลิก"
             disabled={selectedFoods.length === 0}
           >
             <Button
               danger
-              className='action-btn'
+              className="action-btn"
               disabled={selectedFoods.length === 0}
             >
               <FontAwesomeIcon
@@ -147,7 +152,7 @@ const FoodTable = () => {
           </Popconfirm>
         </Col>
       </Row>
-      <Row gutter={8} className='action-bar'>
+      <Row gutter={8} className="action-bar">
         <Col></Col>
       </Row>
       <Table
