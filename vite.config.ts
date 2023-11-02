@@ -7,6 +7,7 @@ export default defineConfig({
   build: {
     outDir: 'build',
   },
+  base: '/smarthome',
   plugins: [react(), viteTsconfigPaths()],
   server: {
     port: 3000,
