@@ -97,8 +97,8 @@ pipeline {
             remote.allowAnyHosts = true
             remote.user = USERNAME
             remote.password = PASSWORD
-            sshCommand remote: remote, command: "cd /opt/app/tu-healthy/tu-healthy-web ; sed -i \"s/^\\(TAG_VERSION=\\).*/TAG_VERSION=${BUILD_VERSION}/g\" .env"
-            sshCommand remote: remote, command: "cd /opt/app/tu-healthy/tu-healthy-web ; docker compose up -d"
+            sshCommand remote: remote, command: "cd /opt/app/smarthome/smarthome-web ; sed -i \"s/^\\(TAG_VERSION=\\).*/TAG_VERSION=${BUILD_VERSION}/g\" .env"
+            sshCommand remote: remote, command: "cd /opt/app/smarthome/smarthome-web ; docker compose up -d"
           }
         }
       }
