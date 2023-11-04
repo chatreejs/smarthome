@@ -25,6 +25,7 @@ const formItemLayout = {
     xs: { span: 24 },
     sm: { span: 8 },
   },
+
   wrapperCol: {
     xs: { span: 24 },
     sm: { span: 16 },
@@ -131,7 +132,7 @@ const FoodDetail = () => {
           form={form}
           name="food-detail-form"
           onFinish={onFinish}
-          style={{ maxWidth: 600 }}
+          style={{ maxWidth: 576 }}
         >
           <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
             <Input />

@@ -163,6 +163,7 @@ const FoodTable = () => {
         columns={columns}
         dataSource={foodData}
         loading={loading}
+        scroll={{ x: 576 }}
       />
     </>
   );
