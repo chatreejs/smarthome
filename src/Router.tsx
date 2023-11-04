@@ -5,6 +5,7 @@ import Food from './views/food/Food';
 import FoodDetail from './views/food/components/food-detail/FoodDetail';
 import FoodTable from './views/food/components/food-table/FoodTable';
 import Inventory from './views/inventory/Inventory';
+import InventoryTable from './views/inventory/components/inventory-table/InventoryTable';
 
 const Router = () => {
   return (
@@ -16,7 +17,9 @@ const Router = () => {
         <Route path="new" element={<FoodDetail />} />
         <Route path=":foodId" element={<FoodDetail />} />
       </Route>
-      <Route path="inventory" element={<Inventory />} />
+      <Route path="inventory" element={<Inventory />}>
+        <Route index element={<InventoryTable />} />
+      </Route>
       <Route path="farm" element={<Farm />} />
     </Routes>
   );

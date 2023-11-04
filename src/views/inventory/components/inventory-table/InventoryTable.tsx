@@ -11,57 +11,52 @@ import {
   notification,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Food, FoodStatus } from '../..';
-import DeleteMultipleFood from '../../api/DeleteMultipleFood';
-import SearchFood from '../../api/SearchFood';
-import './FoodTable.css';
+import DeleteMultipleInventory from '../../api/DeleteMultipleInventory';
+import SearchInventory from '../../api/SearchInventory';
+import { Inventory } from '../../models/Inventory.model';
+import { InventoryStatus } from '../../models/InventoryStatus.enum';
 
 const { Title } = Typography;
 
-const columns: ColumnsType<Food> = [
+const columns: ColumnsType<Inventory> = [
   {
     title: 'ชื่อ',
-    render: (food: Food) => (
-      <Link to={{ pathname: `${food.id}` }}>{food.name}</Link>
+    render: (inventory: Inventory) => (
+      <Link to={{ pathname: `${inventory.id}` }}>{inventory.name}</Link>
     ),
   },
   {
     title: 'สถานะ',
-    render: (food: Food) => {
-      if (food.status === FoodStatus.EXPIRED) {
-        return <Tag color="red">หมดอายุ</Tag>;
+    render: (inventory: Inventory) => {
+      if (inventory.status === InventoryStatus.OUT_OF_STOCK) {
+        return <Tag color="red">หมด</Tag>;
+      } else if (inventory.status === InventoryStatus.LOW_STOCK) {
+        return <Tag color="orange">เหลือน้อย</Tag>;
       }
     },
   },
   {
     title: 'จำนวน',
-    dataIndex: 'quantity',
+    render: (inventory: Inventory) => (
+      <>
+        {inventory.quantity} / {inventory.maxQuantity}
+      </>
+    ),
   },
   {
     title: 'หน่วย',
     dataIndex: 'unit',
   },
-  {
-    title: 'วันที่ซื้อ',
-    render: (food: Food) => (
-      <span>{moment(food.buyDate).locale('th').format('DD MMMM yyyy')}</span>
-    ),
-  },
-  {
-    title: 'วันหมดอายุ',
-    render: (food: Food) => (
-      <span>{moment(food.expiryDate).locale('th').format('DD MMMM yyyy')}</span>
-    ),
-  },
 ];
 
-const FoodTable = () => {
-  const [foodsData, setFoodsData] = useState<Food[]>([]);
-  const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
+const InventoryTable = () => {
+  const [inventoriesData, setInventoriesData] = useState<Inventory[]>([]);
+  const [selectedInventories, setSelectedInventories] = useState<Inventory[]>(
+    [],
+  );
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
@@ -69,8 +64,8 @@ const FoodTable = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const foods = await SearchFood();
-      setFoodsData(foods);
+      const inventories = await SearchInventory();
+      setInventoriesData(inventories);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -91,23 +86,25 @@ const FoodTable = () => {
   }, []);
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: Food[]) => {
-      setSelectedFoods(selectedRows);
+    onChange: (selectedRowKeys: React.Key[], selectedRows: Inventory[]) => {
+      setSelectedInventories(selectedRows);
     },
 
-    getCheckboxProps: (record: Food) => ({
+    getCheckboxProps: (record: Inventory) => ({
       name: record.name,
     }),
   };
 
-  const navigateToCreateFood = () => {
+  const navigateToCreateInventory = () => {
     navigate('new');
   };
 
   const onConfirmDelete = async (e: any) => {
     try {
-      await DeleteMultipleFood(selectedFoods.map((food) => food.id));
-      setSelectedFoods([]);
+      await DeleteMultipleInventory(
+        selectedInventories.map((inventory) => inventory.id),
+      );
+      setSelectedInventories([]);
       loadData();
     } catch (err) {
       console.log(err);
@@ -118,29 +115,29 @@ const FoodTable = () => {
   return (
     <>
       {contextHolder}
-      <Title level={2}>รายการอาหาร</Title>
+      <Title level={2}>รายการของใช้ในบ้าน</Title>
       <Row gutter={8} className="action-bar">
         <Col>
           <Button
             type="primary"
             className="action-btn"
-            onClick={navigateToCreateFood}
+            onClick={navigateToCreateInventory}
           >
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
-            เพิ่มอาหาร
+            เพิ่มของใช้ในบ้าน
           </Button>
           <Popconfirm
             title="ยืนยันการลบ"
-            description={`คุณต้องการลบรายการอาหารจำนวน ${selectedFoods.length} รายการใช่หรือไม่?`}
+            description={`คุณต้องการลบรายการของใช้ในบ้านจำนวน ${selectedInventories.length} รายการใช่หรือไม่?`}
             onConfirm={onConfirmDelete}
             okText="ยืนยัน"
             cancelText="ยกเลิก"
-            disabled={selectedFoods.length === 0}
+            disabled={selectedInventories.length === 0}
           >
             <Button
               danger
               className="action-btn"
-              disabled={selectedFoods.length === 0}
+              disabled={selectedInventories.length === 0}
             >
               <FontAwesomeIcon
                 icon={faTrashCan}
@@ -160,7 +157,7 @@ const FoodTable = () => {
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={foodsData}
+        dataSource={inventoriesData}
         loading={loading}
         scroll={{ x: 576 }}
       />
@@ -168,4 +165,4 @@ const FoodTable = () => {
   );
 };
 
-export default FoodTable;
+export default InventoryTable;
