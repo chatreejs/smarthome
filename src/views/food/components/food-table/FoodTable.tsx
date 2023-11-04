@@ -16,6 +16,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Food, FoodStatus } from '../..';
+
 import DeleteMultipleFood from '../../api/DeleteMultipleFood';
 import SearchFood from '../../api/SearchFood';
 import './FoodTable.css';
@@ -64,7 +65,6 @@ const FoodTable = () => {
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
-  // const handleDelete = useCallback(() => {}, []);
   const navigate = useNavigate();
 
   const loadData = async () => {

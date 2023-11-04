@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom';
 const Food: React.FC = () => {
   return (
     <>
-      <div>Breadcrumb</div>
       <Outlet />
     </>
   );

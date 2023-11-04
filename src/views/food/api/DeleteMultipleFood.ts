@@ -1,3 +1,4 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import { httpClient } from '../../../api/HttpClient';
 
 const DeleteMultipleFood = async (ids: number[]) => {
@@ -10,12 +11,13 @@ const DeleteMultipleFood = async (ids: number[]) => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     })
-    .then((response: any) => {
+    .then((response: AxiosResponse) => {
+      console.log(response);
       if (response.status === 200) {
         return response.data;
       }
     })
-    .catch((error: any) => {
+    .catch((error: AxiosError) => {
       throw error;
     });
 };
