@@ -1,5 +1,6 @@
 import {
   faBoxesStacked,
+  faCertificate,
   faChartLine,
   faUtensils,
   faWheatAlt,
@@ -46,6 +47,10 @@ const SideMenu: React.FC = () => {
       <Menu.Item key="inventory" onClick={() => onClickMenu('inventory')}>
         <FontAwesomeIcon icon={faBoxesStacked} className="fa-fw" />
         <MenuText>ของใช้</MenuText>
+      </Menu.Item>
+      <Menu.Item key="warranty" onClick={() => onClickMenu('warranty')}>
+        <FontAwesomeIcon icon={faCertificate} className="fa-fw" />
+        <MenuText>การรับประกัน</MenuText>
       </Menu.Item>
       <Menu.Item key="farm" onClick={() => onClickMenu('farm')}>
         <FontAwesomeIcon icon={faWheatAlt} className="fa-fw" />

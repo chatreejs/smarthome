@@ -6,6 +6,8 @@ import FoodDetail from './views/food/components/food-detail/FoodDetail';
 import FoodTable from './views/food/components/food-table/FoodTable';
 import Inventory from './views/inventory/Inventory';
 import InventoryTable from './views/inventory/components/inventory-table/InventoryTable';
+import Warranty from './views/warranty/Warranty';
+import WarrantyTable from './views/warranty/components/warranty-table/WarrantyTable';
 
 const Router = () => {
   return (
@@ -19,6 +21,9 @@ const Router = () => {
       </Route>
       <Route path="inventory" element={<Inventory />}>
         <Route index element={<InventoryTable />} />
+      </Route>
+      <Route path="warranty" element={<Warranty />}>
+        <Route index element={<WarrantyTable />} />
       </Route>
       <Route path="farm" element={<Farm />} />
     </Routes>
