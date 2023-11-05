@@ -2,6 +2,10 @@
     margin-right: 8px;
 }
 
+.ant-picker, .ant-input-number {
+    width: 100%;
+}
+
 .ant-picker-input input {
     font-family: 'Kanit', sans-serif;
 }

@@ -151,8 +151,7 @@ const FoodDetail = () => {
               locale={locale}
               size="large"
               placeholder="กรุณาเลือกวันที่ซื้อ"
-              format="DD MMMM BBBB HH:mm:ss"
-              showTime
+              format="DD MMMM BBBB"
             />
           </Form.Item>
           <Form.Item
@@ -164,8 +163,7 @@ const FoodDetail = () => {
               locale={locale}
               size="large"
               placeholder="กรุณาเลือกวันหมดอายุ"
-              format="DD MMMM BBBB HH:mm:ss"
-              showTime
+              format="DD MMMM BBBB"
             />
           </Form.Item>
           <Form.Item {...tailLayout}>
