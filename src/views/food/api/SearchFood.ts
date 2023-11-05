@@ -15,6 +15,7 @@ const SearchFood = async (): Promise<Food[]> => {
             food.unit,
             food.buyDate,
             food.expiryDate,
+            food.status,
           );
         });
       }

@@ -1,4 +1,4 @@
 export enum FoodStatus {
-  SOON,
-  EXPIRED,
+  FRESH = 'FRESH',
+  EXPIRED = 'EXPIRED',
 }

@@ -14,6 +14,7 @@ const SearchInventory = async (): Promise<Inventory[]> => {
             inventory.quantity,
             inventory.maxQuantity,
             inventory.unit,
+            inventory.status,
           );
         });
       }
