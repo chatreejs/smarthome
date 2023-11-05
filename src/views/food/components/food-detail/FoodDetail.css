@@ -7,6 +7,7 @@
 }
 
 .ant-picker-input input {
+    cursor: pointer;
     font-family: 'Kanit', sans-serif;
 }
 

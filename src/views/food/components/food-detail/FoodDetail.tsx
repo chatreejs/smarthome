@@ -150,6 +150,7 @@ const FoodDetail = () => {
             <ThaiDatePicker
               locale={locale}
               size="large"
+              inputReadOnly={true}
               placeholder="กรุณาเลือกวันที่ซื้อ"
               format="DD MMMM BBBB"
             />
@@ -162,6 +163,7 @@ const FoodDetail = () => {
             <ThaiDatePicker
               locale={locale}
               size="large"
+              inputReadOnly={true}
               placeholder="กรุณาเลือกวันหมดอายุ"
               format="DD MMMM BBBB"
             />
