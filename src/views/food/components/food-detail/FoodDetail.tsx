@@ -134,13 +134,13 @@ const FoodDetail = () => {
           style={{ maxWidth: 576 }}
         >
           <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
-            <Input />
+            <Input size="large" />
           </Form.Item>
           <Form.Item name="quantity" label="จำนวน" rules={[{ required: true }]}>
-            <InputNumber />
+            <InputNumber size="large" />
           </Form.Item>
           <Form.Item name="unit" label="หน่วย" rules={[{ required: true }]}>
-            <Input />
+            <Input size="large" />
           </Form.Item>
           <Form.Item
             name="buyDate"
@@ -149,6 +149,7 @@ const FoodDetail = () => {
           >
             <ThaiDatePicker
               locale={locale}
+              size="large"
               placeholder="กรุณาเลือกวันที่ซื้อ"
               format="DD MMMM BBBB HH:mm:ss"
               showTime
@@ -161,20 +162,21 @@ const FoodDetail = () => {
           >
             <ThaiDatePicker
               locale={locale}
+              size="large"
               placeholder="กรุณาเลือกวันหมดอายุ"
               format="DD MMMM BBBB HH:mm:ss"
               showTime
             />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" size="large" htmlType="submit">
               บันทึก
             </Button>
-            <Button htmlType="button" onClick={onReset}>
+            <Button size="large" htmlType="button" onClick={onReset}>
               ล้างข้อมูล
             </Button>
             {isEdit && (
-              <Button danger htmlType="button" onClick={onDelete}>
+              <Button danger size="large" htmlType="button" onClick={onDelete}>
                 ลบ
               </Button>
             )}

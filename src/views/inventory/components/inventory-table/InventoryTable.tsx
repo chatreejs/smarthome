@@ -123,6 +123,7 @@ const InventoryTable = () => {
           <Button
             type="primary"
             className="action-btn"
+            size="large"
             onClick={navigateToCreateInventory}
           >
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
@@ -139,6 +140,7 @@ const InventoryTable = () => {
             <Button
               danger
               className="action-btn"
+              size="large"
               disabled={selectedInventories.length === 0}
             >
               <FontAwesomeIcon
