@@ -7,7 +7,7 @@ import {
   Typography,
   notification,
 } from 'antd';
-
+import locale from 'antd/es/date-picker/locale/th_TH';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -148,6 +148,7 @@ const FoodDetail = () => {
             rules={[{ required: true }]}
           >
             <ThaiDatePicker
+              locale={locale}
               placeholder="กรุณาเลือกวันที่ซื้อ"
               format="DD MMMM BBBB HH:mm:ss"
               showTime
@@ -159,6 +160,7 @@ const FoodDetail = () => {
             rules={[{ required: true }]}
           >
             <ThaiDatePicker
+              locale={locale}
               placeholder="กรุณาเลือกวันหมดอายุ"
               format="DD MMMM BBBB HH:mm:ss"
               showTime

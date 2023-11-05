@@ -2,6 +2,7 @@ import generatePicker from 'antd/es/date-picker/generatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import th from 'dayjs/locale/th';
 import buddistEra from 'dayjs/plugin/buddhistEra';
+import { GenerateConfig } from 'rc-picker/lib/generate';
 import dayjsGenerateConfig from 'rc-picker/lib/generate/dayjs';
 import { noteOnce } from 'rc-util/lib/warning';
 
@@ -31,7 +32,7 @@ const parseNoMatchNotice = () => {
   );
 };
 
-const config = {
+const config: GenerateConfig<Dayjs> = {
   ...dayjsGenerateConfig,
   getFixedDate: (string) => dayjs(string, ['BBBB-M-DD', 'BBBB-MM-DD']),
   setYear: (date, year) => {
