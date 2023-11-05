@@ -1,6 +1,5 @@
 import {
   Button,
-  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -8,14 +7,14 @@ import {
   Typography,
   notification,
 } from 'antd';
+
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import CreateFood from '../../api/CreateFood';
-import GetFoodById from '../../api/GetFoodById';
-import UpdateFood from '../../api/UpdateFood';
-import { Food } from '../../models/Food.model';
+
+import { ThaiDatePicker } from '@components';
+import { CreateFood, Food, GetFoodById, UpdateFood } from '../..';
 import './FoodDetail.css';
 
 const { Title } = Typography;
@@ -148,14 +147,22 @@ const FoodDetail = () => {
             label="วันที่ซื้อ"
             rules={[{ required: true }]}
           >
-            <DatePicker placeholder="กรุณาเลือกวันที่ซื้อ" showTime />
+            <ThaiDatePicker
+              placeholder="กรุณาเลือกวันที่ซื้อ"
+              format="DD MMMM BBBB HH:mm:ss"
+              showTime
+            />
           </Form.Item>
           <Form.Item
             name="expiryDate"
             label="วันหมดอายุ"
             rules={[{ required: true }]}
           >
-            <DatePicker placeholder="กรุณาเลือกวันหมดอายุ" showTime />
+            <ThaiDatePicker
+              placeholder="กรุณาเลือกวันหมดอายุ"
+              format="DD MMMM BBBB HH:mm:ss"
+              showTime
+            />
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">

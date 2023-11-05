@@ -1,7 +1,8 @@
 import { Layout as Layouts, theme } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import SideMenu from '../side-menu/SideMenu';
+
+import { SideMenu } from '@components';
 
 type LayoutProps = {
   children: React.ReactNode;

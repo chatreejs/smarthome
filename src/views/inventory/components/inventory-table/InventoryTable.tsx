@@ -14,10 +14,12 @@ import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import DeleteMultipleInventory from '../../api/DeleteMultipleInventory';
-import SearchInventory from '../../api/SearchInventory';
-import { Inventory } from '../../models/Inventory.model';
-import { InventoryStatus } from '../../models/InventoryStatus.enum';
+import {
+  DeleteMultipleInventory,
+  Inventory,
+  InventoryStatus,
+  SearchInventory,
+} from '../..';
 
 const { Title } = Typography;
 

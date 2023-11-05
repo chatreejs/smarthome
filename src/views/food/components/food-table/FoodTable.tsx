@@ -11,16 +11,19 @@ import {
   notification,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import 'dayjs/locale/th';
+import buddhistEra from 'dayjs/plugin/buddhistEra';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Food, FoodStatus } from '../..';
-import DeleteMultipleFood from '../../api/DeleteMultipleFood';
-import SearchFood from '../../api/SearchFood';
+import { DeleteMultipleFood, Food, FoodStatus, SearchFood } from '../..';
 import './FoodTable.css';
 
 const { Title } = Typography;
+
+dayjs.extend(buddhistEra);
+dayjs.locale('th');
 
 const columns: ColumnsType<Food> = [
   {
@@ -48,13 +51,13 @@ const columns: ColumnsType<Food> = [
   {
     title: 'วันที่ซื้อ',
     render: (food: Food) => (
-      <span>{moment(food.buyDate).locale('th').format('DD MMMM yyyy')}</span>
+      <span>{dayjs(food.buyDate).format('DD MMMM BBBB')}</span>
     ),
   },
   {
     title: 'วันหมดอายุ',
     render: (food: Food) => (
-      <span>{moment(food.expiryDate).locale('th').format('DD MMMM yyyy')}</span>
+      <span>{dayjs(food.expiryDate).format('DD MMMM BBBB')}</span>
     ),
   },
 ];
