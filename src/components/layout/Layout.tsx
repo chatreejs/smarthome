@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { SideMenu } from '@components';
+import './Layout.css';
 
 type LayoutProps = {
   children: React.ReactNode;
