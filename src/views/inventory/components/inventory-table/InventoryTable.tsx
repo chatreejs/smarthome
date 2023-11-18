@@ -20,6 +20,7 @@ import {
   InventoryStatus,
   SearchInventory,
 } from '../..';
+import './InventoryTable.css';
 
 const { Title } = Typography;
 
@@ -77,7 +78,7 @@ const InventoryTable = () => {
 
   const onError = (errorMessage: string) => {
     api.error({
-      message: `เกิดข้อผิดพลาด`,
+      message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
     setLoading(false);

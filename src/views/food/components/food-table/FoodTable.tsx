@@ -83,7 +83,7 @@ const FoodTable = () => {
 
   const onError = (errorMessage: string) => {
     api.error({
-      message: `เกิดข้อผิดพลาด`,
+      message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
     setLoading(false);
