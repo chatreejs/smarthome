@@ -34,6 +34,8 @@ const columns: ColumnsType<Warranty> = [
   },
   {
     title: 'สถานะ',
+    width: '10%',
+    align: 'center',
     render: (warranty: Warranty) => {
       if (warranty.status === WarrantyStatus.OUT_OF_WARRANTY) {
         return <Tag color="red">หมดประกัน</Tag>;
@@ -44,25 +46,30 @@ const columns: ColumnsType<Warranty> = [
   },
   {
     title: 'ยี่ห้อ',
+    width: '10%',
     dataIndex: 'brand',
   },
 
   {
     title: 'รุ่น',
+    width: '10%',
     dataIndex: 'model',
   },
   {
     title: 'Serial No.',
+    width: '10%',
     dataIndex: 'serialNumber',
   },
   {
     title: 'วันที่ซื้อ',
+    width: '15%',
     render: (warranty: Warranty) => (
       <span>{dayjs(warranty.purchaseDate).format('DD MMMM BBBB')}</span>
     ),
   },
   {
     title: 'วันหมดประกัน',
+    width: '15%',
     render: (warranty: Warranty) => (
       <span>{dayjs(warranty.warrantyDate).format('DD MMMM BBBB')}</span>
     ),
@@ -141,27 +148,29 @@ const WarrantyTable = () => {
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
             เพิ่มการรับประกัน
           </Button>
-          <Popconfirm
-            title="ยืนยันการลบ"
-            description={`คุณต้องการลบรายการการรับประกันจำนวน ${selectedWarranties.length} รายการใช่หรือไม่?`}
-            onConfirm={onConfirmDelete}
-            okText="ยืนยัน"
-            cancelText="ยกเลิก"
-            disabled={selectedWarranties.length === 0}
-          >
-            <Button
-              danger
-              className="action-btn"
-              size="large"
+          {selectedWarranties.length > 0 && (
+            <Popconfirm
+              title="ยืนยันการลบ"
+              description={`คุณต้องการลบรายการการรับประกันจำนวน ${selectedWarranties.length} รายการใช่หรือไม่?`}
+              onConfirm={onConfirmDelete}
+              okText="ยืนยัน"
+              cancelText="ยกเลิก"
               disabled={selectedWarranties.length === 0}
             >
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginRight: '0.25rem' }}
-              />
-              ลบ
-            </Button>
-          </Popconfirm>
+              <Button
+                danger
+                className="action-btn"
+                size="large"
+                disabled={selectedWarranties.length === 0}
+              >
+                <FontAwesomeIcon
+                  icon={faTrashCan}
+                  style={{ marginRight: '0.25rem' }}
+                />
+                ลบ
+              </Button>
+            </Popconfirm>
+          )}
         </Col>
       </Row>
       <Row gutter={8} className="action-bar">
@@ -170,12 +179,13 @@ const WarrantyTable = () => {
       <Table
         rowSelection={{
           type: 'checkbox',
+          columnWidth: '5%',
           ...rowSelection,
         }}
         columns={columns}
         dataSource={warrantiesData}
         loading={loading}
-        scroll={{ x: 576 }}
+        scroll={{ x: 576, y: '45vh' }}
       />
     </>
   );

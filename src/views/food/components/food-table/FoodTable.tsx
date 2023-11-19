@@ -34,6 +34,8 @@ const columns: ColumnsType<Food> = [
   },
   {
     title: 'สถานะ',
+    width: '15%',
+    align: 'center',
     render: (food: Food) => {
       if (food.status === FoodStatus.EXPIRED) {
         return <Tag color="red">หมดอายุ</Tag>;
@@ -42,20 +44,25 @@ const columns: ColumnsType<Food> = [
   },
   {
     title: 'จำนวน',
+    width: '15%',
+    align: 'center',
     dataIndex: 'quantity',
   },
   {
     title: 'หน่วย',
+    width: '15%',
     dataIndex: 'unit',
   },
   {
     title: 'วันที่ซื้อ',
+    width: '15%',
     render: (food: Food) => (
       <span>{dayjs(food.buyDate).format('DD MMMM BBBB')}</span>
     ),
   },
   {
     title: 'วันหมดอายุ',
+    width: '15%',
     render: (food: Food) => (
       <span>{dayjs(food.expiryDate).format('DD MMMM BBBB')}</span>
     ),
@@ -133,27 +140,29 @@ const FoodTable = () => {
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
             เพิ่มอาหาร
           </Button>
-          <Popconfirm
-            title="ยืนยันการลบ"
-            description={`คุณต้องการลบรายการอาหารจำนวน ${selectedFoods.length} รายการใช่หรือไม่?`}
-            onConfirm={onConfirmDelete}
-            okText="ยืนยัน"
-            cancelText="ยกเลิก"
-            disabled={selectedFoods.length === 0}
-          >
-            <Button
-              danger
-              className="action-btn"
-              size="large"
+          {selectedFoods.length > 0 && (
+            <Popconfirm
+              title="ยืนยันการลบ"
+              description={`คุณต้องการลบรายการอาหารจำนวน ${selectedFoods.length} รายการใช่หรือไม่?`}
+              onConfirm={onConfirmDelete}
+              okText="ยืนยัน"
+              cancelText="ยกเลิก"
               disabled={selectedFoods.length === 0}
             >
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginRight: '0.25rem' }}
-              />
-              ลบ
-            </Button>
-          </Popconfirm>
+              <Button
+                danger
+                className="action-btn"
+                size="large"
+                disabled={selectedFoods.length === 0}
+              >
+                <FontAwesomeIcon
+                  icon={faTrashCan}
+                  style={{ marginRight: '0.25rem' }}
+                />
+                ลบ
+              </Button>
+            </Popconfirm>
+          )}
         </Col>
       </Row>
       <Row gutter={8} className="action-bar">
@@ -162,12 +171,13 @@ const FoodTable = () => {
       <Table
         rowSelection={{
           type: 'checkbox',
+          columnWidth: '5%',
           ...rowSelection,
         }}
         columns={columns}
         dataSource={foodsData}
         loading={loading}
-        scroll={{ x: 576 }}
+        scroll={{ x: 576, y: '45vh' }}
       />
     </>
   );

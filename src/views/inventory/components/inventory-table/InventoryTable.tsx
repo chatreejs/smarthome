@@ -33,6 +33,8 @@ const columns: ColumnsType<Inventory> = [
   },
   {
     title: 'สถานะ',
+    width: '15%',
+    align: 'center',
     render: (inventory: Inventory) => {
       if (inventory.status === InventoryStatus.OUT_OF_STOCK) {
         return <Tag color="red">หมด</Tag>;
@@ -43,6 +45,8 @@ const columns: ColumnsType<Inventory> = [
   },
   {
     title: 'จำนวน',
+    width: '15%',
+    align: 'center',
     render: (inventory: Inventory) => (
       <>
         {inventory.quantity} / {inventory.maxQuantity}
@@ -51,6 +55,7 @@ const columns: ColumnsType<Inventory> = [
   },
   {
     title: 'หน่วย',
+    width: '15%',
     dataIndex: 'unit',
   },
 ];
@@ -130,27 +135,23 @@ const InventoryTable = () => {
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
             เพิ่มของใช้ในบ้าน
           </Button>
-          <Popconfirm
-            title="ยืนยันการลบ"
-            description={`คุณต้องการลบรายการของใช้ในบ้านจำนวน ${selectedInventories.length} รายการใช่หรือไม่?`}
-            onConfirm={onConfirmDelete}
-            okText="ยืนยัน"
-            cancelText="ยกเลิก"
-            disabled={selectedInventories.length === 0}
-          >
-            <Button
-              danger
-              className="action-btn"
-              size="large"
-              disabled={selectedInventories.length === 0}
+          {selectedInventories.length > 0 && (
+            <Popconfirm
+              title="ยืนยันการลบ"
+              description={`คุณต้องการลบรายการของใช้ในบ้านจำนวน ${selectedInventories.length} รายการใช่หรือไม่?`}
+              onConfirm={onConfirmDelete}
+              okText="ยืนยัน"
+              cancelText="ยกเลิก"
             >
-              <FontAwesomeIcon
-                icon={faTrashCan}
-                style={{ marginRight: '0.25rem' }}
-              />
-              ลบ
-            </Button>
-          </Popconfirm>
+              <Button danger className="action-btn" size="large">
+                <FontAwesomeIcon
+                  icon={faTrashCan}
+                  style={{ marginRight: '0.25rem' }}
+                />
+                ลบ
+              </Button>
+            </Popconfirm>
+          )}
         </Col>
       </Row>
       <Row gutter={8} className="action-bar">
@@ -159,12 +160,13 @@ const InventoryTable = () => {
       <Table
         rowSelection={{
           type: 'checkbox',
+          columnWidth: '5%',
           ...rowSelection,
         }}
         columns={columns}
         dataSource={inventoriesData}
         loading={loading}
-        scroll={{ x: 576 }}
+        scroll={{ x: 576, y: '45vh' }}
       />
     </>
   );

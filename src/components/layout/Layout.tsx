@@ -40,7 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Content
           style={{
             margin: '24px 16px 0',
-            overflowX: 'hidden',
+            overflowY: 'scroll',
           }}
         >
           <ContentWrapper $background={colorBgContainer}>
