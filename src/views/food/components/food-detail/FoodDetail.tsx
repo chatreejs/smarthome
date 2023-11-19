@@ -14,7 +14,19 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
-import { CreateFood, Food, GetFoodById, UpdateFood } from '../..';
+import {
+  faFloppyDisk,
+  faRotateLeft,
+  faTrashCan,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  CreateFood,
+  DeleteFoodById,
+  Food,
+  GetFoodById,
+  UpdateFood,
+} from '../..';
 import './FoodDetail.css';
 
 const { Title } = Typography;
@@ -75,9 +87,16 @@ const FoodDetail = () => {
     }
   }, [foodId]);
 
+  const onSuccess = (successMessage: string) => {
+    api.success({
+      message: 'สำเร็จ',
+      description: successMessage,
+    });
+  };
+
   const onError = (errorMessage: string) => {
     api.error({
-      message: `เกิดข้อผิดพลาด`,
+      message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
   };
@@ -85,19 +104,47 @@ const FoodDetail = () => {
   const onFinish = (values: any) => {
     const formValue = {
       ...values,
-      buyDate: values.buyDate.toISOString(),
-      expiryDate: values.expiryDate.toISOString(),
+      buyDate: values.buyDate.format('YYYY-MM-DD'),
+      expiryDate: values.expiryDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      UpdateFood(+foodId, formValue).then((res) => {
-        console.log(res);
-        navigate('/food');
-      });
+      UpdateFood(+foodId, formValue)
+        .then((res) => {
+          onSuccess('แก้ไขข้อมูลสำเร็จ');
+        })
+        .catch((err: AxiosError) => {
+          const status = err.response?.status;
+          if (status === 400) {
+            onError('ข้อมูลไม่ถูกต้อง');
+          }
+          if (status === 500) {
+            onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
+          }
+        })
+        .then(() => {
+          setTimeout(() => {
+            navigate('/food');
+          }, 2000);
+        });
     } else {
-      CreateFood(formValue).then((res) => {
-        console.log(res);
-        navigate('/food');
-      });
+      CreateFood(formValue)
+        .then((res) => {
+          onSuccess('เพิ่มข้อมูลสำเร็จ');
+        })
+        .catch((err: AxiosError) => {
+          const status = err.response?.status;
+          if (status === 400) {
+            onError('ข้อมูลไม่ถูกต้อง');
+          }
+          if (status === 500) {
+            onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
+          }
+        })
+        .then(() => {
+          setTimeout(() => {
+            navigate('/food');
+          }, 2000);
+        });
     }
   };
 
@@ -116,7 +163,21 @@ const FoodDetail = () => {
   };
 
   const onDelete = () => {
-    console.log('delete');
+    DeleteFoodById(+foodId)
+      .then((res) => {
+        onSuccess('ลบข้อมูลสำเร็จ');
+      })
+      .catch((err: AxiosError) => {
+        const status = err.response?.status;
+        if (status === 500) {
+          onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
+        }
+      })
+      .then(() => {
+        setTimeout(() => {
+          navigate('/food');
+        }, 2000);
+      });
   };
 
   return (
@@ -170,13 +231,16 @@ const FoodDetail = () => {
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" size="large" htmlType="submit">
+              <FontAwesomeIcon icon={faFloppyDisk} />
               บันทึก
             </Button>
             <Button size="large" htmlType="button" onClick={onReset}>
+              <FontAwesomeIcon icon={faRotateLeft} />
               ล้างข้อมูล
             </Button>
             {isEdit && (
               <Button danger size="large" htmlType="button" onClick={onDelete}>
+                <FontAwesomeIcon icon={faTrashCan} />
                 ลบ
               </Button>
             )}

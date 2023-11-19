@@ -1,4 +1,5 @@
 export { default as CreateFood } from './api/CreateFood';
+export { default as DeleteFoodById } from './api/DeleteFoodById';
 export { default as DeleteMultipleFood } from './api/DeleteMultipleFood';
 export { default as GetFoodById } from './api/GetFoodById';
 export { default as SearchFood } from './api/SearchFood';
