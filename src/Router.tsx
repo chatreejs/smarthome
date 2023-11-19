@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+
 import Dashboard from './views/dashboard/Dashboard';
 import Farm from './views/farm/Farm';
+import FarmDashboard from './views/farm/components/farm-dashboard/FarmDashboard';
 import Food from './views/food/Food';
 import FoodDetail from './views/food/components/food-detail/FoodDetail';
 import FoodTable from './views/food/components/food-table/FoodTable';
@@ -28,7 +30,9 @@ const Router = () => {
         <Route path="new" element={<WarrantyDetail />} />
         <Route path=":warrantyId" element={<WarrantyDetail />} />
       </Route>
-      <Route path="farm" element={<Farm />} />
+      <Route path="farm" element={<Farm />}>
+        <Route index element={<FarmDashboard />} />
+      </Route>
     </Routes>
   );
 };
