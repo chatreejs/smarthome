@@ -7,6 +7,7 @@ import FoodTable from './views/food/components/food-table/FoodTable';
 import Inventory from './views/inventory/Inventory';
 import InventoryTable from './views/inventory/components/inventory-table/InventoryTable';
 import Warranty from './views/warranty/Warranty';
+import WarrantyDetail from './views/warranty/components/warranty-detail/WarrantyDetail';
 import WarrantyTable from './views/warranty/components/warranty-table/WarrantyTable';
 
 const Router = () => {
@@ -24,6 +25,8 @@ const Router = () => {
       </Route>
       <Route path="warranty" element={<Warranty />}>
         <Route index element={<WarrantyTable />} />
+        <Route path="new" element={<WarrantyDetail />} />
+        <Route path=":warrantyId" element={<WarrantyDetail />} />
       </Route>
       <Route path="farm" element={<Farm />} />
     </Routes>
