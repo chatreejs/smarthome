@@ -69,7 +69,7 @@ const columns: ColumnsType<Food> = [
   },
 ];
 
-const FoodTable = () => {
+const FoodTable: React.FC = () => {
   const [foodsData, setFoodsData] = useState<Food[]>([]);
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);

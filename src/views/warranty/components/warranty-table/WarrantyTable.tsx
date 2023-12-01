@@ -76,7 +76,7 @@ const columns: ColumnsType<Warranty> = [
   },
 ];
 
-const WarrantyTable = () => {
+const WarrantyTable: React.FC = () => {
   const [warrantiesData, setWarrantiesData] = useState<Warranty[]>([]);
   const [selectedWarranties, setSelectedWarranties] = useState<Warranty[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
+
+import { httpClient } from '@api';
 import { Inventory } from '..';
-import { httpClient } from '../../../api/HttpClient';
 
 const SearchInventory = async (): Promise<Inventory[]> => {
   return httpClient

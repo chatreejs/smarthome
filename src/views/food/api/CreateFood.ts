@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
+
+import { httpClient } from '@api';
 import { Food } from '..';
-import { httpClient } from '../../../api/HttpClient';
 
 const CreateFood = async (food: Food): Promise<Food> => {
   return httpClient

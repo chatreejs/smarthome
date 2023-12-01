@@ -1,5 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { httpClient } from '../../../api/HttpClient';
+
+import { httpClient } from '@api';
 
 const DeleteMultipleWarranty = async (ids: number[]) => {
   return httpClient

@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { Food } from '..';
-import { httpClient } from '../../../api/HttpClient';
+
+import { httpClient } from '@api';
 
 const DeleteFoodById = async (id: number): Promise<Food> => {
   return httpClient

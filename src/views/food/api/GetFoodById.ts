@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
+
+import { httpClient } from '@api';
 import { Food } from '..';
-import { httpClient } from '../../../api/HttpClient';
 
 const GetFoodById = async (id: number): Promise<Food> => {
   return httpClient

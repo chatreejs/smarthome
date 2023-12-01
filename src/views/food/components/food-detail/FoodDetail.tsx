@@ -47,7 +47,7 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const FoodDetail = () => {
+const FoodDetail: React.FC = () => {
   const { foodId } = useParams();
   const [foodData, setFoodData] = useState<Food>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);

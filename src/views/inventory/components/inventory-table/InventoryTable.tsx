@@ -60,7 +60,7 @@ const columns: ColumnsType<Inventory> = [
   },
 ];
 
-const InventoryTable = () => {
+const InventoryTable: React.FC = () => {
   const [inventoriesData, setInventoriesData] = useState<Inventory[]>([]);
   const [selectedInventories, setSelectedInventories] = useState<Inventory[]>(
     [],

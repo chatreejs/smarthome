@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
+
+import { httpClient } from '@api';
 import { Warranty } from '..';
-import { httpClient } from '../../../api/HttpClient';
 
 const GetWarrantyById = async (id: number): Promise<Warranty> => {
   return httpClient

@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
+
+import { httpClient } from '@api';
 import { Warranty } from '..';
-import { httpClient } from '../../../api/HttpClient';
 
 const DeleteWarrantyById = async (id: number): Promise<Warranty> => {
   return httpClient

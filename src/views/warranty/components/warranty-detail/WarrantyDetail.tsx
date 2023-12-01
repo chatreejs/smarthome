@@ -39,7 +39,7 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const WarrantyDetail = () => {
+const WarrantyDetail: React.FC = () => {
   const { warrantyId } = useParams();
   const [warrantyData, setWarrantyData] = useState<Warranty>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
