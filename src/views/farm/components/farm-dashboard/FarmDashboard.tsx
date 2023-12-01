@@ -2,6 +2,7 @@ import {
   faBug,
   faDroplet,
   faEllipsis,
+  faGauge,
   faShower,
   faTemperatureHalf,
   faWind,
@@ -17,9 +18,11 @@ import {
   Statistic,
   Typography,
 } from 'antd';
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
+import { StompClient } from '@api';
+import { WeatherSensor } from '../..';
 import './FarmDashboard.css';
 
 const { Title } = Typography;
@@ -56,10 +59,53 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const FarmDashboard = () => {
-  const [temperature, setTemperature] = useState(25.5);
-  const [humidity, setHumidity] = useState(50);
-  const [windSpeed, setWindSpeed] = useState(10);
+const FarmDashboard: React.FC = () => {
+  const [temperature, setTemperature] = useState<number>(null);
+  const [humidity, setHumidity] = useState<number>(null);
+  const [pressure, setPressure] = useState<number>(null);
+  const [aqi, setAqi] = useState<number>(20); // TODO: [AQI] Add AQI to sensor data
+  const [sensorData, setSensorData] = useState<WeatherSensor>(null);
+
+  useEffect(() => {
+    StompClient.onConnect = () => {
+      StompClient.subscribe('/topic/weather-sensor', (message) => {
+        const body: WeatherSensor = JSON.parse(message.body);
+        setSensorData(body);
+      });
+    };
+    StompClient.activate();
+
+    // Cleanup
+    return () => {
+      if (StompClient.connected) {
+        StompClient.deactivate();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (sensorData) {
+      setTemperature(sensorData.temperature);
+      setHumidity(sensorData.humidity);
+      setPressure(sensorData.pressure);
+    }
+  }, [sensorData]);
+
+  const aqiColor = (aqi: number): string => {
+    if (aqi <= 12) {
+      return '#718A3B';
+    } else if (aqi <= 35.4) {
+      return '#A57F2E';
+    } else if (aqi <= 55.4) {
+      return '#B25925';
+    } else if (aqi <= 150.4) {
+      return '#AF2A3D';
+    } else if (aqi <= 250.4) {
+      return '#6B4A7C';
+    } else {
+      return '#693F53';
+    }
+  };
 
   return (
     <>
@@ -72,6 +118,7 @@ const FarmDashboard = () => {
             precision={2}
             prefix={<FontAwesomeIcon icon={faTemperatureHalf} />}
             suffix="°C"
+            loading={temperature == null}
           />
         </Col>
         <Col span={6}>
@@ -81,15 +128,27 @@ const FarmDashboard = () => {
             precision={2}
             prefix={<FontAwesomeIcon icon={faDroplet} />}
             suffix="%"
+            loading={humidity == null}
           />
         </Col>
         <Col span={6}>
           <Statistic
-            title="ความเร็วลม"
-            value={windSpeed}
+            title="ความดันบรรยากาศ"
+            value={pressure}
+            precision={2}
+            prefix={<FontAwesomeIcon icon={faGauge} />}
+            suffix="hPa"
+            loading={pressure == null}
+          />
+        </Col>
+        <Col span={6}>
+          <Statistic
+            title="AQI"
+            value={aqi}
             precision={2}
             prefix={<FontAwesomeIcon icon={faWind} />}
-            suffix="Km/h"
+            valueStyle={{ color: aqiColor(aqi) }}
+            loading={aqi == null}
           />
         </Col>
       </Row>
