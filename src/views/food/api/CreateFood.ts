@@ -5,7 +5,7 @@ import { Food } from '..';
 
 const CreateFood = async (food: Food): Promise<Food> => {
   return httpClient
-    .post<Food>(`${import.meta.env.VITE_APP_BASE_API}/foods`, food)
+    .post<Food>(`${process.env.VITE_APP_BASE_API}/foods`, food)
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
         return response.data;

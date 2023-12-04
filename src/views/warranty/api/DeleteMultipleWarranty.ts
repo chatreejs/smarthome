@@ -4,7 +4,7 @@ import { httpClient } from '@api';
 
 const DeleteMultipleWarranty = async (ids: number[]) => {
   return httpClient
-    .delete(`${import.meta.env.VITE_APP_BASE_API}/warranties`, {
+    .delete(`${process.env.VITE_APP_BASE_API}/warranties`, {
       data: {
         ids: ids.join(','),
       },

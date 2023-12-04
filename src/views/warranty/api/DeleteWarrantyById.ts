@@ -5,7 +5,7 @@ import { Warranty } from '..';
 
 const DeleteWarrantyById = async (id: number): Promise<Warranty> => {
   return httpClient
-    .delete<Warranty>(`${import.meta.env.VITE_APP_BASE_API}/warranties/${id}`)
+    .delete<Warranty>(`${process.env.VITE_APP_BASE_API}/warranties/${id}`)
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
         return response.data;

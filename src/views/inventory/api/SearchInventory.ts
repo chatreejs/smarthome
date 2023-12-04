@@ -5,7 +5,7 @@ import { Inventory } from '..';
 
 const SearchInventory = async (): Promise<Inventory[]> => {
   return httpClient
-    .get<Inventory[]>(`${import.meta.env.VITE_APP_BASE_API}/inventories`)
+    .get<Inventory[]>(`${process.env.VITE_APP_BASE_API}/inventories`)
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
         return response.data.map((inventory: Inventory) => {

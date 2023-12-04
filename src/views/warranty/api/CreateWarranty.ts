@@ -5,7 +5,7 @@ import { Warranty } from '..';
 
 const CreateWarranty = async (warranty: Warranty): Promise<Warranty> => {
   return httpClient
-    .post<Warranty>(`${import.meta.env.VITE_APP_BASE_API}/warranties`, warranty)
+    .post<Warranty>(`${process.env.VITE_APP_BASE_API}/warranties`, warranty)
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
         return response.data;

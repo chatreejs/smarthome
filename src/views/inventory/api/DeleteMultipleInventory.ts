@@ -4,7 +4,7 @@ import { httpClient } from '@api';
 
 const DeleteMultipleInventory = async (ids: number[]) => {
   return httpClient
-    .delete(`${import.meta.env.VITE_APP_BASE_API}/inventories`, {
+    .delete(`${process.env.VITE_APP_BASE_API}/inventories`, {
       data: {
         ids: ids.join(','),
       },

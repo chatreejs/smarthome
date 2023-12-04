@@ -4,7 +4,7 @@ import { httpClient } from '@api';
 
 const DeleteMultipleFood = async (ids: number[]) => {
   return httpClient
-    .delete(`${import.meta.env.VITE_APP_BASE_API}/foods`, {
+    .delete(`${process.env.VITE_APP_BASE_API}/foods`, {
       data: {
         ids: ids.join(','),
       },

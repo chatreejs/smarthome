@@ -9,7 +9,7 @@ const UpdateWarranty = async (
 ): Promise<Warranty> => {
   return httpClient
     .put<Warranty>(
-      `${import.meta.env.VITE_APP_BASE_API}/warranties/${id}`,
+      `${process.env.VITE_APP_BASE_API}/warranties/${id}`,
       warranty,
     )
     .then((response: AxiosResponse) => {

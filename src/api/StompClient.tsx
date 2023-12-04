@@ -1,7 +1,7 @@
 import { Client } from '@stomp/stompjs';
 
 const client = new Client({
-  brokerURL: import.meta.env.VITE_APP_BASE_SOCKET,
+  brokerURL: process.env.VITE_APP_BASE_SOCKET,
   reconnectDelay: 2000,
 });
 

@@ -5,7 +5,7 @@ import { Food } from '..';
 
 const GetFoodById = async (id: number): Promise<Food> => {
   return httpClient
-    .get<Food>(`${import.meta.env.VITE_APP_BASE_API}/foods/${id}`)
+    .get<Food>(`${process.env.VITE_APP_BASE_API}/foods/${id}`)
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
         return response.data;

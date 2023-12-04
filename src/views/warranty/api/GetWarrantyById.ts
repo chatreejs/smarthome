@@ -5,7 +5,7 @@ import { Warranty } from '..';
 
 const GetWarrantyById = async (id: number): Promise<Warranty> => {
   return httpClient
-    .get<Warranty>(`${import.meta.env.VITE_APP_BASE_API}/warranties/${id}`)
+    .get<Warranty>(`${process.env.VITE_APP_BASE_API}/warranties/${id}`)
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
         return response.data;

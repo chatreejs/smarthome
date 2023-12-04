@@ -5,7 +5,7 @@ import { Warranty } from '..';
 
 const SearchWarranty = async (): Promise<Warranty[]> => {
   return httpClient
-    .get<Warranty[]>(`${import.meta.env.VITE_APP_BASE_API}/warranties`)
+    .get<Warranty[]>(`${process.env.VITE_APP_BASE_API}/warranties`)
     .then((response: AxiosResponse) => {
       if (response.status === 200) {
         return response.data.map((warranty: Warranty) => {

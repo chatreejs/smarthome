@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import EnvironmentPlugin from 'vite-plugin-environment';
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 
@@ -51,7 +52,12 @@ export default defineConfig({
     outDir: 'build',
   },
   base: '/smarthome',
-  plugins: [react(), viteTsconfigPaths(), VitePWA(manifestForPlugin)],
+  plugins: [
+    react(),
+    EnvironmentPlugin('all'),
+    viteTsconfigPaths(),
+    VitePWA(manifestForPlugin),
+  ],
   server: {
     port: 3000,
     open: true,
