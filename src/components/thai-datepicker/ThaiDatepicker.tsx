@@ -1,4 +1,4 @@
-import generatePicker from 'antd/es/date-picker/generatePicker';
+import generatePicker from 'antd/lib/date-picker/generatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import th from 'dayjs/locale/th';
 import buddistEra from 'dayjs/plugin/buddhistEra';

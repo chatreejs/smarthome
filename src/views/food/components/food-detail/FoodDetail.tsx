@@ -7,7 +7,7 @@ import {
   Typography,
   notification,
 } from 'antd';
-import locale from 'antd/es/date-picker/locale/th_TH';
+import locale from 'antd/lib/date-picker/locale/th_TH';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -195,10 +195,10 @@ const FoodDetail: React.FC = () => {
           style={{ maxWidth: 576 }}
         >
           <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
-            <Input size="large" />
+            <Input size="large" data-testid="name-input" />
           </Form.Item>
           <Form.Item name="quantity" label="จำนวน" rules={[{ required: true }]}>
-            <InputNumber size="large" />
+            <InputNumber size="large" data-testid="quantity-input" />
           </Form.Item>
           <Form.Item name="unit" label="หน่วย" rules={[{ required: true }]}>
             <Input size="large" />
