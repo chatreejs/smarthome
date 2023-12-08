@@ -4,8 +4,8 @@ import {
   faEllipsis,
   faGauge,
   faShower,
+  faSmog,
   faTemperatureHalf,
-  faWind,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -63,7 +63,7 @@ const FarmDashboard: React.FC = () => {
   const [temperature, setTemperature] = useState<number>(null);
   const [humidity, setHumidity] = useState<number>(null);
   const [pressure, setPressure] = useState<number>(null);
-  const [aqi, setAqi] = useState<number>(20); // TODO: [AQI] Add AQI to sensor data
+  const [pm25, setPm25] = useState<number>(null);
   const [sensorData, setSensorData] = useState<WeatherSensor>(null);
 
   useEffect(() => {
@@ -88,22 +88,23 @@ const FarmDashboard: React.FC = () => {
       setTemperature(sensorData.temperature);
       setHumidity(sensorData.humidity);
       setPressure(sensorData.pressure);
+      setPm25(sensorData.pm25);
     }
   }, [sensorData]);
 
-  const aqiColor = (aqi: number): string => {
+  const pm25Color = (aqi: number): string => {
     if (aqi <= 12) {
-      return '#718A3B';
-    } else if (aqi <= 35.4) {
-      return '#A57F2E';
-    } else if (aqi <= 55.4) {
-      return '#B25925';
-    } else if (aqi <= 150.4) {
-      return '#AF2A3D';
-    } else if (aqi <= 250.4) {
-      return '#6B4A7C';
+      return '#000000';
+    } else if (aqi <= 35) {
+      return '#dddd00';
+    } else if (aqi <= 55) {
+      return '#ff7e00';
+    } else if (aqi <= 150) {
+      return '#ff0000';
+    } else if (aqi <= 250) {
+      return '#8f3f97';
     } else {
-      return '#693F53';
+      return '#7e0023';
     }
   };
 
@@ -143,12 +144,12 @@ const FarmDashboard: React.FC = () => {
         </Col>
         <Col span={6}>
           <Statistic
-            title="AQI"
-            value={aqi}
-            precision={2}
-            prefix={<FontAwesomeIcon icon={faWind} />}
-            valueStyle={{ color: aqiColor(aqi) }}
-            loading={aqi == null}
+            title="Air Quality (PM2.5)"
+            value={pm25}
+            prefix={<FontAwesomeIcon icon={faSmog} />}
+            suffix="μg/m³"
+            valueStyle={{ color: pm25Color(pm25) }}
+            loading={pm25 == null}
           />
         </Col>
       </Row>

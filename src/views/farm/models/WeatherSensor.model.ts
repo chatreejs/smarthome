@@ -3,4 +3,5 @@ export interface WeatherSensor {
   temperature: number;
   humidity: number;
   pressure: number;
+  pm25: number;
 }
