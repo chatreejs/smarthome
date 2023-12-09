@@ -28,13 +28,14 @@ dayjs.locale('th');
 const columns: ColumnsType<Food> = [
   {
     title: 'ชื่อ',
+    width: 'calc(10vh)',
     render: (food: Food) => (
       <Link to={{ pathname: `${food.id}` }}>{food.name}</Link>
     ),
   },
   {
     title: 'สถานะ',
-    width: '15%',
+    width: '80px',
     align: 'center',
     render: (food: Food) => {
       if (food.status === FoodStatus.EXPIRED) {
@@ -44,25 +45,25 @@ const columns: ColumnsType<Food> = [
   },
   {
     title: 'จำนวน',
-    width: '15%',
+    width: '80px',
     align: 'center',
     dataIndex: 'quantity',
   },
   {
     title: 'หน่วย',
-    width: '15%',
+    width: '80px',
     dataIndex: 'unit',
   },
   {
     title: 'วันที่ซื้อ',
-    width: '15%',
+    width: '180px',
     render: (food: Food) => (
       <span>{dayjs(food.buyDate).format('DD MMMM BBBB')}</span>
     ),
   },
   {
     title: 'วันหมดอายุ',
-    width: '15%',
+    width: '180px',
     render: (food: Food) => (
       <span>{dayjs(food.expiryDate).format('DD MMMM BBBB')}</span>
     ),
@@ -171,7 +172,7 @@ const FoodTable: React.FC = () => {
       <Table
         rowSelection={{
           type: 'checkbox',
-          columnWidth: '5%',
+          columnWidth: '40px',
           ...rowSelection,
         }}
         columns={columns}

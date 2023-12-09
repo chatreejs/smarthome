@@ -1,12 +1,4 @@
-import {
-  faBug,
-  faDroplet,
-  faEllipsis,
-  faGauge,
-  faShower,
-  faSmog,
-  faTemperatureHalf,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBug, faEllipsis, faShower } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Card,
@@ -92,63 +84,42 @@ const FarmDashboard: React.FC = () => {
     }
   }, [sensorData]);
 
-  const pm25Color = (aqi: number): string => {
-    if (aqi <= 12) {
-      return '#000000';
-    } else if (aqi <= 35) {
-      return '#dddd00';
-    } else if (aqi <= 55) {
-      return '#ff7e00';
-    } else if (aqi <= 150) {
-      return '#ff0000';
-    } else if (aqi <= 250) {
-      return '#8f3f97';
-    } else {
-      return '#7e0023';
-    }
-  };
-
   return (
     <>
       <Title level={2}>ฟาร์ม</Title>
       <Row gutter={8}>
-        <Col span={6}>
+        <Col xs={12} sm={12} md={6} lg={6}>
           <Statistic
             title="อุณหภูมิ"
             value={temperature}
             precision={2}
-            prefix={<FontAwesomeIcon icon={faTemperatureHalf} />}
             suffix="°C"
             loading={temperature == null}
           />
         </Col>
-        <Col span={6}>
+        <Col xs={12} sm={12} md={6} lg={6}>
           <Statistic
             title="ความชื้นสัมพัทธ์"
             value={humidity}
             precision={2}
-            prefix={<FontAwesomeIcon icon={faDroplet} />}
             suffix="%"
             loading={humidity == null}
           />
         </Col>
-        <Col span={6}>
+        <Col xs={12} sm={12} md={6} lg={6}>
           <Statistic
             title="ความดันบรรยากาศ"
             value={pressure}
             precision={2}
-            prefix={<FontAwesomeIcon icon={faGauge} />}
             suffix="hPa"
             loading={pressure == null}
           />
         </Col>
-        <Col span={6}>
+        <Col xs={12} sm={12} md={6} lg={6}>
           <Statistic
             title="Air Quality (PM2.5)"
             value={pm25}
-            prefix={<FontAwesomeIcon icon={faSmog} />}
             suffix="μg/m³"
-            valueStyle={{ color: pm25Color(pm25) }}
             loading={pm25 == null}
           />
         </Col>
@@ -177,19 +148,10 @@ const FarmDashboard: React.FC = () => {
             >
               <Row>
                 <Col span={12}>
-                  <Statistic
-                    title="ความชื้นในดิน"
-                    value={10}
-                    prefix={<FontAwesomeIcon icon={faShower} />}
-                    suffix="%"
-                  />
+                  <Statistic title="ความชื้นในดิน" value={10} suffix="%" />
                 </Col>
                 <Col span={12}>
-                  <Statistic
-                    title="pH"
-                    value={5.5}
-                    prefix={<FontAwesomeIcon icon={faDroplet} />}
-                  />
+                  <Statistic title="pH" value={5.5} />
                 </Col>
               </Row>
             </Card>
@@ -215,19 +177,10 @@ const FarmDashboard: React.FC = () => {
             >
               <Row>
                 <Col span={12}>
-                  <Statistic
-                    title="ความชื้นในดิน"
-                    value={50}
-                    prefix={<FontAwesomeIcon icon={faShower} />}
-                    suffix="%"
-                  />
+                  <Statistic title="ความชื้นในดิน" value={50} suffix="%" />
                 </Col>
                 <Col span={12}>
-                  <Statistic
-                    title="pH"
-                    value={5.5}
-                    prefix={<FontAwesomeIcon icon={faDroplet} />}
-                  />
+                  <Statistic title="pH" value={5.5} />
                 </Col>
               </Row>
             </Card>
@@ -253,19 +206,10 @@ const FarmDashboard: React.FC = () => {
             >
               <Row>
                 <Col span={12}>
-                  <Statistic
-                    title="ความชื้นในดิน"
-                    value={30}
-                    prefix={<FontAwesomeIcon icon={faShower} />}
-                    suffix="%"
-                  />
+                  <Statistic title="ความชื้นในดิน" value={30} suffix="%" />
                 </Col>
                 <Col span={12}>
-                  <Statistic
-                    title="pH"
-                    value={5.5}
-                    prefix={<FontAwesomeIcon icon={faDroplet} />}
-                  />
+                  <Statistic title="pH" value={5.5} />
                 </Col>
               </Row>
             </Card>
@@ -291,19 +235,10 @@ const FarmDashboard: React.FC = () => {
             >
               <Row>
                 <Col span={12}>
-                  <Statistic
-                    title="ความชื้นในดิน"
-                    value={30}
-                    prefix={<FontAwesomeIcon icon={faShower} />}
-                    suffix="%"
-                  />
+                  <Statistic title="ความชื้นในดิน" value={30} suffix="%" />
                 </Col>
                 <Col span={12}>
-                  <Statistic
-                    title="pH"
-                    value={5.5}
-                    prefix={<FontAwesomeIcon icon={faDroplet} />}
-                  />
+                  <Statistic title="pH" value={5.5} />
                 </Col>
               </Row>
             </Card>
