@@ -2,7 +2,7 @@ import { Layout as Layouts, theme } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 
-import { SideMenu } from '@components';
+import { Logo, SideMenu } from '@components';
 import './Layout.css';
 
 type LayoutProps = {
@@ -13,13 +13,8 @@ const ContentWrapper = styled.div<{ $background?: string }>`
   padding: 24px;
   background: ${(props) => props.$background};
   border-radius: 8px;
-`;
-
-const DemoLogo = styled.div`
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-  border-radius: 6px;
+  width: 100%;
+  max-width: 1500px;
 `;
 
 const { Header, Content, Footer, Sider } = Layouts;
@@ -32,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <Layouts>
       <Sider breakpoint="lg" collapsedWidth="0" width={300}>
-        <DemoLogo />
+        <Logo systemName="smarthome" />
         <SideMenu />
       </Sider>
       <Layouts style={{ minHeight: '100vh', maxHeight: '100vh' }}>
@@ -41,6 +36,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           style={{
             margin: '24px 16px 0',
             overflowY: 'scroll',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
           }}
         >
           <ContentWrapper $background={colorBgContainer}>
