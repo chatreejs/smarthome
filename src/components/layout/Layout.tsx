@@ -1,4 +1,4 @@
-import { Layout as Layouts, theme } from 'antd';
+import { Avatar, Badge, Layout as Layouts, theme } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -16,6 +16,14 @@ const ContentWrapper = styled.div<{ $background?: string }>`
   width: 100%;
   max-width: 1500px;
   border: 1px solid rgb(240, 240, 240);
+`;
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  width: 100%;
 `;
 
 const { Header, Content, Footer, Sider } = Layouts;
@@ -46,11 +54,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         <Header
           style={{
+            display: 'flex',
             padding: 0,
             background: colorBgContainer,
             borderBottom: '1px solid rgb(240, 240, 240)',
           }}
-        />
+        >
+          <HeaderWrapper>
+            <div>a1</div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Badge count={5}>
+                <Avatar
+                  style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}
+                >
+                  U
+                </Avatar>
+              </Badge>
+              <h5 style={{ marginLeft: '16px' }}>John Doe</h5>
+            </div>
+          </HeaderWrapper>
+        </Header>
         <Content
           style={{
             margin: '24px 16px 0',
