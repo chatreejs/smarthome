@@ -33,7 +33,7 @@ const SideMenu: React.FC = () => {
     <Menu
       defaultSelectedKeys={[defaultSelectedKeys]}
       mode="inline"
-      theme="dark"
+      theme="light"
       className="menu"
     >
       <Menu.Item key="dashboard" onClick={() => onClickMenu('dashboard')}>

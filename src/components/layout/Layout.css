@@ -3,3 +3,7 @@
     height: 100vh;
     z-index: 2;
 }
+
+.ant-layout .ant-layout-sider-children > ul {
+    border-inline-end: none !important;
+}

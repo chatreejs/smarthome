@@ -13,12 +13,13 @@ const LogoWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  user-select: none;
 `;
 
 const EnvBadge = styled.div`
   background: #fa3e3e;
   color: #fff;
-  font-size: 16px;
+  font-size: 10px;
   font-weight: bold;
   padding: 2px 8px;
   border-radius: 4px;
