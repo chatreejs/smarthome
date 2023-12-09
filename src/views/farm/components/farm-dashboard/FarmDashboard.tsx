@@ -51,6 +51,15 @@ const items: MenuProps['items'] = [
   },
 ];
 
+const getAirQualityColor = (pm25: number) => {
+  if (pm25 <= 35) {
+    return '#00e400';
+  } else if (pm25 <= 85) {
+    return '#feb726';
+  }
+  return '#ff0000';
+};
+
 const FarmDashboard: React.FC = () => {
   const [temperature, setTemperature] = useState<number>(null);
   const [humidity, setHumidity] = useState<number>(null);
@@ -120,6 +129,7 @@ const FarmDashboard: React.FC = () => {
             title="Air Quality (PM2.5)"
             value={pm25}
             suffix="μg/m³"
+            valueStyle={{ color: getAirQualityColor(pm25) }}
             loading={pm25 == null}
           />
         </Col>
