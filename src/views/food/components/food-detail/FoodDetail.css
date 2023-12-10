@@ -1,24 +1,25 @@
 .ant-btn {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
-.ant-picker, .ant-input-number {
-    width: 100%;
+.ant-picker,
+.ant-input-number {
+  width: 100%;
 }
 
 .ant-form-item-label > label {
-    font-size: 16px !important;
+  font-size: 16px !important;
 }
 
 .ant-picker-input input {
-    cursor: pointer;
-    font-family: 'Kanit', sans-serif;
+  cursor: pointer;
+  font-family: 'Kanit', sans-serif;
 }
 
 .ant-picker-header-view button {
-    font-family: 'Kanit', sans-serif;
+  font-family: 'Kanit', sans-serif;
 }
 
 button > svg {
-    margin-right: 0.5em;
+  margin-right: 0.5em;
 }
