@@ -11,6 +11,7 @@ export default {
     '\\.(css|less)$': '<rootDir>/src/test/__mocks__/styleMock.js',
     '@api': '<rootDir>/src/api',
     '@components': '<rootDir>/src/components',
+    '@hooks': '<rootDir>/src/hooks',
     '@views': '<rootDir>/src/views',
   },
 };

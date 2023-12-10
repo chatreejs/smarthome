@@ -1,5 +1,6 @@
 import {
   Button,
+  Card,
   Form,
   Input,
   InputNumber,
@@ -186,69 +187,80 @@ const FoodDetail: React.FC = () => {
       <Title level={2}>
         {isEdit ? 'แก้ไขรายการอาหาร' : 'เพิ่มรายการอาหาร'}
       </Title>
-      {!isEdit || foodData ? (
-        <Form
-          {...formItemLayout}
-          form={form}
-          name="food-detail-form"
-          onFinish={onFinish}
-          style={{ maxWidth: 576 }}
-        >
-          <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
-            <Input size="large" data-testid="name-input" />
-          </Form.Item>
-          <Form.Item name="quantity" label="จำนวน" rules={[{ required: true }]}>
-            <InputNumber size="large" data-testid="quantity-input" />
-          </Form.Item>
-          <Form.Item name="unit" label="หน่วย" rules={[{ required: true }]}>
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item
-            name="buyDate"
-            label="วันที่ซื้อ"
-            rules={[{ required: true }]}
+      <Card>
+        {!isEdit || foodData ? (
+          <Form
+            {...formItemLayout}
+            form={form}
+            name="food-detail-form"
+            onFinish={onFinish}
+            style={{ maxWidth: 576 }}
           >
-            <ThaiDatePicker
-              locale={locale}
-              size="large"
-              inputReadOnly={true}
-              placeholder="กรุณาเลือกวันที่ซื้อ"
-              format="DD MMMM BBBB"
-            />
-          </Form.Item>
-          <Form.Item
-            name="expiryDate"
-            label="วันหมดอายุ"
-            rules={[{ required: true }]}
-          >
-            <ThaiDatePicker
-              locale={locale}
-              size="large"
-              inputReadOnly={true}
-              placeholder="กรุณาเลือกวันหมดอายุ"
-              format="DD MMMM BBBB"
-            />
-          </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Button type="primary" size="large" htmlType="submit">
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              บันทึก
-            </Button>
-            <Button size="large" htmlType="button" onClick={onReset}>
-              <FontAwesomeIcon icon={faRotateLeft} />
-              ล้างข้อมูล
-            </Button>
-            {isEdit && (
-              <Button danger size="large" htmlType="button" onClick={onDelete}>
-                <FontAwesomeIcon icon={faTrashCan} />
-                ลบ
+            <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
+              <Input size="large" data-testid="name-input" />
+            </Form.Item>
+            <Form.Item
+              name="quantity"
+              label="จำนวน"
+              rules={[{ required: true }]}
+            >
+              <InputNumber size="large" data-testid="quantity-input" />
+            </Form.Item>
+            <Form.Item name="unit" label="หน่วย" rules={[{ required: true }]}>
+              <Input size="large" />
+            </Form.Item>
+            <Form.Item
+              name="buyDate"
+              label="วันที่ซื้อ"
+              rules={[{ required: true }]}
+            >
+              <ThaiDatePicker
+                locale={locale}
+                size="large"
+                inputReadOnly={true}
+                placeholder="กรุณาเลือกวันที่ซื้อ"
+                format="DD MMMM BBBB"
+              />
+            </Form.Item>
+            <Form.Item
+              name="expiryDate"
+              label="วันหมดอายุ"
+              rules={[{ required: true }]}
+            >
+              <ThaiDatePicker
+                locale={locale}
+                size="large"
+                inputReadOnly={true}
+                placeholder="กรุณาเลือกวันหมดอายุ"
+                format="DD MMMM BBBB"
+              />
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" size="large" htmlType="submit">
+                <FontAwesomeIcon icon={faFloppyDisk} />
+                บันทึก
               </Button>
-            )}
-          </Form.Item>
-        </Form>
-      ) : (
-        <Skeleton active />
-      )}
+              <Button size="large" htmlType="button" onClick={onReset}>
+                <FontAwesomeIcon icon={faRotateLeft} />
+                ล้างข้อมูล
+              </Button>
+              {isEdit && (
+                <Button
+                  danger
+                  size="large"
+                  htmlType="button"
+                  onClick={onDelete}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} />
+                  ลบ
+                </Button>
+              )}
+            </Form.Item>
+          </Form>
+        ) : (
+          <Skeleton active />
+        )}
+      </Card>
     </>
   );
 };

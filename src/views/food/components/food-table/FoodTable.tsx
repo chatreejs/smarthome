@@ -2,6 +2,7 @@ import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Button,
+  Card,
   Col,
   Popconfirm,
   Row,
@@ -28,7 +29,7 @@ dayjs.locale('th');
 const columns: ColumnsType<Food> = [
   {
     title: 'ชื่อ',
-    width: 'calc(10vh)',
+    width: '200px',
     render: (food: Food) => (
       <Link to={{ pathname: `${food.id}` }}>{food.name}</Link>
     ),
@@ -169,17 +170,19 @@ const FoodTable: React.FC = () => {
       <Row gutter={8} className="action-bar">
         <Col></Col>
       </Row>
-      <Table
-        rowSelection={{
-          type: 'checkbox',
-          columnWidth: '40px',
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={foodsData}
-        loading={loading}
-        scroll={{ x: 576, y: '45vh' }}
-      />
+      <Card>
+        <Table
+          rowSelection={{
+            type: 'checkbox',
+            columnWidth: '40px',
+            ...rowSelection,
+          }}
+          columns={columns}
+          dataSource={foodsData}
+          loading={loading}
+          scroll={{ x: 576, y: '45vh' }}
+        />
+      </Card>
     </>
   );
 };

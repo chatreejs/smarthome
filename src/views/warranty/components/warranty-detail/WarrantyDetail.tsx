@@ -1,4 +1,12 @@
-import { Button, Form, Input, Skeleton, Typography, notification } from 'antd';
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Skeleton,
+  Typography,
+  notification,
+} from 'antd';
 import locale from 'antd/es/date-picker/locale/th_TH';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
@@ -183,83 +191,90 @@ const WarrantyDetail: React.FC = () => {
       <Title level={2}>
         {isEdit ? 'แก้ไขรายการการรับประกัน' : 'เพิ่มรายการการรับประกัน'}
       </Title>
-      {!isEdit || warrantyData ? (
-        <Form
-          {...formItemLayout}
-          form={form}
-          name="warranty-detail-form"
-          onFinish={onFinish}
-          style={{ maxWidth: 576 }}
-        >
-          <Form.Item name="brand" label="ยี่ห้อ" rules={[{ required: true }]}>
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item
-            name="productName"
-            label="ชื่อสินค้า"
-            rules={[{ required: true }]}
+      <Card>
+        {!isEdit || warrantyData ? (
+          <Form
+            {...formItemLayout}
+            form={form}
+            name="warranty-detail-form"
+            onFinish={onFinish}
+            style={{ maxWidth: 576 }}
           >
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item name="productNumber" label="รหัสสินค้า">
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item name="model" label="รุ่น" rules={[{ required: true }]}>
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item
-            name="serialNumber"
-            label="Serial No."
-            rules={[{ required: true }]}
-          >
-            <Input size="large" />
-          </Form.Item>
-          <Form.Item
-            name="purchaseDate"
-            label="วันที่ซื้อ"
-            rules={[{ required: true }]}
-          >
-            <ThaiDatePicker
-              locale={locale}
-              size="large"
-              inputReadOnly={true}
-              placeholder="กรุณาเลือกวันที่ซื้อ"
-              format="DD MMMM BBBB"
-            />
-          </Form.Item>
-          <Form.Item
-            name="warrantyDate"
-            label="วันหมดประกัน"
-            rules={[{ required: true }]}
-          >
-            <ThaiDatePicker
-              locale={locale}
-              size="large"
-              inputReadOnly={true}
-              placeholder="กรุณาเลือกวันหมดประกัน"
-              format="DD MMMM BBBB"
-            />
-          </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Button type="primary" size="large" htmlType="submit">
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              บันทึก
-            </Button>
-            <Button size="large" htmlType="button" onClick={onReset}>
-              <FontAwesomeIcon icon={faRotateLeft} />
-              ล้างข้อมูล
-            </Button>
-            {isEdit && (
-              <Button danger size="large" htmlType="button" onClick={onDelete}>
-                <FontAwesomeIcon icon={faTrashCan} />
-                ลบ
+            <Form.Item name="brand" label="ยี่ห้อ" rules={[{ required: true }]}>
+              <Input size="large" />
+            </Form.Item>
+            <Form.Item
+              name="productName"
+              label="ชื่อสินค้า"
+              rules={[{ required: true }]}
+            >
+              <Input size="large" />
+            </Form.Item>
+            <Form.Item name="productNumber" label="รหัสสินค้า">
+              <Input size="large" />
+            </Form.Item>
+            <Form.Item name="model" label="รุ่น" rules={[{ required: true }]}>
+              <Input size="large" />
+            </Form.Item>
+            <Form.Item
+              name="serialNumber"
+              label="Serial No."
+              rules={[{ required: true }]}
+            >
+              <Input size="large" />
+            </Form.Item>
+            <Form.Item
+              name="purchaseDate"
+              label="วันที่ซื้อ"
+              rules={[{ required: true }]}
+            >
+              <ThaiDatePicker
+                locale={locale}
+                size="large"
+                inputReadOnly={true}
+                placeholder="กรุณาเลือกวันที่ซื้อ"
+                format="DD MMMM BBBB"
+              />
+            </Form.Item>
+            <Form.Item
+              name="warrantyDate"
+              label="วันหมดประกัน"
+              rules={[{ required: true }]}
+            >
+              <ThaiDatePicker
+                locale={locale}
+                size="large"
+                inputReadOnly={true}
+                placeholder="กรุณาเลือกวันหมดประกัน"
+                format="DD MMMM BBBB"
+              />
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" size="large" htmlType="submit">
+                <FontAwesomeIcon icon={faFloppyDisk} />
+                บันทึก
               </Button>
-            )}
-          </Form.Item>
-        </Form>
-      ) : (
-        <Skeleton active />
-      )}
+              <Button size="large" htmlType="button" onClick={onReset}>
+                <FontAwesomeIcon icon={faRotateLeft} />
+                ล้างข้อมูล
+              </Button>
+              {isEdit && (
+                <Button
+                  danger
+                  size="large"
+                  htmlType="button"
+                  onClick={onDelete}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} />
+                  ลบ
+                </Button>
+              )}
+            </Form.Item>
+          </Form>
+        ) : (
+          <Skeleton active />
+        )}
+      </Card>
     </>
   );
 };

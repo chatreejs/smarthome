@@ -2,6 +2,7 @@ import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Button,
+  Card,
   Col,
   Popconfirm,
   Row,
@@ -27,13 +28,14 @@ const { Title } = Typography;
 const columns: ColumnsType<Inventory> = [
   {
     title: 'ชื่อ',
+    width: '200px',
     render: (inventory: Inventory) => (
       <Link to={{ pathname: `${inventory.id}` }}>{inventory.name}</Link>
     ),
   },
   {
     title: 'สถานะ',
-    width: '15%',
+    width: '80px',
     align: 'center',
     render: (inventory: Inventory) => {
       if (inventory.status === InventoryStatus.OUT_OF_STOCK) {
@@ -45,7 +47,7 @@ const columns: ColumnsType<Inventory> = [
   },
   {
     title: 'จำนวน',
-    width: '15%',
+    width: '80px',
     align: 'center',
     render: (inventory: Inventory) => (
       <>
@@ -55,7 +57,7 @@ const columns: ColumnsType<Inventory> = [
   },
   {
     title: 'หน่วย',
-    width: '15%',
+    width: '80px',
     dataIndex: 'unit',
   },
 ];
@@ -157,17 +159,19 @@ const InventoryTable: React.FC = () => {
       <Row gutter={8} className="action-bar">
         <Col></Col>
       </Row>
-      <Table
-        rowSelection={{
-          type: 'checkbox',
-          columnWidth: '5%',
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={inventoriesData}
-        loading={loading}
-        scroll={{ x: 576, y: '45vh' }}
-      />
+      <Card>
+        <Table
+          rowSelection={{
+            type: 'checkbox',
+            columnWidth: '40px',
+            ...rowSelection,
+          }}
+          columns={columns}
+          dataSource={inventoriesData}
+          loading={loading}
+          scroll={{ x: 576, y: '45vh' }}
+        />
+      </Card>
     </>
   );
 };

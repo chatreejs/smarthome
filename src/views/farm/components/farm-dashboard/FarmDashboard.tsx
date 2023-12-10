@@ -11,23 +11,12 @@ import {
   Typography,
 } from 'antd';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 
 import { StompClient } from '@api';
 import { WeatherSensor } from '../..';
 import './FarmDashboard.css';
 
 const { Title } = Typography;
-
-const CardWrapper = styled.div`
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 55vh;
-
-  @media (max-width: 768px) {
-    max-height: 40vh;
-  }
-`;
 
 const items: MenuProps['items'] = [
   {
@@ -96,165 +85,172 @@ const FarmDashboard: React.FC = () => {
   return (
     <>
       <Title level={2}>ฟาร์ม</Title>
-      <Row gutter={8}>
+      <Row gutter={[8, 8]}>
         <Col xs={12} sm={12} md={6} lg={6}>
-          <Statistic
-            title="อุณหภูมิ"
-            value={temperature}
-            precision={2}
-            suffix="°C"
-            loading={temperature == null}
-          />
+          <Card>
+            <Statistic
+              title="อุณหภูมิ"
+              value={temperature}
+              precision={2}
+              suffix="°C"
+              loading={temperature == null}
+            />
+          </Card>
         </Col>
         <Col xs={12} sm={12} md={6} lg={6}>
-          <Statistic
-            title="ความชื้นสัมพัทธ์"
-            value={humidity}
-            precision={2}
-            suffix="%"
-            loading={humidity == null}
-          />
+          <Card>
+            <Statistic
+              title="ความชื้นสัมพัทธ์"
+              value={humidity}
+              precision={2}
+              suffix="%"
+              loading={humidity == null}
+            />
+          </Card>
         </Col>
         <Col xs={12} sm={12} md={6} lg={6}>
-          <Statistic
-            title="ความดันบรรยากาศ"
-            value={pressure}
-            precision={2}
-            suffix="hPa"
-            loading={pressure == null}
-          />
+          <Card>
+            <Statistic
+              title="ความดันบรรยากาศ"
+              value={pressure}
+              precision={2}
+              suffix="hPa"
+              loading={pressure == null}
+            />
+          </Card>
         </Col>
         <Col xs={12} sm={12} md={6} lg={6}>
-          <Statistic
-            title="Air Quality (PM2.5)"
-            value={pm25}
-            suffix="μg/m³"
-            valueStyle={{ color: getAirQualityColor(pm25) }}
-            loading={pm25 == null}
-          />
+          <Card>
+            <Statistic
+              title="Air Quality (PM2.5)"
+              value={pm25}
+              suffix="μg/m³"
+              valueStyle={{ color: getAirQualityColor(pm25) }}
+              loading={pm25 == null}
+            />
+          </Card>
         </Col>
       </Row>
       <Divider />
-      <CardWrapper>
-        <Row gutter={8}>
-          <Col xs={24} sm={12} md={8}>
-            <Card
-              title="มะนาว"
-              cover={
-                <img
-                  alt="example"
-                  src="https://www.gardeningknowhow.com/wp-content/uploads/2007/09/lime-tree.jpg"
-                />
-              }
-              actions={[
-                <FontAwesomeIcon icon={faShower} />,
-                <FontAwesomeIcon icon={faBug} />,
-                <Dropdown menu={{ items }} trigger={['click']}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    <FontAwesomeIcon icon={faEllipsis} />
-                  </a>
-                </Dropdown>,
-              ]}
-            >
-              <Row>
-                <Col span={12}>
-                  <Statistic title="ความชื้นในดิน" value={10} suffix="%" />
-                </Col>
-                <Col span={12}>
-                  <Statistic title="pH" value={5.5} />
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-          <Col xs={24} sm={12} md={8}>
-            <Card
-              title="เลมอน"
-              cover={
-                <img
-                  alt="example"
-                  src="https://www.bhg.com/thmb/u6rFkSUuKIWEeUYyTVThJhrJk84=/4000x0/filters:no_upscale():strip_icc()/How-to-Grow-a-Lemon-Tree-from-Seed-EpMfZ-e-KadA6psBW7Me0e-7444bd1697b3418595ab1df6c3dcb48f.jpg"
-                />
-              }
-              actions={[
-                <FontAwesomeIcon icon={faShower} />,
-                <FontAwesomeIcon icon={faBug} />,
-                <Dropdown menu={{ items }} trigger={['click']}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    <FontAwesomeIcon icon={faEllipsis} />
-                  </a>
-                </Dropdown>,
-              ]}
-            >
-              <Row>
-                <Col span={12}>
-                  <Statistic title="ความชื้นในดิน" value={50} suffix="%" />
-                </Col>
-                <Col span={12}>
-                  <Statistic title="pH" value={5.5} />
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-          <Col xs={24} sm={12} md={8}>
-            <Card
-              title="ต้นหอม"
-              cover={
-                <img
-                  alt="example"
-                  src="https://media.istockphoto.com/id/1226286409/photo/young-green-spring-shoots-of-green-onions-in-the-garden-selective-focus.jpg?s=612x612&w=0&k=20&c=1k6CPblUttEj_94REWPnbt9LguMIfOgKN39d896lfrI="
-                />
-              }
-              actions={[
-                <FontAwesomeIcon icon={faShower} />,
-                <FontAwesomeIcon icon={faBug} />,
-                <Dropdown menu={{ items }} trigger={['click']}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    <FontAwesomeIcon icon={faEllipsis} />
-                  </a>
-                </Dropdown>,
-              ]}
-            >
-              <Row>
-                <Col span={12}>
-                  <Statistic title="ความชื้นในดิน" value={30} suffix="%" />
-                </Col>
-                <Col span={12}>
-                  <Statistic title="pH" value={5.5} />
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-          <Col xs={24} sm={12} md={8}>
-            <Card
-              title="ต้นหอม"
-              cover={
-                <img
-                  alt="example"
-                  src="https://media.istockphoto.com/id/1226286409/photo/young-green-spring-shoots-of-green-onions-in-the-garden-selective-focus.jpg?s=612x612&w=0&k=20&c=1k6CPblUttEj_94REWPnbt9LguMIfOgKN39d896lfrI="
-                />
-              }
-              actions={[
-                <FontAwesomeIcon icon={faShower} />,
-                <FontAwesomeIcon icon={faBug} />,
-                <Dropdown menu={{ items }} trigger={['click']}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    <FontAwesomeIcon icon={faEllipsis} />
-                  </a>
-                </Dropdown>,
-              ]}
-            >
-              <Row>
-                <Col span={12}>
-                  <Statistic title="ความชื้นในดิน" value={30} suffix="%" />
-                </Col>
-                <Col span={12}>
-                  <Statistic title="pH" value={5.5} />
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-        </Row>
-      </CardWrapper>
+
+      <Row gutter={[8, 8]}>
+        <Col xs={24} sm={12} md={8}>
+          <Card
+            title="มะนาว"
+            cover={
+              <img
+                alt="example"
+                src="https://www.gardeningknowhow.com/wp-content/uploads/2007/09/lime-tree.jpg"
+              />
+            }
+            actions={[
+              <FontAwesomeIcon icon={faShower} />,
+              <FontAwesomeIcon icon={faBug} />,
+              <Dropdown menu={{ items }} trigger={['click']}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <FontAwesomeIcon icon={faEllipsis} />
+                </a>
+              </Dropdown>,
+            ]}
+          >
+            <Row>
+              <Col span={12}>
+                <Statistic title="ความชื้นในดิน" value={10} suffix="%" />
+              </Col>
+              <Col span={12}>
+                <Statistic title="pH" value={5.5} />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <Card
+            title="เลมอน"
+            cover={
+              <img
+                alt="example"
+                src="https://www.bhg.com/thmb/u6rFkSUuKIWEeUYyTVThJhrJk84=/4000x0/filters:no_upscale():strip_icc()/How-to-Grow-a-Lemon-Tree-from-Seed-EpMfZ-e-KadA6psBW7Me0e-7444bd1697b3418595ab1df6c3dcb48f.jpg"
+              />
+            }
+            actions={[
+              <FontAwesomeIcon icon={faShower} />,
+              <FontAwesomeIcon icon={faBug} />,
+              <Dropdown menu={{ items }} trigger={['click']}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <FontAwesomeIcon icon={faEllipsis} />
+                </a>
+              </Dropdown>,
+            ]}
+          >
+            <Row>
+              <Col span={12}>
+                <Statistic title="ความชื้นในดิน" value={50} suffix="%" />
+              </Col>
+              <Col span={12}>
+                <Statistic title="pH" value={5.5} />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <Card
+            title="ต้นหอม"
+            cover={
+              <img
+                alt="example"
+                src="https://media.istockphoto.com/id/1226286409/photo/young-green-spring-shoots-of-green-onions-in-the-garden-selective-focus.jpg?s=612x612&w=0&k=20&c=1k6CPblUttEj_94REWPnbt9LguMIfOgKN39d896lfrI="
+              />
+            }
+            actions={[
+              <FontAwesomeIcon icon={faShower} />,
+              <FontAwesomeIcon icon={faBug} />,
+              <Dropdown menu={{ items }} trigger={['click']}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <FontAwesomeIcon icon={faEllipsis} />
+                </a>
+              </Dropdown>,
+            ]}
+          >
+            <Row>
+              <Col span={12}>
+                <Statistic title="ความชื้นในดิน" value={30} suffix="%" />
+              </Col>
+              <Col span={12}>
+                <Statistic title="pH" value={5.5} />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <Card
+            title="ต้นหอม"
+            cover={
+              <img
+                alt="example"
+                src="https://media.istockphoto.com/id/1226286409/photo/young-green-spring-shoots-of-green-onions-in-the-garden-selective-focus.jpg?s=612x612&w=0&k=20&c=1k6CPblUttEj_94REWPnbt9LguMIfOgKN39d896lfrI="
+              />
+            }
+            actions={[
+              <FontAwesomeIcon icon={faShower} />,
+              <FontAwesomeIcon icon={faBug} />,
+              <Dropdown menu={{ items }} trigger={['click']}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <FontAwesomeIcon icon={faEllipsis} />
+                </a>
+              </Dropdown>,
+            ]}
+          >
+            <Row>
+              <Col span={12}>
+                <Statistic title="ความชื้นในดิน" value={30} suffix="%" />
+              </Col>
+              <Col span={12}>
+                <Statistic title="pH" value={5.5} />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
     </>
   );
 };

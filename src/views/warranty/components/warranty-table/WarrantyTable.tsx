@@ -2,6 +2,7 @@ import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Button,
+  Card,
   Col,
   Popconfirm,
   Row,
@@ -28,13 +29,14 @@ const { Title } = Typography;
 const columns: ColumnsType<Warranty> = [
   {
     title: 'ชื่อสินค้า',
+    width: '200px',
     render: (warranty: Warranty) => (
       <Link to={{ pathname: `${warranty.id}` }}>{warranty.productName}</Link>
     ),
   },
   {
     title: 'สถานะ',
-    width: '10%',
+    width: '90px',
     align: 'center',
     render: (warranty: Warranty) => {
       if (warranty.status === WarrantyStatus.OUT_OF_WARRANTY) {
@@ -46,30 +48,30 @@ const columns: ColumnsType<Warranty> = [
   },
   {
     title: 'ยี่ห้อ',
-    width: '10%',
+    width: '100px',
     dataIndex: 'brand',
   },
 
   {
     title: 'รุ่น',
-    width: '10%',
+    width: '150px',
     dataIndex: 'model',
   },
   {
     title: 'Serial No.',
-    width: '10%',
+    width: '180px',
     dataIndex: 'serialNumber',
   },
   {
     title: 'วันที่ซื้อ',
-    width: '15%',
+    width: '180px',
     render: (warranty: Warranty) => (
       <span>{dayjs(warranty.purchaseDate).format('DD MMMM BBBB')}</span>
     ),
   },
   {
     title: 'วันหมดประกัน',
-    width: '15%',
+    width: '180px',
     render: (warranty: Warranty) => (
       <span>{dayjs(warranty.warrantyDate).format('DD MMMM BBBB')}</span>
     ),
@@ -176,17 +178,19 @@ const WarrantyTable: React.FC = () => {
       <Row gutter={8} className="action-bar">
         <Col></Col>
       </Row>
-      <Table
-        rowSelection={{
-          type: 'checkbox',
-          columnWidth: '5%',
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={warrantiesData}
-        loading={loading}
-        scroll={{ x: 576, y: '45vh' }}
-      />
+      <Card>
+        <Table
+          rowSelection={{
+            type: 'checkbox',
+            columnWidth: '40px',
+            ...rowSelection,
+          }}
+          columns={columns}
+          dataSource={warrantiesData}
+          loading={loading}
+          scroll={{ x: 576, y: '45vh' }}
+        />
+      </Card>
     </>
   );
 };
