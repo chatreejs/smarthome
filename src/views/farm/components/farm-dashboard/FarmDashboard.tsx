@@ -1,5 +1,6 @@
 import { faBug, faEllipsis, faShower } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Client } from '@stomp/stompjs';
 import {
   Card,
   Col,
@@ -12,7 +13,6 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { StompClient } from '@api';
 import { WeatherSensor } from '../..';
 import './FarmDashboard.css';
 
@@ -57,18 +57,22 @@ const FarmDashboard: React.FC = () => {
   const [sensorData, setSensorData] = useState<WeatherSensor>(null);
 
   useEffect(() => {
-    StompClient.onConnect = () => {
-      StompClient.subscribe('/topic/weather-sensor', (message) => {
+    const weatherStompClient = new Client({
+      brokerURL: process.env.VITE_APP_WEATHER_SOCKET,
+      reconnectDelay: 2000,
+    });
+    weatherStompClient.onConnect = () => {
+      weatherStompClient.subscribe('/topic/weather-sensor', (message) => {
         const body: WeatherSensor = JSON.parse(message.body);
         setSensorData(body);
       });
     };
-    StompClient.activate();
+    weatherStompClient.activate();
 
     // Cleanup
     return () => {
-      if (StompClient.connected) {
-        StompClient.deactivate();
+      if (weatherStompClient.connected) {
+        weatherStompClient.deactivate();
       }
     };
   }, []);
