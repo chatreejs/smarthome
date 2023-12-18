@@ -130,7 +130,7 @@ const FoodTable: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <Title level={2}>รายการอาหาร</Title>
+      <Title level={2}>อาหาร</Title>
       <Row gutter={8} className="action-bar">
         <Col>
           <Button

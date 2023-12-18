@@ -1,7 +1,31 @@
-import React from 'react';
+import { Card, Col, Row, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+
+const { Title } = Typography;
 
 const Dashboard: React.FC = () => {
-  return <div>Dashboard</div>;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // random data
+    const temp = data;
+    temp.push({ x: 1, y: 2 });
+    setData(temp);
+  }, []);
+
+  return (
+    <>
+      <Title level={2}>ภาพรวม</Title>
+      <Row gutter={[8, 8]}>
+        <Col xs={12} sm={12} md={6} lg={6}>
+          <Card>
+            <h4>55</h4>
+            <span>PM 2.5</span>
+          </Card>
+        </Col>
+      </Row>
+    </>
+  );
 };
 
 export default Dashboard;

@@ -1,16 +1,28 @@
 import {
+  faBolt,
   faBoxesStacked,
   faCertificate,
-  faChartLine,
+  faChartPie,
+  faCog,
+  faFaucet,
+  faFileInvoiceDollar,
+  faHouse,
   faUtensils,
   faWheatAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import './SideMenu.css';
+
+const MenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 64px);
+`;
 
 const MenuText = styled.span`
   font-size: 1rem;
@@ -29,6 +41,10 @@ const SideMenu: React.FC = () => {
     navigate(`/${path}`);
   };
 
+  useEffect(() => {
+    console.log(defaultSelectedKeys);
+  }, []);
+
   return (
     <Menu
       defaultSelectedKeys={[defaultSelectedKeys]}
@@ -36,10 +52,28 @@ const SideMenu: React.FC = () => {
       theme="light"
       className="menu"
     >
+      <Menu.ItemGroup title="ภาพรวม" />
       <Menu.Item key="dashboard" onClick={() => onClickMenu('dashboard')}>
-        <FontAwesomeIcon icon={faChartLine} className="fa-fw" />
-        <MenuText>ภาพรวม</MenuText>
+        <FontAwesomeIcon icon={faChartPie} className="fa-fw" />
+        <MenuText>แดชบอร์ด</MenuText>
       </Menu.Item>
+      <Menu.SubMenu
+        title="สาธารณูปโภค"
+        icon={<FontAwesomeIcon icon={faHouse} className="fa-fw" />}
+      >
+        <Menu.Item key="electricity" onClick={() => onClickMenu('electricity')}>
+          <FontAwesomeIcon icon={faBolt} className="fa-fw" />
+          <MenuText>ค่าไฟ</MenuText>
+        </Menu.Item>
+        <Menu.Item key="waterworks" onClick={() => onClickMenu('waterworks')}>
+          <FontAwesomeIcon icon={faFaucet} className="fa-fw" />
+          <MenuText>ค่าน้ำ</MenuText>
+        </Menu.Item>
+        <Menu.Item key="services" onClick={() => onClickMenu('services')}>
+          <FontAwesomeIcon icon={faFileInvoiceDollar} className="fa-fw" />
+          <MenuText>ค่าบริการ</MenuText>
+        </Menu.Item>
+      </Menu.SubMenu>
       <Menu.Item key="food" onClick={() => onClickMenu('food')}>
         <FontAwesomeIcon icon={faUtensils} className="fa-fw" />
         <MenuText>อาหาร</MenuText>
@@ -52,9 +86,17 @@ const SideMenu: React.FC = () => {
         <FontAwesomeIcon icon={faCertificate} className="fa-fw" />
         <MenuText>การรับประกัน</MenuText>
       </Menu.Item>
-      <Menu.Item key="farm" onClick={() => onClickMenu('farm')}>
+      <Menu.Divider />
+      <Menu.ItemGroup title="ระบบ" />
+      <Menu.Item key="smartfarm" onClick={() => onClickMenu('smartfarm')}>
         <FontAwesomeIcon icon={faWheatAlt} className="fa-fw" />
-        <MenuText>ฟาร์ม</MenuText>
+        <MenuText>ฟาร์มอัจฉริยะ</MenuText>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.ItemGroup title="การตั้งค่า" />
+      <Menu.Item key="setting" onClick={() => onClickMenu('setting')}>
+        <FontAwesomeIcon icon={faCog} className="fa-fw" />
+        <MenuText>ตั้งค่าบ้าน</MenuText>
       </Menu.Item>
     </Menu>
   );

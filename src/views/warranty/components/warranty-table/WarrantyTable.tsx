@@ -138,7 +138,7 @@ const WarrantyTable: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <Title level={2}>รายการการรับประกัน</Title>
+      <Title level={2}>การรับประกัน</Title>
       <Row gutter={8} className="action-bar">
         <Col>
           <Button

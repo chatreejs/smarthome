@@ -1,5 +1,4 @@
 import '@fontsource/kanit';
-import { ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -26,18 +25,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <BrowserRouter basename="/smarthome">
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#30D5C8',
-          colorLink: '#30D5C8',
-          colorLinkHover: '#82E8E0',
-          fontFamily: 'Kanit',
-        },
-      }}
-    >
-      <App />
-    </ConfigProvider>
+    <App />
   </BrowserRouter>,
 );
 

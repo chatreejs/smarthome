@@ -125,7 +125,7 @@ const InventoryTable: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <Title level={2}>รายการของใช้ในบ้าน</Title>
+      <Title level={2}>ของใช้ในบ้าน</Title>
       <Row gutter={8} className="action-bar">
         <Col>
           <Button

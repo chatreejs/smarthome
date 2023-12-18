@@ -71,6 +71,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         }}
       >
         <Logo systemName="smarthome" />
+
         <SideMenu />
       </Sider>
       <div

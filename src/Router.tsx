@@ -32,7 +32,7 @@ const Router = () => {
         <Route path="new" element={<WarrantyDetail />} />
         <Route path=":warrantyId" element={<WarrantyDetail />} />
       </Route>
-      <Route path="farm" element={<Farm />}>
+      <Route path="smartfarm" element={<Farm />}>
         <Route index element={<FarmDashboard />} />
       </Route>
     </Routes>
