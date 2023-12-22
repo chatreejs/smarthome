@@ -1,3 +1,4 @@
+import { AuthContext } from '@context';
 import {
   faBolt,
   faBoxesStacked,
@@ -12,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import './SideMenu.css';
@@ -32,6 +33,7 @@ const MenuText = styled.span`
 const SideMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
 
   const [defaultSelectedKeys] = useState(
     location.pathname.split('/')[1] || 'dashboard',
@@ -40,10 +42,6 @@ const SideMenu: React.FC = () => {
   const onClickMenu = (path: string) => {
     navigate(`/${path}`);
   };
-
-  useEffect(() => {
-    console.log(defaultSelectedKeys);
-  }, []);
 
   return (
     <Menu
@@ -93,11 +91,15 @@ const SideMenu: React.FC = () => {
         <MenuText>ฟาร์มอัจฉริยะ</MenuText>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.ItemGroup title="การตั้งค่า" />
-      <Menu.Item key="setting" onClick={() => onClickMenu('setting')}>
-        <FontAwesomeIcon icon={faCog} className="fa-fw" />
-        <MenuText>ตั้งค่าบ้าน</MenuText>
-      </Menu.Item>
+      {authContext.hasRole('admin') && (
+        <>
+          <Menu.ItemGroup title="การตั้งค่า" />
+          <Menu.Item key="setting" onClick={() => onClickMenu('setting')}>
+            <FontAwesomeIcon icon={faCog} className="fa-fw" />
+            <MenuText>ตั้งค่าบ้าน</MenuText>
+          </Menu.Item>
+        </>
+      )}
     </Menu>
   );
 };

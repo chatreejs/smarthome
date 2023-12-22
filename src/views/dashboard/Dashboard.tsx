@@ -1,10 +1,12 @@
+import { AuthContext } from '@context';
 import { Card, Col, Row, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 const { Title } = Typography;
 
 const Dashboard: React.FC = () => {
   const [data, setData] = useState([]);
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     // random data
@@ -15,7 +17,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Title level={2}>ภาพรวม</Title>
+      <Title level={2}>ยินดีต้อนรับ {authContext.userProfile.firstName}</Title>
       <Row gutter={[8, 8]}>
         <Col xs={12} sm={12} md={6} lg={6}>
           <Card>

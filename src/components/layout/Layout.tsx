@@ -1,9 +1,11 @@
-import { Avatar, Badge, Layout as Layouts, theme } from 'antd';
-import React, { useEffect } from 'react';
+import { Layout as Layouts, theme } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Logo, SideMenu } from '@components';
+import { AuthContext } from '@context';
 import useWindowResize from '../../hooks/useWindowResize';
+import CurrentUser from '../current-user/CurrentUser';
 import './Layout.css';
 
 type LayoutProps = {
@@ -33,8 +35,9 @@ const HeaderWrapper = styled.div`
 const { Header, Content, Footer, Sider } = Layouts;
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [showOverlay, setShowOverlay] = React.useState(false);
+  const authContext = useContext(AuthContext);
+  const [collapsed, setCollapsed] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
   const { width } = useWindowResize();
 
   const {
@@ -102,14 +105,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 alignItems: 'center',
               }}
             >
-              <Badge count={5}>
-                <Avatar
-                  style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}
-                >
-                  U
-                </Avatar>
-              </Badge>
-              <h5 style={{ marginLeft: '16px' }}>John Doe</h5>
+              <CurrentUser />
             </div>
           </HeaderWrapper>
         </Header>
