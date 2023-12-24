@@ -1,8 +1,8 @@
-import { ConfigProvider, Spin } from 'antd';
+import { ConfigProvider } from 'antd';
 import React, { useContext } from 'react';
 import Router from './Router';
 
-import { Layout } from '@components';
+import { Layout, SplashSpinner } from '@components';
 import { AuthContext } from '@context';
 
 const App: React.FC = () => {
@@ -10,7 +10,7 @@ const App: React.FC = () => {
 
   // Show a loading screen while we are checking the authentication status.
   if (!authContext.isAuthenticated) {
-    return <Spin spinning={true} tip="Loading ..." fullscreen />;
+    return <SplashSpinner />;
   } else {
     // If the user is authenticated we render the application.
     return (
