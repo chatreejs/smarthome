@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { AuthContext } from '@context';
 import {
   Dashboard,
   Farm,
@@ -14,12 +13,9 @@ import {
   WarrantyDetail,
   WarrantyTable,
 } from '@views';
-import { useContext } from 'react';
 import PageResult from './components/page-result/PageResult';
 
 const Router = () => {
-  const authContext = useContext(AuthContext);
-
   return (
     <Routes>
       <Route index element={<Navigate to="dashboard" />} />
@@ -40,16 +36,7 @@ const Router = () => {
       <Route path="smartfarm" element={<Farm />}>
         <Route index element={<FarmDashboard />} />
       </Route>
-      <Route
-        path="setting"
-        element={
-          authContext.hasRole('admin') ? (
-            <Dashboard />
-          ) : (
-            <PageResult status="403" />
-          )
-        }
-      />
+      <Route path="*" element={<PageResult status="500" />} />
     </Routes>
   );
 };
