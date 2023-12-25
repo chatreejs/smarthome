@@ -1,4 +1,5 @@
 import {
+  App,
   Button,
   Card,
   Form,
@@ -6,7 +7,6 @@ import {
   InputNumber,
   Skeleton,
   Typography,
-  notification,
 } from 'antd';
 import locale from 'antd/lib/date-picker/locale/th_TH';
 import { AxiosError } from 'axios';
@@ -49,11 +49,11 @@ const tailLayout = {
 };
 
 const FoodDetail: React.FC = () => {
+  const { notification } = App.useApp();
   const { foodId } = useParams();
   const [foodData, setFoodData] = useState<Food>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,27 +76,27 @@ const FoodDetail: React.FC = () => {
             onError('ไม่พบข้อมูล');
             setTimeout(() => {
               navigate('/food');
-            }, 2000);
+            }, 500);
           }
           if (status === 500) {
             onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
             setTimeout(() => {
               navigate('/food');
-            }, 2000);
+            }, 500);
           }
         });
     }
   }, [foodId]);
 
   const onSuccess = (successMessage: string) => {
-    api.success({
+    notification.success({
       message: 'สำเร็จ',
       description: successMessage,
     });
   };
 
   const onError = (errorMessage: string) => {
-    api.error({
+    notification.error({
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
@@ -125,7 +125,7 @@ const FoodDetail: React.FC = () => {
         .then(() => {
           setTimeout(() => {
             navigate('/food');
-          }, 2000);
+          }, 500);
         });
     } else {
       CreateFood(formValue)
@@ -144,7 +144,7 @@ const FoodDetail: React.FC = () => {
         .then(() => {
           setTimeout(() => {
             navigate('/food');
-          }, 2000);
+          }, 500);
         });
     }
   };
@@ -177,13 +177,12 @@ const FoodDetail: React.FC = () => {
       .then(() => {
         setTimeout(() => {
           navigate('/food');
-        }, 2000);
+        }, 500);
       });
   };
 
   return (
     <>
-      {contextHolder}
       <Title level={2}>
         {isEdit ? 'แก้ไขรายการอาหาร' : 'เพิ่มรายการอาหาร'}
       </Title>

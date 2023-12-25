@@ -1,6 +1,7 @@
 import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  App,
   Button,
   Card,
   Col,
@@ -9,7 +10,6 @@ import {
   Table,
   Tag,
   Typography,
-  notification,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -72,11 +72,15 @@ const columns: ColumnsType<Food> = [
 ];
 
 const FoodTable: React.FC = () => {
+  const { notification } = App.useApp();
   const [foodsData, setFoodsData] = useState<Food[]>([]);
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
-  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const loadData = async () => {
     try {
@@ -90,17 +94,20 @@ const FoodTable: React.FC = () => {
     }
   };
 
+  const onSuccess = (successMessage: string) => {
+    notification.success({
+      message: 'สำเร็จ',
+      description: successMessage,
+    });
+  };
+
   const onError = (errorMessage: string) => {
-    api.error({
+    notification.error({
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
     setLoading(false);
   };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: Food[]) => {
@@ -119,6 +126,7 @@ const FoodTable: React.FC = () => {
   const onConfirmDelete = async (e: any) => {
     try {
       await DeleteMultipleFood(selectedFoods.map((food) => food.id));
+      onSuccess(`ลบข้อมูล ${selectedFoods.length} รายการสำเร็จ`);
       setSelectedFoods([]);
       loadData();
     } catch (err) {
@@ -129,7 +137,6 @@ const FoodTable: React.FC = () => {
 
   return (
     <>
-      {contextHolder}
       <Title level={2}>อาหาร</Title>
       <Row gutter={8} className="action-bar">
         <Col>

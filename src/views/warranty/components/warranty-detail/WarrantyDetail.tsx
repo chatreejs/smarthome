@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  Form,
-  Input,
-  Skeleton,
-  Typography,
-  notification,
-} from 'antd';
+import { App, Button, Card, Form, Input, Skeleton, Typography } from 'antd';
 import locale from 'antd/es/date-picker/locale/th_TH';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
@@ -48,11 +40,11 @@ const tailLayout = {
 };
 
 const WarrantyDetail: React.FC = () => {
+  const { notification } = App.useApp();
   const { warrantyId } = useParams();
   const [warrantyData, setWarrantyData] = useState<Warranty>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,27 +69,27 @@ const WarrantyDetail: React.FC = () => {
             onError('ไม่พบข้อมูล');
             setTimeout(() => {
               navigate('/warranty');
-            }, 2000);
+            }, 500);
           }
           if (status === 500) {
             onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
             setTimeout(() => {
               navigate('/warranty');
-            }, 2000);
+            }, 500);
           }
         });
     }
   }, [warrantyId]);
 
   const onSuccess = (successMessage: string) => {
-    api.success({
+    notification.success({
       message: 'สำเร็จ',
       description: successMessage,
     });
   };
 
   const onError = (errorMessage: string) => {
-    api.error({
+    notification.error({
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
@@ -127,7 +119,7 @@ const WarrantyDetail: React.FC = () => {
         .then(() => {
           setTimeout(() => {
             navigate('/warranty');
-          }, 2000);
+          }, 500);
         });
     } else {
       CreateWarranty(formValue)
@@ -146,7 +138,7 @@ const WarrantyDetail: React.FC = () => {
         .then(() => {
           setTimeout(() => {
             navigate('/warranty');
-          }, 2000);
+          }, 500);
         });
     }
   };
@@ -181,13 +173,12 @@ const WarrantyDetail: React.FC = () => {
       .then(() => {
         setTimeout(() => {
           navigate('/warranty');
-        }, 2000);
+        }, 500);
       });
   };
 
   return (
     <>
-      {contextHolder}
       <Title level={2}>
         {isEdit ? 'แก้ไขรายการการรับประกัน' : 'เพิ่มรายการการรับประกัน'}
       </Title>

@@ -1,6 +1,7 @@
 import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  App,
   Button,
   Card,
   Col,
@@ -9,7 +10,6 @@ import {
   Table,
   Tag,
   Typography,
-  notification,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -79,10 +79,10 @@ const columns: ColumnsType<Warranty> = [
 ];
 
 const WarrantyTable: React.FC = () => {
+  const { notification } = App.useApp();
   const [warrantiesData, setWarrantiesData] = useState<Warranty[]>([]);
   const [selectedWarranties, setSelectedWarranties] = useState<Warranty[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
   const loadData = async () => {
@@ -97,7 +97,7 @@ const WarrantyTable: React.FC = () => {
   };
 
   const onError = (errorMessage: string) => {
-    api.error({
+    notification.error({
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
@@ -137,7 +137,6 @@ const WarrantyTable: React.FC = () => {
 
   return (
     <>
-      {contextHolder}
       <Title level={2}>การรับประกัน</Title>
       <Row gutter={8} className="action-bar">
         <Col>

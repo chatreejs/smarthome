@@ -1,4 +1,4 @@
-import { ConfigProvider } from 'antd';
+import { App as AntApp, ConfigProvider } from 'antd';
 import React, { useContext } from 'react';
 import Router from './Router';
 
@@ -24,9 +24,11 @@ const App: React.FC = () => {
           },
         }}
       >
-        <Layout>
-          <Router />
-        </Layout>
+        <AntApp>
+          <Layout>
+            <Router />
+          </Layout>
+        </AntApp>
       </ConfigProvider>
     );
   }

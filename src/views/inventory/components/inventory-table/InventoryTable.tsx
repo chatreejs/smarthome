@@ -1,6 +1,7 @@
 import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  App,
   Button,
   Card,
   Col,
@@ -9,7 +10,6 @@ import {
   Table,
   Tag,
   Typography,
-  notification,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
@@ -63,12 +63,12 @@ const columns: ColumnsType<Inventory> = [
 ];
 
 const InventoryTable: React.FC = () => {
+  const { notification } = App.useApp();
   const [inventoriesData, setInventoriesData] = useState<Inventory[]>([]);
   const [selectedInventories, setSelectedInventories] = useState<Inventory[]>(
     [],
   );
   const [loading, setLoading] = useState(false);
-  const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
   const loadData = async () => {
@@ -84,7 +84,7 @@ const InventoryTable: React.FC = () => {
   };
 
   const onError = (errorMessage: string) => {
-    api.error({
+    notification.error({
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
@@ -124,7 +124,6 @@ const InventoryTable: React.FC = () => {
 
   return (
     <>
-      {contextHolder}
       <Title level={2}>ของใช้ในบ้าน</Title>
       <Row gutter={8} className="action-bar">
         <Col>
