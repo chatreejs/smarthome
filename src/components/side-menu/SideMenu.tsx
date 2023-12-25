@@ -4,10 +4,10 @@ import {
   faBoxesStacked,
   faCertificate,
   faChartPie,
-  faCog,
   faFaucet,
   faFileInvoiceDollar,
   faHouse,
+  faSuitcaseMedical,
   faUtensils,
   faWheatAlt,
 } from '@fortawesome/free-solid-svg-icons';
@@ -56,6 +56,7 @@ const SideMenu: React.FC = () => {
         <MenuText>แดชบอร์ด</MenuText>
       </Menu.Item>
       <Menu.SubMenu
+        key="utilities"
         title="สาธารณูปโภค"
         icon={<FontAwesomeIcon icon={faHouse} className="fa-fw" />}
       >
@@ -80,6 +81,13 @@ const SideMenu: React.FC = () => {
         <FontAwesomeIcon icon={faBoxesStacked} className="fa-fw" />
         <MenuText>ของใช้</MenuText>
       </Menu.Item>
+      <Menu.Item
+        key="medical-supplies"
+        onClick={() => onClickMenu('medical-supplies')}
+      >
+        <FontAwesomeIcon icon={faSuitcaseMedical} className="fa-fw" />
+        <MenuText>ยา และ เวชภัณฑ์</MenuText>
+      </Menu.Item>
       <Menu.Item key="warranty" onClick={() => onClickMenu('warranty')}>
         <FontAwesomeIcon icon={faCertificate} className="fa-fw" />
         <MenuText>การรับประกัน</MenuText>
@@ -90,16 +98,6 @@ const SideMenu: React.FC = () => {
         <FontAwesomeIcon icon={faWheatAlt} className="fa-fw" />
         <MenuText>ฟาร์มอัจฉริยะ</MenuText>
       </Menu.Item>
-      <Menu.Divider />
-      {authContext.hasRole('admin') && (
-        <>
-          <Menu.ItemGroup title="การตั้งค่า" />
-          <Menu.Item key="setting" onClick={() => onClickMenu('setting')}>
-            <FontAwesomeIcon icon={faCog} className="fa-fw" />
-            <MenuText>ตั้งค่าบ้าน</MenuText>
-          </Menu.Item>
-        </>
-      )}
     </Menu>
   );
 };
