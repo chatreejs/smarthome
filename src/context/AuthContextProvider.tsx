@@ -177,7 +177,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
   };
 
   const logout = () => {
-    keycloak.redirectUri = `${window.location.origin}/`;
+    keycloak.redirectUri = `${process.env.VITE_APP_BASE_URL}`;
     keycloak.logout();
   };
 
