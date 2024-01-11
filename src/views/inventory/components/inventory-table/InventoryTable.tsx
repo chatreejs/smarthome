@@ -161,7 +161,7 @@ const InventoryTable: React.FC = () => {
           }}
           columns={columns}
           dataSource={inventoriesData}
-          rowKey={(record) => record.id}
+          rowKey={(inventory) => inventory.id}
           loading={loading}
           scroll={{ x: 576, y: '45vh' }}
         />

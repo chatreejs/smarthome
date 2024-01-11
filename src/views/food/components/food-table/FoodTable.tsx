@@ -187,6 +187,7 @@ const FoodTable: React.FC = () => {
           }}
           columns={columns}
           dataSource={foodsData}
+          rowKey={(food) => food.id}
           loading={loading}
           scroll={{ x: 576, y: '45vh' }}
         />
