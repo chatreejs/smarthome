@@ -2,7 +2,6 @@
   "name": "smarthome",
   "private": true,
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
     "start": "vite",
     "start:develop": "env-cmd -f .env.develop vite",
@@ -40,6 +39,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.5",
+    "@babel/preset-typescript": "^7.23.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
