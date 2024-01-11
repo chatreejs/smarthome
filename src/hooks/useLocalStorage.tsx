@@ -20,6 +20,11 @@ const useLocalStorage = (key: string, initialValue: any) => {
   // ... persists the new value to localStorage.
   const setValue = (value: any) => {
     try {
+      if (!value) {
+        window.localStorage.removeItem(key);
+        setStoredValue(value);
+        return;
+      }
       // Allow value to be a function so we have same API as useState
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;

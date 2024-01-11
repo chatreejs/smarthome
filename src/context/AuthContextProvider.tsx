@@ -126,9 +126,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
   useEffect(() => {
     axiosInstance.interceptors.request.use(
       (config) => {
-        if (isAuthenticated) {
-          config.headers.Authorization = `Bearer ${keycloak.token}`;
-        }
+        config.headers.Authorization = `Bearer ${keycloak.token}`;
         return config;
       },
       (error) => {
