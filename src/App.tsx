@@ -1,8 +1,8 @@
 import { App as AntApp, ConfigProvider } from 'antd';
 import React, { useContext } from 'react';
-import Router from './Router';
+import Router from './config/routes';
 
-import { Layout, SplashSpinner } from '@components';
+import { SplashSpinner } from '@components';
 import { AuthContext } from '@context';
 
 const App: React.FC = () => {
@@ -25,9 +25,7 @@ const App: React.FC = () => {
         }}
       >
         <AntApp>
-          <Layout>
-            <Router />
-          </Layout>
+          <Router />
         </AntApp>
       </ConfigProvider>
     );

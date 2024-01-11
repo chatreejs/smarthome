@@ -1,6 +1,7 @@
-import { AuthContext } from '@context';
 import { Card, Col, Row, Typography } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
+
+import { AuthContext } from '@context';
 
 const { Title } = Typography;
 

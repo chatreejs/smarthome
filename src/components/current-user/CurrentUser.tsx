@@ -1,4 +1,3 @@
-import { AuthContext } from '@context';
 import {
   faArrowRightFromBracket,
   faCog,
@@ -8,6 +7,8 @@ import { Avatar, Badge, Dropdown } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { AuthContext } from '@context';
 
 const CurrentUserWrapper = styled.div`
   display: flex;

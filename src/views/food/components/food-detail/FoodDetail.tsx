@@ -1,4 +1,10 @@
 import {
+  faFloppyDisk,
+  faRotateLeft,
+  faTrashCan,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
   App,
   Button,
   Card,
@@ -9,25 +15,13 @@ import {
   Typography,
 } from 'antd';
 import locale from 'antd/lib/date-picker/locale/th_TH';
-import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
-import {
-  faFloppyDisk,
-  faRotateLeft,
-  faTrashCan,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  CreateFood,
-  DeleteFoodById,
-  Food,
-  GetFoodById,
-  UpdateFood,
-} from '../..';
+import { Food } from '@models';
+import { FoodService } from '@services';
 import './FoodDetail.css';
 
 const { Title } = Typography;
@@ -59,8 +53,8 @@ const FoodDetail: React.FC = () => {
   useEffect(() => {
     if (foodId) {
       setIsEdit(true);
-      GetFoodById(+foodId)
-        .then((food) => {
+      FoodService.getFoodById(+foodId).subscribe({
+        next: (food) => {
           setFoodData(food);
           form.setFieldsValue({
             name: food?.name,
@@ -69,22 +63,17 @@ const FoodDetail: React.FC = () => {
             buyDate: dayjs(food?.buyDate),
             expiryDate: dayjs(food?.expiryDate),
           });
-        })
-        .catch((err: AxiosError) => {
+        },
+        error: (err) => {
           const status = err.response?.status;
           if (status === 404) {
-            onError('ไม่พบข้อมูล');
-            setTimeout(() => {
-              navigate('/food');
-            }, 500);
+            notification.error({
+              message: 'เกิดข้อผิดพลาด',
+              description: 'ไม่พบข้อมูล',
+            });
           }
-          if (status === 500) {
-            onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
-            setTimeout(() => {
-              navigate('/food');
-            }, 500);
-          }
-        });
+        },
+      });
     }
   }, [foodId]);
 
@@ -103,17 +92,17 @@ const FoodDetail: React.FC = () => {
   };
 
   const onFinish = (values: any) => {
-    const formValue = {
+    const formValue: Food = {
       ...values,
       buyDate: values.buyDate.format('YYYY-MM-DD'),
       expiryDate: values.expiryDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      UpdateFood(+foodId, formValue)
-        .then((res) => {
+      FoodService.updateFood(+foodId, formValue).subscribe({
+        next: (res) => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
-        })
-        .catch((err: AxiosError) => {
+        },
+        error: (err) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -121,18 +110,19 @@ const FoodDetail: React.FC = () => {
           if (status === 500) {
             onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
           }
-        })
-        .then(() => {
+        },
+        complete: () => {
           setTimeout(() => {
             navigate('/food');
           }, 500);
-        });
+        },
+      });
     } else {
-      CreateFood(formValue)
-        .then((res) => {
+      FoodService.createFood(formValue).subscribe({
+        next: (res) => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
-        })
-        .catch((err: AxiosError) => {
+        },
+        error: (err) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -140,12 +130,13 @@ const FoodDetail: React.FC = () => {
           if (status === 500) {
             onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
           }
-        })
-        .then(() => {
+        },
+        complete: () => {
           setTimeout(() => {
             navigate('/food');
           }, 500);
-        });
+        },
+      });
     }
   };
 
@@ -164,21 +155,25 @@ const FoodDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    DeleteFoodById(+foodId)
-      .then((res) => {
+    FoodService.deleteFood(+foodId).subscribe({
+      next: (res) => {
         onSuccess('ลบข้อมูลสำเร็จ');
-      })
-      .catch((err: AxiosError) => {
+      },
+      error: (err) => {
         const status = err.response?.status;
+        if (status === 404) {
+          onError('ไม่พบข้อมูล');
+        }
         if (status === 500) {
           onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
         }
-      })
-      .then(() => {
+      },
+      complete: () => {
         setTimeout(() => {
           navigate('/food');
         }, 500);
-      });
+      },
+    });
   };
 
   return (

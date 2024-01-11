@@ -1,6 +1,7 @@
 import { Button, Result } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import './PageResult.css';
 
 interface PageResultProps {

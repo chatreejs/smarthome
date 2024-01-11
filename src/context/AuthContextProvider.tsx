@@ -4,7 +4,8 @@ import Keycloak, {
   KeycloakProfile,
 } from 'keycloak-js';
 import { createContext, useEffect, useState } from 'react';
-import { httpClient } from '../api/HttpClient';
+
+import { axiosInstance } from '@config';
 
 /**
  * KeycloakConfig configures the connection to the Keycloak server.
@@ -123,7 +124,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    httpClient.interceptors.request.use(
+    axiosInstance.interceptors.request.use(
       (config) => {
         if (isAuthenticated) {
           config.headers.Authorization = `Bearer ${keycloak.token}`;
@@ -138,7 +139,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
 
   useEffect(() => {
     // Deal with all responses containing a 401 error to try to refresh the access token if possible
-    httpClient.interceptors.response.use(
+    axiosInstance.interceptors.response.use(
       // No special handling of responses needed. We return it as it comes in.
       (response) => {
         return response;
@@ -156,7 +157,7 @@ const AuthContextProvider = (props: AuthContextProviderProps) => {
             // Was refreshing the access token successfull?
             if (result === true) {
               // Repeat the request
-              return await httpClient({ ...error.config });
+              return await axiosInstance({ ...error.config });
             } else {
               // If the access token could not be refreshed we reject the promise and the code responsible for the request has to handle it.
               throw new Error('Unauthorized');

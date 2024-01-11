@@ -1,6 +1,7 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import FoodDetail from '../../views/food/components/food-detail/FoodDetail';
+
+import { FoodDetail } from '@views';
 
 describe('Create Food', () => {
   it('submits the form correctly', async () => {

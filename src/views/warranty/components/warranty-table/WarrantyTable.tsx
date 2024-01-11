@@ -11,17 +11,13 @@ import {
   Tag,
   Typography,
 } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import {
-  DeleteMultipleWarranty,
-  SearchWarranty,
-  Warranty,
-  WarrantyStatus,
-} from '../..';
+import { Warranty, WarrantyStatus } from '@models';
+import { WarrantyService } from '@services';
 import './WarrantyTable.css';
 
 const { Title } = Typography;
@@ -85,15 +81,15 @@ const WarrantyTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      const warranties = await SearchWarranty();
-      setWarrantiesData(warranties);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+  const loadData = () => {
+    setLoading(true);
+    WarrantyService.getAllWarranties().subscribe({
+      next: (warranties) => {
+        setWarrantiesData(warranties);
+      },
+      error: (err) => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      complete: () => setLoading(false),
+    });
   };
 
   const onError = (errorMessage: string) => {
@@ -101,7 +97,6 @@ const WarrantyTable: React.FC = () => {
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -122,17 +117,17 @@ const WarrantyTable: React.FC = () => {
     navigate('new');
   };
 
-  const onConfirmDelete = async (e: any) => {
-    try {
-      await DeleteMultipleWarranty(
-        selectedWarranties.map((warranty) => warranty.id),
-      );
-      setSelectedWarranties([]);
-      loadData();
-    } catch (err) {
-      console.log(err);
-      onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
-    }
+  const onConfirmDelete = (e: any) => {
+    WarrantyService.deleteMultipleWarranties(
+      selectedWarranties.map((warranty) => warranty.id),
+    ).subscribe({
+      next: () => {
+        setSelectedWarranties([]);
+        loadData();
+      },
+      error: (err) => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      complete: () => {},
+    });
   };
 
   return (
@@ -186,6 +181,7 @@ const WarrantyTable: React.FC = () => {
           }}
           columns={columns}
           dataSource={warrantiesData}
+          rowKey={(warranty) => warranty.id}
           loading={loading}
           scroll={{ x: 576, y: '45vh' }}
         />

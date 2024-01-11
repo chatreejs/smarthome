@@ -11,16 +11,12 @@ import {
   Tag,
   Typography,
 } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType } from 'antd/lib/table';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import {
-  DeleteMultipleInventory,
-  Inventory,
-  InventoryStatus,
-  SearchInventory,
-} from '../..';
+import { Inventory, InventoryStatus } from '@models';
+import { InventoryService } from '@services';
 import './InventoryTable.css';
 
 const { Title } = Typography;
@@ -71,16 +67,15 @@ const InventoryTable: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      const inventories = await SearchInventory();
-      setInventoriesData(inventories);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
-    }
+  const loadData = () => {
+    setLoading(true);
+    InventoryService.getAllInventories().subscribe({
+      next: (response) => {
+        setInventoriesData(response);
+      },
+      error: (err) => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      complete: () => setLoading(false),
+    });
   };
 
   const onError = (errorMessage: string) => {
@@ -88,7 +83,6 @@ const InventoryTable: React.FC = () => {
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -109,17 +103,17 @@ const InventoryTable: React.FC = () => {
     navigate('new');
   };
 
-  const onConfirmDelete = async (e: any) => {
-    try {
-      await DeleteMultipleInventory(
-        selectedInventories.map((inventory) => inventory.id),
-      );
-      setSelectedInventories([]);
-      loadData();
-    } catch (err) {
-      console.log(err);
-      onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
-    }
+  const onConfirmDelete = (e: any) => {
+    InventoryService.deleteMultipleInventories(
+      selectedInventories.map((inventory) => inventory.id),
+    ).subscribe({
+      next: () => {
+        setSelectedInventories([]);
+        loadData();
+      },
+      error: (err) => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      complete: () => {},
+    });
   };
 
   return (
@@ -167,6 +161,7 @@ const InventoryTable: React.FC = () => {
           }}
           columns={columns}
           dataSource={inventoriesData}
+          rowKey={(record) => record.id}
           loading={loading}
           scroll={{ x: 576, y: '45vh' }}
         />

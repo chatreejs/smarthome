@@ -1,24 +1,18 @@
-import { App, Button, Card, Form, Input, Skeleton, Typography } from 'antd';
-import locale from 'antd/es/date-picker/locale/th_TH';
-import { AxiosError } from 'axios';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import { ThaiDatePicker } from '@components';
 import {
   faFloppyDisk,
   faRotateLeft,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  CreateWarranty,
-  DeleteWarrantyById,
-  GetWarrantyById,
-  UpdateWarranty,
-  Warranty,
-} from '../..';
+import { App, Button, Card, Form, Input, Skeleton, Typography } from 'antd';
+import locale from 'antd/lib/date-picker/locale/th_TH';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { ThaiDatePicker } from '@components';
+import { Warranty } from '@models';
+import { WarrantyService } from '@services';
 import './WarrantyDetail.css';
 
 const { Title } = Typography;
@@ -50,8 +44,8 @@ const WarrantyDetail: React.FC = () => {
   useEffect(() => {
     if (warrantyId) {
       setIsEdit(true);
-      GetWarrantyById(+warrantyId)
-        .then((warranty) => {
+      WarrantyService.getWarrantyById(+warrantyId).subscribe({
+        next: (warranty) => {
           setWarrantyData(warranty);
           form.setFieldsValue({
             brand: warranty?.brand,
@@ -62,8 +56,8 @@ const WarrantyDetail: React.FC = () => {
             purchaseDate: dayjs(warranty?.purchaseDate),
             warrantyDate: dayjs(warranty?.warrantyDate),
           });
-        })
-        .catch((err: AxiosError) => {
+        },
+        error: (err) => {
           const status = err.response?.status;
           if (status === 404) {
             onError('ไม่พบข้อมูล');
@@ -77,7 +71,8 @@ const WarrantyDetail: React.FC = () => {
               navigate('/warranty');
             }, 500);
           }
-        });
+        },
+      });
     }
   }, [warrantyId]);
 
@@ -96,18 +91,18 @@ const WarrantyDetail: React.FC = () => {
   };
 
   const onFinish = (values: any) => {
-    const formValue = {
+    const formValue: Warranty = {
       ...values,
       productNumber: values.productNumber ?? '-',
       purchaseDate: values.purchaseDate.format('YYYY-MM-DD'),
       warrantyDate: values.warrantyDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      UpdateWarranty(+warrantyId, formValue)
-        .then((res) => {
+      WarrantyService.updateWarranty(+warrantyId, formValue).subscribe({
+        next: (res) => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
-        })
-        .catch((err: AxiosError) => {
+        },
+        error: (err) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -115,18 +110,19 @@ const WarrantyDetail: React.FC = () => {
           if (status === 500) {
             onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
           }
-        })
-        .then(() => {
+        },
+        complete: () => {
           setTimeout(() => {
             navigate('/warranty');
           }, 500);
-        });
+        },
+      });
     } else {
-      CreateWarranty(formValue)
-        .then((res) => {
+      WarrantyService.createWarranty(formValue).subscribe({
+        next: (res) => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
-        })
-        .catch((err: AxiosError) => {
+        },
+        error: (err) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -134,12 +130,13 @@ const WarrantyDetail: React.FC = () => {
           if (status === 500) {
             onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
           }
-        })
-        .then(() => {
+        },
+        complete: () => {
           setTimeout(() => {
             navigate('/warranty');
           }, 500);
-        });
+        },
+      });
     }
   };
 
@@ -160,21 +157,22 @@ const WarrantyDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    DeleteWarrantyById(+warrantyId)
-      .then((res) => {
+    WarrantyService.deleteWarranty(+warrantyId).subscribe({
+      next: (res) => {
         onSuccess('ลบข้อมูลสำเร็จ');
-      })
-      .catch((err: AxiosError) => {
+      },
+      error: (err) => {
         const status = err.response?.status;
         if (status === 500) {
           onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
         }
-      })
-      .then(() => {
+      },
+      complete: () => {
         setTimeout(() => {
           navigate('/warranty');
         }, 500);
-      });
+      },
+    });
   };
 
   return (

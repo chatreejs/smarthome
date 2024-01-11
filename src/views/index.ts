@@ -4,6 +4,7 @@ export { default as FarmDashboard } from './farm/components/farm-dashboard/FarmD
 export { default as Food } from './food/Food';
 export { default as FoodDetail } from './food/components/food-detail/FoodDetail';
 export { default as FoodTable } from './food/components/food-table/FoodTable';
+export { default as HomeSetup } from './home-setup/HomeSetup';
 export { default as Inventory } from './inventory/Inventory';
 export { default as InventoryTable } from './inventory/components/inventory-table/InventoryTable';
 export { default as Warranty } from './warranty/Warranty';

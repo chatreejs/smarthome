@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { WeatherSensor } from '../..';
+import { WeatherSensor } from '@models';
 import './FarmDashboard.css';
 
 const { Title } = Typography;

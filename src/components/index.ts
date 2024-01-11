@@ -1,3 +1,5 @@
+export { default as CurrentUser } from './current-user/CurrentUser';
+export { default as Footer } from './footer/Footer';
 export { default as Layout } from './layout/Layout';
 export { default as Logo } from './logo/Logo';
 export { default as PageResult } from './page-result/PageResult';

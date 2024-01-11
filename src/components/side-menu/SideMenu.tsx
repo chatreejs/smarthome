@@ -1,4 +1,3 @@
-import { AuthContext } from '@context';
 import {
   faBolt,
   faBoxesStacked,
@@ -13,22 +12,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import './SideMenu.css';
 
-const MenuWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: calc(100vh - 64px);
-`;
+import { AuthContext } from '@context';
+import { Permission } from '@enums';
+import './SideMenu.css';
 
 const MenuText = styled.span`
   font-size: 1rem;
   margin-left: 0.5rem;
 `;
+
+const permissions = ['UTILITY', 'FOOD', 'INVENTORY', 'MEDICAL_SUPPLIES'];
 
 const SideMenu: React.FC = () => {
   const location = useLocation();
@@ -43,6 +40,8 @@ const SideMenu: React.FC = () => {
     navigate(`/${path}`);
   };
 
+  useEffect(() => {});
+
   return (
     <Menu
       defaultSelectedKeys={[defaultSelectedKeys]}
@@ -55,24 +54,29 @@ const SideMenu: React.FC = () => {
         <FontAwesomeIcon icon={faChartPie} className="fa-fw" />
         <MenuText>แดชบอร์ด</MenuText>
       </Menu.Item>
-      <Menu.SubMenu
-        key="utilities"
-        title="สาธารณูปโภค"
-        icon={<FontAwesomeIcon icon={faHouse} className="fa-fw" />}
-      >
-        <Menu.Item key="electricity" onClick={() => onClickMenu('electricity')}>
-          <FontAwesomeIcon icon={faBolt} className="fa-fw" />
-          <MenuText>ค่าไฟ</MenuText>
-        </Menu.Item>
-        <Menu.Item key="waterworks" onClick={() => onClickMenu('waterworks')}>
-          <FontAwesomeIcon icon={faFaucet} className="fa-fw" />
-          <MenuText>ค่าน้ำ</MenuText>
-        </Menu.Item>
-        <Menu.Item key="services" onClick={() => onClickMenu('services')}>
-          <FontAwesomeIcon icon={faFileInvoiceDollar} className="fa-fw" />
-          <MenuText>ค่าบริการ</MenuText>
-        </Menu.Item>
-      </Menu.SubMenu>
+      {permissions.includes(Permission.UTILITY) && (
+        <Menu.SubMenu
+          key="utilities"
+          title="สาธารณูปโภค"
+          icon={<FontAwesomeIcon icon={faHouse} className="fa-fw" />}
+        >
+          <Menu.Item
+            key="electricity"
+            onClick={() => onClickMenu('electricity')}
+          >
+            <FontAwesomeIcon icon={faBolt} className="fa-fw" />
+            <MenuText>ค่าไฟ</MenuText>
+          </Menu.Item>
+          <Menu.Item key="waterworks" onClick={() => onClickMenu('waterworks')}>
+            <FontAwesomeIcon icon={faFaucet} className="fa-fw" />
+            <MenuText>ค่าน้ำ</MenuText>
+          </Menu.Item>
+          <Menu.Item key="services" onClick={() => onClickMenu('services')}>
+            <FontAwesomeIcon icon={faFileInvoiceDollar} className="fa-fw" />
+            <MenuText>ค่าบริการ</MenuText>
+          </Menu.Item>
+        </Menu.SubMenu>
+      )}
       <Menu.Item key="food" onClick={() => onClickMenu('food')}>
         <FontAwesomeIcon icon={faUtensils} className="fa-fw" />
         <MenuText>อาหาร</MenuText>

@@ -11,14 +11,15 @@ import {
   Tag,
   Typography,
 } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { DeleteMultipleFood, Food, FoodStatus, SearchFood } from '../..';
+import { Food, FoodStatus } from '@models';
+import { FoodService } from '@services';
 import './FoodTable.css';
 
 const { Title } = Typography;
@@ -82,16 +83,15 @@ const FoodTable: React.FC = () => {
     loadData();
   }, []);
 
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      const foods = await SearchFood();
-      setFoodsData(foods);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
-    }
+  const loadData = () => {
+    setLoading(true);
+    FoodService.getAllFoods().subscribe({
+      next: (res) => {
+        setFoodsData(res);
+      },
+      error: (err) => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      complete: () => setLoading(false),
+    });
   };
 
   const onSuccess = (successMessage: string) => {
@@ -106,7 +106,6 @@ const FoodTable: React.FC = () => {
       message: 'เกิดข้อผิดพลาด',
       description: errorMessage,
     });
-    setLoading(false);
   };
 
   const rowSelection = {
@@ -123,16 +122,18 @@ const FoodTable: React.FC = () => {
     navigate('new');
   };
 
-  const onConfirmDelete = async (e: any) => {
-    try {
-      await DeleteMultipleFood(selectedFoods.map((food) => food.id));
-      onSuccess(`ลบข้อมูล ${selectedFoods.length} รายการสำเร็จ`);
-      setSelectedFoods([]);
-      loadData();
-    } catch (err) {
-      console.log(err);
-      onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
-    }
+  const onConfirmDelete = (e: any) => {
+    FoodService.deleteMultipleFoods(
+      selectedFoods.map((food) => food.id),
+    ).subscribe({
+      next: () => {
+        setSelectedFoods([]);
+        loadData();
+        onSuccess('ลบข้อมูลสำเร็จ');
+      },
+      error: (err) => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      complete: () => {},
+    });
   };
 
   return (
