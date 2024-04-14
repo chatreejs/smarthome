@@ -60,14 +60,14 @@ const columns: ColumnsType<Warranty> = [
   },
   {
     title: 'วันที่ซื้อ',
-    width: '180px',
+    width: '120px',
     render: (warranty: Warranty) => (
       <span>{dayjs(warranty.purchaseDate).format('DD MMMM BBBB')}</span>
     ),
   },
   {
     title: 'วันหมดประกัน',
-    width: '180px',
+    width: '120px',
     render: (warranty: Warranty) => (
       <span>{dayjs(warranty.warrantyDate).format('DD MMMM BBBB')}</span>
     ),
@@ -183,7 +183,7 @@ const WarrantyTable: React.FC = () => {
           dataSource={warrantiesData}
           rowKey={(warranty) => warranty.id}
           loading={loading}
-          scroll={{ x: 576, y: '45vh' }}
+          scroll={{ x: 576, y: '60vh' }}
         />
       </Card>
     </>

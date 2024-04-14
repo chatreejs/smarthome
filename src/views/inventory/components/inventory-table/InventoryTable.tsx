@@ -12,6 +12,7 @@ import {
   Typography,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -28,6 +29,11 @@ const columns: ColumnsType<Inventory> = [
     render: (inventory: Inventory) => (
       <Link to={{ pathname: `${inventory.id}` }}>{inventory.name}</Link>
     ),
+  },
+  {
+    title: 'ยี่ห้อ',
+    width: '150px',
+    dataIndex: 'brand',
   },
   {
     title: 'สถานะ',
@@ -55,6 +61,17 @@ const columns: ColumnsType<Inventory> = [
     title: 'หน่วย',
     width: '80px',
     dataIndex: 'unit',
+  },
+  {
+    title: 'วันที่เติมครั้งล่าสุด',
+    width: '120px',
+    render: (inventory: Inventory) => (
+      <span>
+        {inventory.restockDate
+          ? dayjs(inventory.restockDate).format('DD MMMM BBBB')
+          : '-'}
+      </span>
+    ),
   },
 ];
 
@@ -163,7 +180,7 @@ const InventoryTable: React.FC = () => {
           dataSource={inventoriesData}
           rowKey={(inventory) => inventory.id}
           loading={loading}
-          scroll={{ x: 576, y: '45vh' }}
+          scroll={{ x: 576, y: '60vh' }}
         />
       </Card>
     </>

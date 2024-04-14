@@ -36,6 +36,11 @@ const columns: ColumnsType<Food> = [
     ),
   },
   {
+    title: 'ยี่ห้อ',
+    width: '150px',
+    dataIndex: 'brand',
+  },
+  {
     title: 'สถานะ',
     width: '80px',
     align: 'center',
@@ -58,14 +63,14 @@ const columns: ColumnsType<Food> = [
   },
   {
     title: 'วันที่ซื้อ',
-    width: '180px',
+    width: '120px',
     render: (food: Food) => (
       <span>{dayjs(food.buyDate).format('DD MMMM BBBB')}</span>
     ),
   },
   {
     title: 'วันหมดอายุ',
-    width: '180px',
+    width: '120px',
     render: (food: Food) => (
       <span>{dayjs(food.expiryDate).format('DD MMMM BBBB')}</span>
     ),
@@ -189,7 +194,7 @@ const FoodTable: React.FC = () => {
           dataSource={foodsData}
           rowKey={(food) => food.id}
           loading={loading}
-          scroll={{ x: 576, y: '45vh' }}
+          scroll={{ x: 576, y: '60vh' }}
         />
       </Card>
     </>
