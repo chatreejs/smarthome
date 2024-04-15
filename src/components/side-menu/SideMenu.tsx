@@ -12,11 +12,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AuthContext } from '@context';
 import { Permission } from '@enums';
 import './SideMenu.css';
 
@@ -30,7 +29,6 @@ const permissions = ['UTILITY', 'FOOD', 'INVENTORY', 'MEDICAL_SUPPLIES'];
 const SideMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
 
   const [defaultSelectedKeys] = useState(
     location.pathname.split('/')[1] || 'dashboard',

@@ -33,6 +33,8 @@ const Logo: React.FC<LogoProps> = ({ systemName }) => {
 
   const getEnvironmentText = (env: string) => {
     switch (env) {
+      case 'local':
+        return 'LOCAL';
       case 'develop':
         return 'DEV';
       case 'staging':
@@ -44,7 +46,7 @@ const Logo: React.FC<LogoProps> = ({ systemName }) => {
 
   return (
     <LogoWrapper>
-      <p>{systemName.toUpperCase()}</p>
+      <p className="logo">{systemName.toUpperCase()}</p>
       {!isProduction && <EnvBadge>{getEnvironmentText(env)}</EnvBadge>}
     </LogoWrapper>
   );

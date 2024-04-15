@@ -5,7 +5,7 @@
   base-palette: 1;
 }
 
-p {
+p.logo {
   font-family: 'Nabla';
   font-variation-settings: 'EDPT' 120;
   font-palette: --Nabla;

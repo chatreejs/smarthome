@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AuthContext } from '@context';
+import { useLocalStorage } from '@hooks';
 
 const CurrentUserWrapper = styled.div`
   display: flex;
@@ -37,6 +38,8 @@ const DropdownMenuItemText = styled.span`
 
 const CurrentUser: React.FC = () => {
   const authContext = useContext(AuthContext);
+  const [isHasHome, setIsHasHome] = useLocalStorage('sh-hashome');
+  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
   const navigate = useNavigate();
   const [currentUserName, setCurrentUserName] = useState<string>('');
   const [monogramColor, setMonogramColor] = useState<string>('');
@@ -123,6 +126,12 @@ const CurrentUser: React.FC = () => {
     navigate(`/${path}`);
   };
 
+  const onLogout = () => {
+    setHomeId(undefined);
+    setIsHasHome(undefined);
+    authContext.logout();
+  };
+
   return (
     <Dropdown
       trigger={['click']}
@@ -152,7 +161,7 @@ const CurrentUser: React.FC = () => {
                 <DropdownMenuItemText>ออกจากระบบ</DropdownMenuItemText>
               </DropdownMenuItem>
             ),
-            onClick: () => authContext.logout(),
+            onClick: () => onLogout(),
           },
         ],
       }}

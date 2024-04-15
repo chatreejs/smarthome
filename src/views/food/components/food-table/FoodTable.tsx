@@ -18,6 +18,7 @@ import buddhistEra from 'dayjs/plugin/buddhistEra';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useLocalStorage } from '@hooks';
 import { Food, FoodStatus } from '@models';
 import { FoodService } from '@services';
 import './FoodTable.css';
@@ -79,6 +80,7 @@ const columns: ColumnsType<Food> = [
 
 const FoodTable: React.FC = () => {
   const { notification } = App.useApp();
+  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
   const [foodsData, setFoodsData] = useState<Food[]>([]);
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
@@ -90,7 +92,7 @@ const FoodTable: React.FC = () => {
 
   const loadData = () => {
     setLoading(true);
-    FoodService.getAllFoods().subscribe({
+    FoodService.getAllFoods(homeId).subscribe({
       next: (res) => {
         setFoodsData(res);
       },
@@ -130,6 +132,7 @@ const FoodTable: React.FC = () => {
   const onConfirmDelete = (e: any) => {
     FoodService.deleteMultipleFoods(
       selectedFoods.map((food) => food.id),
+      homeId,
     ).subscribe({
       next: () => {
         setSelectedFoods([]);

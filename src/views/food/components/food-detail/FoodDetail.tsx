@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
+import { useLocalStorage } from '@hooks';
 import { Food } from '@models';
 import { FoodService } from '@services';
 import './FoodDetail.css';
@@ -45,6 +46,7 @@ const tailLayout = {
 const FoodDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { foodId } = useParams();
+  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
   const [foodData, setFoodData] = useState<Food>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm();
@@ -53,11 +55,12 @@ const FoodDetail: React.FC = () => {
   useEffect(() => {
     if (foodId) {
       setIsEdit(true);
-      FoodService.getFoodById(+foodId).subscribe({
+      FoodService.getFoodById(+foodId, homeId).subscribe({
         next: (food) => {
           setFoodData(food);
           form.setFieldsValue({
             name: food?.name,
+            brand: food?.brand,
             quantity: food?.quantity,
             unit: food?.unit,
             buyDate: dayjs(food?.buyDate),
@@ -98,7 +101,7 @@ const FoodDetail: React.FC = () => {
       expiryDate: values.expiryDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      FoodService.updateFood(+foodId, formValue).subscribe({
+      FoodService.updateFood(+foodId, formValue, homeId).subscribe({
         next: (res) => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
         },
@@ -118,7 +121,7 @@ const FoodDetail: React.FC = () => {
         },
       });
     } else {
-      FoodService.createFood(formValue).subscribe({
+      FoodService.createFood(formValue, homeId).subscribe({
         next: (res) => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
         },
@@ -144,6 +147,7 @@ const FoodDetail: React.FC = () => {
     if (isEdit) {
       form.setFieldsValue({
         name: foodData.name,
+        brand: foodData.brand,
         quantity: foodData.quantity,
         unit: foodData.unit,
         buyDate: dayjs(foodData.buyDate),
@@ -155,7 +159,7 @@ const FoodDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    FoodService.deleteFood(+foodId).subscribe({
+    FoodService.deleteFood(+foodId, homeId).subscribe({
       next: (res) => {
         onSuccess('ลบข้อมูลสำเร็จ');
       },
@@ -192,6 +196,9 @@ const FoodDetail: React.FC = () => {
           >
             <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
               <Input size="large" data-testid="name-input" />
+            </Form.Item>
+            <Form.Item name="brand" label="ยี่ห้อ" rules={[{ required: true }]}>
+              <Input size="large" data-testid="name-brand" />
             </Form.Item>
             <Form.Item
               name="quantity"

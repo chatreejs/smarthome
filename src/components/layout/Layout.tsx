@@ -30,9 +30,9 @@ const HeaderWrapper = styled.div`
 const { Header, Content, Sider } = AntLayout;
 
 const Layout: React.FC = () => {
-  const [isHasHome, setIsHasHome] = useLocalStorage('sh-hashome', false);
   const navigate = useNavigate();
   const { width } = useWindowResize();
+  const [isHasHome, setIsHasHome] = useLocalStorage('sh-hashome');
   const [collapsed, setCollapsed] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
