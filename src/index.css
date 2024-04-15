@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.ant-picker {
+  font-family: 'Kanit', sans-serif;
+}
+
+.ant-picker-input input {
+  cursor: pointer;
+}
+
+.ant-picker-header-view button {
+  font-family: 'Kanit', sans-serif;
+}
+
+.ant-picker-dropdown {
+  font-family: 'Kanit', sans-serif;
+}
