@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AuthContext } from '@context';
-import { useLocalStorage } from '@hooks';
+import { useBrowserStorage } from '@hooks';
 import { HomeRequest } from '@models';
 import { HomeService } from '@services';
 import HomeConfigForm from './components/HomeConfigForm';
@@ -30,8 +30,16 @@ const StepWrapper = styled.div`
 const HomeSetup: React.FC = () => {
   const authContext = useContext(AuthContext);
   const { token } = theme.useToken();
-  const [isHasHome, setIsHasHome] = useLocalStorage('sh-hashome');
-  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
+  const [isHasHome, setIsHasHome] = useBrowserStorage(
+    'sh-hashome',
+    null,
+    'local',
+  );
+  const [homeId, setHomeId] = useBrowserStorage(
+    'sh-current-homeid',
+    null,
+    'local',
+  );
   const navigate = useNavigate();
   const [homeConfigForm] = Form.useForm();
   const [current, setCurrent] = useState(0);

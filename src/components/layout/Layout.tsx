@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { CurrentUser, Footer, Logo, SideMenu } from '@components';
-import { useLocalStorage, useWindowResize } from '@hooks';
+import { useBrowserStorage, useWindowResize } from '@hooks';
 import './Layout.css';
 
 const ContentWrapper = styled.div`
@@ -32,7 +32,11 @@ const { Header, Content, Sider } = AntLayout;
 const Layout: React.FC = () => {
   const navigate = useNavigate();
   const { width } = useWindowResize();
-  const [isHasHome, setIsHasHome] = useLocalStorage('sh-hashome');
+  const [isHasHome, setIsHasHome] = useBrowserStorage(
+    'sh-hashome',
+    null,
+    'local',
+  );
   const [collapsed, setCollapsed] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 

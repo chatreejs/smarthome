@@ -4,14 +4,22 @@ import Router from './config/routes';
 
 import { SplashSpinner } from '@components';
 import { AuthContext } from '@context';
-import { useLocalStorage } from '@hooks';
+import { useBrowserStorage } from '@hooks';
 import { AccountRequest } from '@models';
 import { AccountService, HomeService } from '@services';
 
 const App: React.FC = () => {
   const authContext = useContext(AuthContext);
-  const [isHasHome, setIsHasHome] = useLocalStorage('sh-hashome');
-  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
+  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean>(
+    'sh-hashome',
+    null,
+    'local',
+  );
+  const [homeId, setHomeId] = useBrowserStorage<number>(
+    'sh-current-homeid',
+    null,
+    'local',
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
-import { useLocalStorage } from '@hooks';
+import { useBrowserStorage } from '@hooks';
 import { Food } from '@models';
 import { FoodService } from '@services';
 import './FoodDetail.css';
@@ -46,7 +46,11 @@ const tailLayout = {
 const FoodDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { foodId } = useParams();
-  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
+  const [homeId, setHomeId] = useBrowserStorage(
+    'sh-current-homeid',
+    null,
+    'local',
+  );
   const [foodData, setFoodData] = useState<Food>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm();

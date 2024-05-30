@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AuthContext } from '@context';
-import { useLocalStorage } from '@hooks';
+import { useBrowserStorage } from '@hooks';
 
 const CurrentUserWrapper = styled.div`
   display: flex;
@@ -38,8 +38,16 @@ const DropdownMenuItemText = styled.span`
 
 const CurrentUser: React.FC = () => {
   const authContext = useContext(AuthContext);
-  const [isHasHome, setIsHasHome] = useLocalStorage('sh-hashome');
-  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
+  const [isHasHome, setIsHasHome] = useBrowserStorage(
+    'sh-hashome',
+    null,
+    'local',
+  );
+  const [homeId, setHomeId] = useBrowserStorage(
+    'sh-current-homeid',
+    null,
+    'local',
+  );
   const navigate = useNavigate();
   const [currentUserName, setCurrentUserName] = useState<string>('');
   const [monogramColor, setMonogramColor] = useState<string>('');

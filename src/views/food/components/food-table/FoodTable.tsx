@@ -18,7 +18,7 @@ import buddhistEra from 'dayjs/plugin/buddhistEra';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useLocalStorage } from '@hooks';
+import { useBrowserStorage } from '@hooks';
 import { Food, FoodStatus } from '@models';
 import { FoodService } from '@services';
 import './FoodTable.css';
@@ -80,7 +80,11 @@ const columns: ColumnsType<Food> = [
 
 const FoodTable: React.FC = () => {
   const { notification } = App.useApp();
-  const [homeId, setHomeId] = useLocalStorage('sh-current-homeid');
+  const [homeId, setHomeId] = useBrowserStorage(
+    'sh-current-homeid',
+    null,
+    'local',
+  );
   const [foodsData, setFoodsData] = useState<Food[]>([]);
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
