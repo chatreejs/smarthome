@@ -35,7 +35,7 @@ pipeline {
       agent {
         docker {
           image 'sonarsource/sonar-scanner-cli:latest'
-          args '-v $PWD:/workspace -w /workspace'
+          args '-v $PWD:/workspace -w /workspace -u root --privileged'
         }
       }
       steps {
