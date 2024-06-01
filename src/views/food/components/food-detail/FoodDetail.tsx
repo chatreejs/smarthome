@@ -25,7 +25,7 @@ import { Food } from '@models';
 import { FoodService } from '@services';
 import './FoodDetail.css';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const formItemLayout = {
   labelCol: {
@@ -41,6 +41,10 @@ const formItemLayout = {
 
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
+};
+
+const validateMessages = {
+  required: 'กรุณากรอก${label}',
 };
 
 const FoodDetail: React.FC = () => {
@@ -194,6 +198,7 @@ const FoodDetail: React.FC = () => {
           <Form
             {...formItemLayout}
             form={form}
+            validateMessages={validateMessages}
             name="food-detail-form"
             onFinish={onFinish}
             style={{ maxWidth: 576 }}
@@ -239,6 +244,15 @@ const FoodDetail: React.FC = () => {
                 placeholder="กรุณาเลือกวันหมดอายุ"
                 format="DD MMMM BBBB"
               />
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+              <Text italic>
+                แก้ไขล่าสุดเมื่อ{' '}
+                {dayjs(foodData?.updateDate)
+                  .locale('th')
+                  .format('D MMMM BBBB')}{' '}
+                โดย {foodData?.updateBy}
+              </Text>
             </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" size="large" htmlType="submit">

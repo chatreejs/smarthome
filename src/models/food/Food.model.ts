@@ -9,4 +9,6 @@ export interface Food {
   buyDate: Date;
   expiryDate: Date;
   status: FoodStatus;
+  updateBy: string;
+  updateDate: Date;
 }
