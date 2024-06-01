@@ -5,6 +5,7 @@ pipeline {
     VERSION = "0.1.0"
     IMAGE_URL = "registry.chatree.dev/smarthome/web"
     BUILD_PROFILE = 'develop'
+    DESTINATION_SERVER = "10.13.21.1"
   }
 
   stages {
@@ -90,15 +91,12 @@ pipeline {
     stage('Deploy') {
       steps {
         script {
-          withCredentials([usernamePassword(credentialsId: 'srv-dev-01-webusr-credential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-            def remote = [: ]
-            remote.name = 'srv-dev-01'
-            remote.host = '10.13.21.1'
-            remote.allowAnyHosts = true
-            remote.user = USERNAME
-            remote.password = PASSWORD
-            sshCommand remote: remote, command: "cd /opt/app/smarthome/smarthome-web ; sed -i \"s/^\\(TAG_VERSION=\\).*/TAG_VERSION=${BUILD_VERSION}/g\" .env"
-            sshCommand remote: remote, command: "cd /opt/app/smarthome/smarthome-web ; docker compose up -d"
+          withCredentials([sshUserPrivateKey(credentialsId: 'ctlssh-credential', keyFileVariable: 'IDENTITY', usernameVariable: 'USERNAME')]) {
+            sh "ssh -o StrictHostKeyChecking=no -i ${IDENTITY} ${USERNAME}@${DESTINATION_SERVER} \'docker pull ${IMAGE_URL}:${BUILD_VERSION} \
+            && cd /opt/app/smarthome/smarthome-web \
+            && docker compose down \
+            && sed -i \"s/^\\(TAG_VERSION=\\).*/TAG_VERSION=${BUILD_VERSION}/g\" .env \
+            && docker compose up -d\'"
           }
         }
       }
