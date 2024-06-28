@@ -1,15 +1,16 @@
 import { App as AntApp, ConfigProvider } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce';
 import Router from './config/routes';
 
 import { SplashSpinner } from '@components';
-import { AuthContext } from '@context';
 import { useBrowserStorage } from '@hooks';
 import { AccountRequest } from '@models';
 import { AccountService, HomeService } from '@services';
 
 const App: React.FC = () => {
-  const authContext = useContext(AuthContext);
+  const { token, tokenData, logIn, error } =
+    useContext<IAuthContext>(AuthContext);
   const [isHasHome, setIsHasHome] = useBrowserStorage<boolean>(
     'sh-hashome',
     null,
@@ -23,7 +24,13 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!authContext.isAuthenticated || !authContext.userProfile) return;
+    if (error) {
+      logIn();
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (!token) return;
     AccountService.getUserInfo().subscribe({
       next: (account) => {
         setIsHasHome(account.hasHome);
@@ -41,22 +48,22 @@ const App: React.FC = () => {
       },
       error: (error) => {
         if (error.response.status === 404) {
-          // Create new account from authContext
+          // Create new account from token data
           const accountRequest: AccountRequest = {
-            username: authContext.userProfile.username,
-            firstName: authContext.userProfile.firstName,
-            lastName: authContext.userProfile.lastName,
-            email: authContext.userProfile.email,
+            username: tokenData.preferred_username,
+            firstName: tokenData.given_name,
+            lastName: tokenData.family_name,
+            email: tokenData.email,
           };
           AccountService.createAccount(accountRequest).subscribe((res) => {}); // No need to handle response
         }
         setLoading(false);
       },
     });
-  }, [authContext.userProfile]);
+  }, [token, tokenData]);
 
   // Show a loading screen while we are checking the authentication status.
-  if (loading || !authContext.isAuthenticated) {
+  if (loading || !tokenData) {
     return <SplashSpinner />;
   } else {
     // If the user is authenticated we render the application.

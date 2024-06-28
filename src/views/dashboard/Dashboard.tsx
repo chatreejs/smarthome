@@ -1,24 +1,17 @@
 import { Card, Col, Row, Typography } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
-
-import { AuthContext } from '@context';
+import React, { useContext } from 'react';
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce';
 
 const { Title } = Typography;
 
 const Dashboard: React.FC = () => {
-  const [data, setData] = useState([]);
-  const authContext = useContext(AuthContext);
-
-  useEffect(() => {
-    // random data
-    const temp = data;
-    temp.push({ x: 1, y: 2 });
-    setData(temp);
-  }, []);
+  const { tokenData } = useContext<IAuthContext>(AuthContext);
 
   return (
     <>
-      <Title level={2}>ยินดีต้อนรับ {authContext.userProfile.firstName}</Title>
+      <Title level={2}>
+        ยินดีต้อนรับ {tokenData?.given_name} {tokenData?.family_name}
+      </Title>
       <Row gutter={[8, 8]}>
         <Col xs={12} sm={12} md={6} lg={6}>
           <Card>

@@ -9,7 +9,11 @@ import weekday from 'dayjs/plugin/weekday';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-import { AuthContextProvider } from '@context';
+import {
+  AuthProvider,
+  TAuthConfig,
+  TRefreshTokenExpiredEvent,
+} from 'react-oauth2-code-pkce';
 import App from './App';
 import './index.css';
 
@@ -20,13 +24,25 @@ dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
 
+const authConfig: TAuthConfig = {
+  clientId: `${process.env.VITE_APP_OAUTH_CLIENT_ID}`,
+  authorizationEndpoint: `${process.env.VITE_APP_OAUTH_URL}/protocol/openid-connect/auth`,
+  tokenEndpoint: `${process.env.VITE_APP_OAUTH_URL}/protocol/openid-connect/token`,
+  redirectUri: `${process.env.VITE_APP_BASE_URL}`,
+  logoutEndpoint: `${process.env.VITE_APP_OAUTH_URL}/protocol/openid-connect/logout`,
+  scope: 'openid',
+  onRefreshTokenExpire: (event: TRefreshTokenExpiredEvent) =>
+    event.logIn(undefined, undefined, 'popup'),
+  storageKeyPrefix: 'sh-',
+};
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 root.render(
-  <AuthContextProvider>
+  <AuthProvider authConfig={authConfig}>
     <BrowserRouter basename="/smarthome">
       <App />
     </BrowserRouter>
-  </AuthContextProvider>,
+  </AuthProvider>,
 );

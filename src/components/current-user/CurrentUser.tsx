@@ -5,10 +5,10 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, Badge, Dropdown } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AuthContext } from '@context';
 import { useBrowserStorage } from '@hooks';
 
 const CurrentUserWrapper = styled.div`
@@ -37,7 +37,7 @@ const DropdownMenuItemText = styled.span`
 `;
 
 const CurrentUser: React.FC = () => {
-  const authContext = useContext(AuthContext);
+  const { tokenData, logOut } = useContext<IAuthContext>(AuthContext);
   const [isHasHome, setIsHasHome] = useBrowserStorage(
     'sh-hashome',
     null,
@@ -55,8 +55,8 @@ const CurrentUser: React.FC = () => {
   const [notificationCount, setNotificationCount] = useState<number>(2);
 
   useEffect(() => {
-    const firstName = authContext.userProfile.firstName;
-    const lastName = authContext.userProfile.lastName;
+    const firstName = tokenData?.given_name;
+    const lastName = tokenData?.family_name;
 
     if (firstName && lastName) {
       // Capitalize the first letter of the first name and last name.
@@ -71,7 +71,7 @@ const CurrentUser: React.FC = () => {
       setMonogramColor(monogramColor);
       setMonogramTextColor(monogramTextColor);
     }
-  }, [authContext.userProfile]);
+  });
 
   const generateMonogramText = (name: string) => {
     const nameSplit = name.split(' ');
@@ -137,7 +137,7 @@ const CurrentUser: React.FC = () => {
   const onLogout = () => {
     setHomeId(undefined);
     setIsHasHome(undefined);
-    authContext.logout();
+    logOut();
   };
 
   return (

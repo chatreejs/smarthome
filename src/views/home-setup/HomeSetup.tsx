@@ -1,9 +1,9 @@
 import { Button, Flex, Form, Steps, theme, Typography } from 'antd';
 import { useContext, useEffect, useState } from 'react';
+import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { AuthContext } from '@context';
 import { useBrowserStorage } from '@hooks';
 import { HomeRequest } from '@models';
 import { HomeService } from '@services';
@@ -28,7 +28,7 @@ const StepWrapper = styled.div`
 `;
 
 const HomeSetup: React.FC = () => {
-  const authContext = useContext(AuthContext);
+  const { tokenData } = useContext<IAuthContext>(AuthContext);
   const { token } = theme.useToken();
   const [isHasHome, setIsHasHome] = useBrowserStorage(
     'sh-hashome',
@@ -112,7 +112,7 @@ const HomeSetup: React.FC = () => {
     <HomeSetupWrapper>
       <Flex vertical justify="center" style={{ height: '100%' }}>
         <Title level={2} style={{ alignSelf: 'center', color: 'white' }}>
-          ยินดีต้อนรับคุณ {authContext.userProfile.username}
+          ยินดีต้อนรับคุณ {tokenData?.given_name} {tokenData?.family_name}
         </Title>
         <Text style={{ alignSelf: 'center', fontSize: 18, color: 'white' }}>
           เพื่อเข้าใช้งานระบบ กรุณาตั้งค่าบ้านของคุณให้เรียบร้อย
