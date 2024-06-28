@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { WeatherSensor } from '@models';
+import { AirQuality, WeatherSensor } from '@models';
 import './FarmDashboard.css';
 
 const { Title } = Typography;
@@ -50,11 +50,9 @@ const getAirQualityColor = (pm25: number) => {
 };
 
 const FarmDashboard: React.FC = () => {
-  const [temperature, setTemperature] = useState<number>(null);
-  const [humidity, setHumidity] = useState<number>(null);
-  const [pressure, setPressure] = useState<number>(null);
-  const [pm25, setPm25] = useState<number>(null);
-  const [sensorData, setSensorData] = useState<WeatherSensor>(null);
+  const [weatherSensorData, setWeatherSensorData] =
+    useState<WeatherSensor>(null);
+  const [airQualityData, setAirQualityData] = useState<AirQuality>(null);
 
   useEffect(() => {
     const weatherStompClient = new Client({
@@ -64,7 +62,11 @@ const FarmDashboard: React.FC = () => {
     weatherStompClient.onConnect = () => {
       weatherStompClient.subscribe('/topic/weather-sensor', (message) => {
         const body: WeatherSensor = JSON.parse(message.body);
-        setSensorData(body);
+        setWeatherSensorData(body);
+      });
+      weatherStompClient.subscribe('/topic/air-quality', (message) => {
+        const body: AirQuality = JSON.parse(message.body);
+        setAirQualityData(body);
       });
     };
     weatherStompClient.activate();
@@ -77,15 +79,6 @@ const FarmDashboard: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (sensorData) {
-      setTemperature(sensorData.temperature);
-      setHumidity(sensorData.humidity);
-      setPressure(sensorData.pressure);
-      setPm25(sensorData.pm25);
-    }
-  }, [sensorData]);
-
   return (
     <>
       <Title level={2}>ฟาร์ม</Title>
@@ -94,10 +87,10 @@ const FarmDashboard: React.FC = () => {
           <Card>
             <Statistic
               title="อุณหภูมิ"
-              value={temperature}
+              value={weatherSensorData?.temperature}
               precision={2}
               suffix="°C"
-              loading={temperature == null}
+              loading={weatherSensorData?.temperature == null}
             />
           </Card>
         </Col>
@@ -105,10 +98,10 @@ const FarmDashboard: React.FC = () => {
           <Card>
             <Statistic
               title="ความชื้นสัมพัทธ์"
-              value={humidity}
+              value={weatherSensorData?.humidity}
               precision={2}
               suffix="%"
-              loading={humidity == null}
+              loading={weatherSensorData?.humidity == null}
             />
           </Card>
         </Col>
@@ -116,10 +109,10 @@ const FarmDashboard: React.FC = () => {
           <Card>
             <Statistic
               title="ความดันบรรยากาศ"
-              value={pressure}
+              value={weatherSensorData?.pressure}
               precision={2}
               suffix="hPa"
-              loading={pressure == null}
+              loading={weatherSensorData?.pressure == null}
             />
           </Card>
         </Col>
@@ -127,10 +120,10 @@ const FarmDashboard: React.FC = () => {
           <Card>
             <Statistic
               title="Air Quality (PM2.5)"
-              value={pm25}
+              value={airQualityData?.pm25}
               suffix="μg/m³"
-              valueStyle={{ color: getAirQualityColor(pm25) }}
-              loading={pm25 == null}
+              valueStyle={{ color: getAirQualityColor(airQualityData?.pm25) }}
+              loading={airQualityData?.pm25 == null}
             />
           </Card>
         </Col>
