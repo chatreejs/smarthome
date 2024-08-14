@@ -5,7 +5,6 @@ pipeline {
     VERSION = "0.1.0"
     IMAGE_URL = "registry.chatree.dev/smarthome/web"
     BUILD_PROFILE = 'develop'
-    DESTINATION_SERVER = "10.13.21.1"
   }
 
   stages {
@@ -88,17 +87,9 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+    stage('Deploy to Kubernetes') {
       steps {
-        script {
-          withCredentials([sshUserPrivateKey(credentialsId: 'ctlssh-credential', keyFileVariable: 'IDENTITY', usernameVariable: 'USERNAME')]) {
-            sh "ssh -o StrictHostKeyChecking=no -i ${IDENTITY} ${USERNAME}@${DESTINATION_SERVER} \'docker pull ${IMAGE_URL}:${BUILD_VERSION} \
-            && cd /opt/app/smarthome/smarthome-web \
-            && docker compose down \
-            && sed -i \"s/^\\(TAG_VERSION=\\).*/TAG_VERSION=${BUILD_VERSION}/g\" .env \
-            && docker compose up -d\'"
-          }
-        }
+        build job: 'chatreejs/GitOps/weather-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_URL}:${BUILD_VERSION}")]
       }
     }
 
