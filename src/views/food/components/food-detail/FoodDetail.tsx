@@ -16,7 +16,7 @@ import {
 } from 'antd';
 import locale from 'antd/lib/date-picker/locale/th_TH';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
@@ -50,17 +50,13 @@ const validateMessages = {
 const FoodDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { foodId } = useParams();
-  const [homeId, setHomeId] = useBrowserStorage(
-    'sh-current-homeid',
-    null,
-    'local',
-  );
+  const [homeId] = useBrowserStorage('sh-current-homeid', null, 'local');
   const [foodData, setFoodData] = useState<Food>(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchFoodData = useCallback(() => {
     if (foodId) {
       setIsEdit(true);
       FoodService.getFoodById(+foodId, homeId).subscribe({
@@ -86,7 +82,11 @@ const FoodDetail: React.FC = () => {
         },
       });
     }
-  }, [foodId]);
+  }, [foodId, homeId, form, notification]);
+
+  useEffect(() => {
+    fetchFoodData();
+  }, [fetchFoodData]);
 
   const onSuccess = (successMessage: string) => {
     notification.success({
@@ -217,7 +217,7 @@ const FoodDetail: React.FC = () => {
               <InputNumber data-testid="quantity-input" />
             </Form.Item>
             <Form.Item name="unit" label="หน่วย" rules={[{ required: true }]}>
-              <Input />
+              <Input data-testid="unit-input" />
             </Form.Item>
             <Form.Item
               name="buyDate"
@@ -225,6 +225,7 @@ const FoodDetail: React.FC = () => {
               rules={[{ required: true }]}
             >
               <ThaiDatePicker
+                data-testid="buy-date-input"
                 locale={locale}
                 inputReadOnly={true}
                 placeholder="กรุณาเลือกวันที่ซื้อ"
@@ -232,6 +233,7 @@ const FoodDetail: React.FC = () => {
               />
             </Form.Item>
             <Form.Item
+              data-testid="expiry-date-input"
               name="expiryDate"
               label="วันหมดอายุ"
               rules={[{ required: true }]}

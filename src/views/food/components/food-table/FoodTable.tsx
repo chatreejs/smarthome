@@ -80,11 +80,7 @@ const columns: ColumnsType<Food> = [
 
 const FoodTable: React.FC = () => {
   const { notification } = App.useApp();
-  const [homeId, setHomeId] = useBrowserStorage(
-    'sh-current-homeid',
-    null,
-    'local',
-  );
+  const [homeId] = useBrowserStorage('sh-current-homeid', null, 'local');
   const [foodsData, setFoodsData] = useState<Food[]>([]);
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
