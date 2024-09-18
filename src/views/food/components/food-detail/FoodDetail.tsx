@@ -243,15 +243,17 @@ const FoodDetail: React.FC = () => {
                 format="DD MMMM BBBB"
               />
             </Form.Item>
-            <Form.Item {...tailLayout}>
-              <Text italic>
-                แก้ไขล่าสุดเมื่อ{' '}
-                {dayjs(foodData?.updateDate)
-                  .locale('th')
-                  .format('D MMMM BBBB')}{' '}
-                โดย {foodData?.updateBy}
-              </Text>
-            </Form.Item>
+            {isEdit && (
+              <Form.Item {...tailLayout}>
+                <Text italic>
+                  แก้ไขล่าสุดเมื่อ{' '}
+                  {dayjs(foodData?.updateDate)
+                    .locale('th')
+                    .format('D MMMM BBBB')}{' '}
+                  โดย {foodData?.updateBy}
+                </Text>
+              </Form.Item>
+            )}
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit">
                 <FontAwesomeIcon icon={faFloppyDisk} />
