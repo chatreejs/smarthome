@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout, PageResult } from '@components';
 import {
   Dashboard,
+  Electricity,
   Farm,
   FarmDashboard,
   Food,
@@ -10,6 +11,7 @@ import {
   FoodTable,
   HomeSetup,
   Inventory,
+  InventoryDetail,
   InventoryTable,
   Warranty,
   WarrantyDetail,
@@ -22,6 +24,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="electricity" element={<Electricity />} />
         <Route path="food" element={<Food />}>
           <Route index element={<FoodTable />} />
           <Route path="new" element={<FoodDetail />} />
@@ -29,6 +32,7 @@ const AppRoutes: React.FC = () => {
         </Route>
         <Route path="inventory" element={<Inventory />}>
           <Route index element={<InventoryTable />} />
+          <Route path="new" element={<InventoryDetail />} />
         </Route>
         <Route path="warranty" element={<Warranty />}>
           <Route index element={<WarrantyTable />} />
