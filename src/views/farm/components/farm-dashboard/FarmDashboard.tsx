@@ -1,4 +1,10 @@
-import { faBug, faEllipsis, faShower } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBug,
+  faCaretDown,
+  faCaretUp,
+  faEllipsis,
+  faShower,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Client } from '@stomp/stompjs';
 import {
@@ -11,7 +17,7 @@ import {
   Statistic,
   Typography,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { AirQuality, WeatherSensor } from '@models';
 import './FarmDashboard.css';
@@ -40,44 +46,63 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const getAirQualityColor = (pm25: number) => {
-  if (pm25 <= 35) {
-    return '#00e400';
-  } else if (pm25 <= 85) {
-    return '#feb726';
+const getDataPrefix = (prior: number, current: number) => {
+  if (prior < current) {
+    return <FontAwesomeIcon icon={faCaretUp} style={{ color: '#ff4d4f' }} />;
+  } else {
+    return <FontAwesomeIcon icon={faCaretDown} style={{ color: '#52c41a' }} />;
   }
-  return '#ff0000';
 };
 
 const FarmDashboard: React.FC = () => {
   const [weatherSensorData, setWeatherSensorData] =
     useState<WeatherSensor>(null);
+  const [weatherSensorPriorData, setWeatherSensorPriorData] =
+    useState<WeatherSensor>(null);
   const [airQualityData, setAirQualityData] = useState<AirQuality>(null);
+  const [airQualityPriorData, setAirQualityPriorData] =
+    useState<AirQuality>(null);
 
-  useEffect(() => {
+  const handleWeatherSensorMessage = (message) => {
+    const body: WeatherSensor = JSON.parse(message.body);
+    setWeatherSensorPriorData(weatherSensorData);
+    setWeatherSensorData(body);
+  };
+
+  const handleAirQualityMessage = (message) => {
+    const body: AirQuality = JSON.parse(message.body);
+    setAirQualityPriorData(airQualityData);
+    setAirQualityData(body);
+  };
+
+  const setupStompClient = useCallback(() => {
     const weatherStompClient = new Client({
       brokerURL: process.env.VITE_APP_WEATHER_SOCKET,
       reconnectDelay: 2000,
     });
+
     weatherStompClient.onConnect = () => {
-      weatherStompClient.subscribe('/topic/weather-sensor', (message) => {
-        const body: WeatherSensor = JSON.parse(message.body);
-        setWeatherSensorData(body);
-      });
-      weatherStompClient.subscribe('/topic/air-quality', (message) => {
-        const body: AirQuality = JSON.parse(message.body);
-        setAirQualityData(body);
-      });
+      weatherStompClient.subscribe(
+        '/topic/weather-sensor',
+        handleWeatherSensorMessage,
+      );
+      weatherStompClient.subscribe(
+        '/topic/air-quality',
+        handleAirQualityMessage,
+      );
     };
+
     weatherStompClient.activate();
 
-    // Cleanup
     return () => {
-      if (weatherStompClient.connected) {
-        weatherStompClient.deactivate();
-      }
+      weatherStompClient.deactivate();
     };
-  }, []);
+  }, [weatherSensorData, airQualityData]);
+
+  useEffect(() => {
+    const stompClient = setupStompClient();
+    return stompClient;
+  }, [setupStompClient]);
 
   return (
     <>
@@ -89,6 +114,10 @@ const FarmDashboard: React.FC = () => {
               title="อุณหภูมิ"
               value={weatherSensorData?.temperature}
               precision={2}
+              prefix={getDataPrefix(
+                weatherSensorPriorData?.temperature,
+                weatherSensorData?.temperature,
+              )}
               suffix="°C"
               loading={weatherSensorData?.temperature == null}
             />
@@ -100,6 +129,10 @@ const FarmDashboard: React.FC = () => {
               title="ความชื้นสัมพัทธ์"
               value={weatherSensorData?.humidity}
               precision={2}
+              prefix={getDataPrefix(
+                weatherSensorPriorData?.humidity,
+                weatherSensorData?.humidity,
+              )}
               suffix="%"
               loading={weatherSensorData?.humidity == null}
             />
@@ -111,6 +144,10 @@ const FarmDashboard: React.FC = () => {
               title="ความดันบรรยากาศ"
               value={weatherSensorData?.pressure}
               precision={2}
+              prefix={getDataPrefix(
+                weatherSensorPriorData?.pressure,
+                weatherSensorData?.pressure,
+              )}
               suffix="hPa"
               loading={weatherSensorData?.pressure == null}
             />
@@ -121,8 +158,11 @@ const FarmDashboard: React.FC = () => {
             <Statistic
               title="Air Quality (PM2.5)"
               value={airQualityData?.pm25}
+              prefix={getDataPrefix(
+                airQualityPriorData?.pm25,
+                airQualityData?.pm25,
+              )}
               suffix="μg/m³"
-              valueStyle={{ color: getAirQualityColor(airQualityData?.pm25) }}
               loading={airQualityData?.pm25 == null}
             />
           </Card>

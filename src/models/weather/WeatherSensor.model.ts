@@ -1,7 +1,6 @@
 export interface WeatherSensor {
-  timestamp: string;
+  timestamp?: string;
   temperature: number;
   humidity: number;
   pressure: number;
-  pm25: number;
 }
