@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useBrowserStorage } from '@hooks';
 import { Inventory, InventoryStatus } from '@models';
 import { InventoryService } from '@services';
 import './InventoryTable.css';
@@ -77,6 +78,7 @@ const columns: ColumnsType<Inventory> = [
 
 const InventoryTable: React.FC = () => {
   const { notification } = App.useApp();
+  const [homeId] = useBrowserStorage('sh-current-homeid', null, 'local');
   const [inventoriesData, setInventoriesData] = useState<Inventory[]>([]);
   const [selectedInventories, setSelectedInventories] = useState<Inventory[]>(
     [],
@@ -86,7 +88,7 @@ const InventoryTable: React.FC = () => {
 
   const loadData = () => {
     setLoading(true);
-    InventoryService.getAllInventories().subscribe({
+    InventoryService.getAllInventories(homeId).subscribe({
       next: (response) => {
         setInventoriesData(response);
       },
@@ -123,6 +125,7 @@ const InventoryTable: React.FC = () => {
   const onConfirmDelete = (e: any) => {
     InventoryService.deleteMultipleInventories(
       selectedInventories.map((inventory) => inventory.id),
+      homeId,
     ).subscribe({
       next: () => {
         setSelectedInventories([]);

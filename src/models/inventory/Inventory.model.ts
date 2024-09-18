@@ -9,4 +9,6 @@ export interface Inventory {
   unit: string;
   status: InventoryStatus;
   restockDate: Date;
+  updateBy: string;
+  updateDate: Date;
 }
