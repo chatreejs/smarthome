@@ -204,20 +204,20 @@ const FoodDetail: React.FC = () => {
             style={{ maxWidth: 576 }}
           >
             <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
-              <Input size="large" data-testid="name-input" />
+              <Input data-testid="name-input" />
             </Form.Item>
             <Form.Item name="brand" label="ยี่ห้อ" rules={[{ required: true }]}>
-              <Input size="large" data-testid="name-brand" />
+              <Input data-testid="name-brand" />
             </Form.Item>
             <Form.Item
               name="quantity"
               label="จำนวน"
               rules={[{ required: true }]}
             >
-              <InputNumber size="large" data-testid="quantity-input" />
+              <InputNumber data-testid="quantity-input" />
             </Form.Item>
             <Form.Item name="unit" label="หน่วย" rules={[{ required: true }]}>
-              <Input size="large" />
+              <Input />
             </Form.Item>
             <Form.Item
               name="buyDate"
@@ -226,7 +226,6 @@ const FoodDetail: React.FC = () => {
             >
               <ThaiDatePicker
                 locale={locale}
-                size="large"
                 inputReadOnly={true}
                 placeholder="กรุณาเลือกวันที่ซื้อ"
                 format="DD MMMM BBBB"
@@ -239,7 +238,6 @@ const FoodDetail: React.FC = () => {
             >
               <ThaiDatePicker
                 locale={locale}
-                size="large"
                 inputReadOnly={true}
                 placeholder="กรุณาเลือกวันหมดอายุ"
                 format="DD MMMM BBBB"
@@ -255,21 +253,16 @@ const FoodDetail: React.FC = () => {
               </Text>
             </Form.Item>
             <Form.Item {...tailLayout}>
-              <Button type="primary" size="large" htmlType="submit">
+              <Button type="primary" htmlType="submit">
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 บันทึก
               </Button>
-              <Button size="large" htmlType="button" onClick={onReset}>
+              <Button htmlType="button" onClick={onReset}>
                 <FontAwesomeIcon icon={faRotateLeft} />
                 ล้างข้อมูล
               </Button>
               {isEdit && (
-                <Button
-                  danger
-                  size="large"
-                  htmlType="button"
-                  onClick={onDelete}
-                >
+                <Button danger htmlType="button" onClick={onDelete}>
                   <FontAwesomeIcon icon={faTrashCan} />
                   ลบ
                 </Button>

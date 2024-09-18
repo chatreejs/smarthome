@@ -1916,10 +1916,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.18.20.tgz#786c5f41f043b07afb1af37683d7c33668858f6d"
   integrity sha512-kTdfRcSiDfQca/y9QIkng02avJ+NCaQvrMejlsB3RRv5sE9rRoeBPISaZpKxHELzRxZyLvNts1P27W3wV+8geQ==
 
-"@fontsource/kanit@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@fontsource/kanit/-/kanit-5.0.3.tgz#2b335c67c673f0f48f783cab45819009cfc6515a"
-  integrity sha512-WnXid2qgqQJig1Siw69ngAfcDnCABujbhocuaaRCzoIFY0J0a9sWptbByOMauuTOgviN7E4aFH82FtX5bD+2dg==
+"@fontsource/sarabun@^5.0.3":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/sarabun/-/sarabun-5.1.0.tgz#d65c0d22a7b05c96deeb206f181828844a1f1497"
+  integrity sha512-mFP6JgA++2RZQMbASKjMQQG5+EOfljDyBJX2fEQqxU2ilyaQSLqhe1ddCfy1W/CAn9vZI15B2NMYsHJwSynPEA==
 
 "@fortawesome/fontawesome-common-types@6.4.0":
   version "6.4.0"

@@ -105,7 +105,7 @@ const Layout: React.FC = () => {
               }}
             >
               <HeaderWrapper>
-                <div>a1</div>
+                <div>Some Menu</div>
                 <div
                   style={{
                     display: 'flex',

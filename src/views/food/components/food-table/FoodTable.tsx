@@ -156,7 +156,6 @@ const FoodTable: React.FC = () => {
           <Button
             type="primary"
             className="action-btn"
-            size="large"
             onClick={navigateToCreateFood}
           >
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
@@ -174,7 +173,6 @@ const FoodTable: React.FC = () => {
               <Button
                 danger
                 className="action-btn"
-                size="large"
                 disabled={selectedFoods.length === 0}
               >
                 <FontAwesomeIcon

@@ -27,7 +27,7 @@ const HomeConfigForm: React.FC<HomeConfigFormProps> = ({ form }) => {
     <>
       <Form {...formItemLayout} form={form} name="home-config-form">
         <Form.Item name="name" label="ชื่อบ้าน" rules={[{ required: true }]}>
-          <Input size="large" data-testid="name-input" />
+          <Input data-testid="name-input" />
         </Form.Item>
         <Form.Item name="address" label="ที่อยู่" rules={[{ required: true }]}>
           <TextArea rows={3} data-testid="address-input" />

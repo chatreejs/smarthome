@@ -141,7 +141,6 @@ const InventoryTable: React.FC = () => {
           <Button
             type="primary"
             className="action-btn"
-            size="large"
             onClick={navigateToCreateInventory}
           >
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
@@ -155,7 +154,7 @@ const InventoryTable: React.FC = () => {
               okText="ยืนยัน"
               cancelText="ยกเลิก"
             >
-              <Button danger className="action-btn" size="large">
+              <Button danger className="action-btn">
                 <FontAwesomeIcon
                   icon={faTrashCan}
                   style={{ marginRight: '0.25rem' }}

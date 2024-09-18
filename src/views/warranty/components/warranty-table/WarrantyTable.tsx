@@ -138,7 +138,6 @@ const WarrantyTable: React.FC = () => {
           <Button
             type="primary"
             className="action-btn"
-            size="large"
             onClick={navigateToCreateWarranty}
           >
             <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
@@ -156,7 +155,6 @@ const WarrantyTable: React.FC = () => {
               <Button
                 danger
                 className="action-btn"
-                size="large"
                 disabled={selectedWarranties.length === 0}
               >
                 <FontAwesomeIcon
