@@ -1,4 +1,4 @@
-import '@fontsource/kanit';
+import '@fontsource/sarabun';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';

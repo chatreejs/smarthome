@@ -74,7 +74,7 @@ const App: React.FC = () => {
             colorPrimary: '#30D5C8',
             colorLink: '#30D5C8',
             colorLinkHover: '#82E8E0',
-            fontFamily: 'Kanit',
+            fontFamily: 'Sarabun',
           },
         }}
       >
