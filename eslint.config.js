@@ -53,11 +53,6 @@ export default tseslint.config(
       'vite.config.ts',
       'eslint.config.js',
       'babel.config.js',
-      'jest.config.ts',
-      'coverage/*',
-      'src/test/*',
-      'src/__tests__/*',
-      'src/setupTests.ts',
     ],
   },
   configPrettier, // For disabling conflicting rules with Prettier, require as the last config
