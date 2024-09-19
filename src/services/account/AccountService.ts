@@ -12,8 +12,8 @@ export class AccountService {
     ).pipe(map((response) => response.data));
   }
 
-  static createAccount(account: AccountRequest): Observable<any> {
-    return from(axiosInstance.post<any>(this.apiEndpoint, account)).pipe(
+  static createAccount(account: AccountRequest): Observable<void> {
+    return from(axiosInstance.post<void>(this.apiEndpoint, account)).pipe(
       map((response) => response.data),
     );
   }

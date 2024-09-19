@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useBrowserStorage } from '@hooks';
@@ -78,7 +78,11 @@ const columns: ColumnsType<Inventory> = [
 
 const InventoryTable: React.FC = () => {
   const { notification } = App.useApp();
-  const [homeId] = useBrowserStorage('sh-current-homeid', null, 'local');
+  const [homeId] = useBrowserStorage<number | undefined>(
+    'sh-current-homeid',
+    undefined,
+    'local',
+  );
   const [inventoriesData, setInventoriesData] = useState<Inventory[]>([]);
   const [selectedInventories, setSelectedInventories] = useState<Inventory[]>(
     [],
@@ -86,30 +90,33 @@ const InventoryTable: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const loadData = () => {
+  const onError = useCallback(
+    (errorMessage: string) => {
+      notification.error({
+        message: 'เกิดข้อผิดพลาด',
+        description: errorMessage,
+      });
+    },
+    [notification],
+  );
+
+  const fetchInventoryData = useCallback(() => {
     setLoading(true);
-    InventoryService.getAllInventories(homeId).subscribe({
+    InventoryService.getAllInventories(homeId!).subscribe({
       next: (response) => {
         setInventoriesData(response);
       },
-      error: (err) => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      error: () => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
       complete: () => setLoading(false),
     });
-  };
-
-  const onError = (errorMessage: string) => {
-    notification.error({
-      message: 'เกิดข้อผิดพลาด',
-      description: errorMessage,
-    });
-  };
+  }, [homeId, onError]);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    fetchInventoryData();
+  }, [fetchInventoryData]);
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: Inventory[]) => {
+    onChange: (_: React.Key[], selectedRows: Inventory[]) => {
       setSelectedInventories(selectedRows);
     },
 
@@ -122,17 +129,16 @@ const InventoryTable: React.FC = () => {
     navigate('new');
   };
 
-  const onConfirmDelete = (e: any) => {
+  const onConfirmDelete = () => {
     InventoryService.deleteMultipleInventories(
       selectedInventories.map((inventory) => inventory.id),
-      homeId,
+      homeId!,
     ).subscribe({
       next: () => {
         setSelectedInventories([]);
-        loadData();
+        fetchInventoryData();
       },
-      error: (err) => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
-      complete: () => {},
+      error: () => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
     });
   };
 

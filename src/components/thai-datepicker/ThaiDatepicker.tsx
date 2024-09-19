@@ -18,7 +18,7 @@ dayjs.locale(
       LLLL: 'วันddddที่ D MMMM BBBB เวลา H:mm',
     },
   },
-  null,
+  undefined,
   true,
 );
 
@@ -40,21 +40,19 @@ const config: GenerateConfig<Dayjs> = {
   },
   getYear: (date) => Number(date.format('BBBB')),
   locale: {
-    getWeekFirstDay: (locale) =>
-      dayjs().locale('th').localeData().firstDayOfWeek(),
-    getWeekFirstDate: (locale, date) => date.locale('th').weekday(0),
-    getWeek: (locale, date) => date.locale('th').week(),
-    getShortWeekDays: (locale) =>
-      dayjs().locale('th').localeData().weekdaysMin(),
-    getShortMonths: (locale) => dayjs().locale('th').localeData().monthsShort(),
-    format: (locale, date, format) => {
+    getWeekFirstDay: () => dayjs().locale('th').localeData().firstDayOfWeek(),
+    getWeekFirstDate: (_, date) => date.locale('th').weekday(0),
+    getWeek: (_, date) => date.locale('th').week(),
+    getShortWeekDays: () => dayjs().locale('th').localeData().weekdaysMin(),
+    getShortMonths: () => dayjs().locale('th').localeData().monthsShort(),
+    format: (_, date, format) => {
       const convertFormat = format.replace('YYYY', 'BBBB');
       return date.locale('th').format(convertFormat);
     },
-    parse: (locale, text, formats) => {
+    parse: (_, text, formats) => {
       const localeStr = 'th';
-      for (let i = 0; i < formats.length; i += 1) {
-        const format = formats[i];
+      for (const element of formats) {
+        const format = element;
         const formatText = text;
         if (format.includes('wo') || format.includes('Wo')) {
           const year = formatText.split('-')[0];

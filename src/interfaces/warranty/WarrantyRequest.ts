@@ -1,7 +1,4 @@
-import { WarrantyStatus } from '@models';
-
-export interface Warranty {
-  id: number;
+export interface WarrantyRequest {
   brand: string;
   productName: string;
   productNumber: string;
@@ -9,5 +6,4 @@ export interface Warranty {
   serialNumber: string;
   purchaseDate: string;
   warrantyDate: string;
-  status: WarrantyStatus;
 }

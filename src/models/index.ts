@@ -3,7 +3,6 @@ export * from './account/AccountRequest.model';
 export * from './food/Food.model';
 export * from './food/FoodStatus.enum';
 export * from './home/Home.model';
-export * from './home/HomeRequest.model';
 export * from './inventory/Inventory.model';
 export * from './inventory/InventoryStatus.enum';
 export * from './warranty/Warranty.model';

@@ -22,8 +22,10 @@ import dayjs from 'dayjs';
 
 import { ThaiDatePicker } from '@components';
 import { useBrowserStorage } from '@hooks';
+import { InventoryRequest } from '@interfaces';
 import { Inventory } from '@models';
 import { InventoryService } from '@services';
+import { AxiosError } from 'axios';
 
 const { Title, Text } = Typography;
 
@@ -47,19 +49,49 @@ const validateMessages = {
   required: 'กรุณากรอก${label}',
 };
 
+interface InventoryForm {
+  name: string;
+  brand: string;
+  quantity: number;
+  maxQuantity: number;
+  unit: string;
+  restockDate: dayjs.Dayjs;
+}
+
 const InventoryDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { inventoryId } = useParams();
-  const [homeId] = useBrowserStorage('sh-current-homeid', null, 'local');
-  const [inventoryData, setInventoryData] = useState<Inventory>(null);
+  const [homeId] = useBrowserStorage<number | undefined>(
+    'sh-current-homeid',
+    undefined,
+    'local',
+  );
+  const [inventoryData, setInventoryData] = useState<Inventory>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<InventoryForm>();
   const navigate = useNavigate();
+
+  const onSuccess = (successMessage: string) => {
+    notification.success({
+      message: 'สำเร็จ',
+      description: successMessage,
+    });
+  };
+
+  const onError = useCallback(
+    (errorMessage: string) => {
+      notification.error({
+        message: 'เกิดข้อผิดพลาด',
+        description: errorMessage,
+      });
+    },
+    [notification],
+  );
 
   const fetchInventoryData = useCallback(() => {
     if (inventoryId) {
       setIsEdit(true);
-      InventoryService.getInventoryById(+inventoryId, homeId).subscribe({
+      InventoryService.getInventoryById(+inventoryId, homeId!).subscribe({
         next: (inventory) => {
           setInventoryData(inventory);
           form.setFieldsValue({
@@ -71,52 +103,44 @@ const InventoryDetail: React.FC = () => {
             restockDate: dayjs(inventory?.restockDate),
           });
         },
-        error: (err) => {
+        error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
           if (status === 404) {
-            notification.error({
-              message: 'เกิดข้อผิดพลาด',
-              description: 'ไม่พบข้อมูล',
-            });
+            onError('ไม่พบข้อมูล');
+            setTimeout(() => {
+              navigate('/inventory');
+            }, 500);
+          }
+          if (status === 500) {
+            onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
+            setTimeout(() => {
+              navigate('/inventory');
+            }, 500);
           }
         },
       });
     }
-  }, [inventoryId, homeId, form, notification]);
+  }, [inventoryId, homeId, form, onError, navigate]);
 
   useEffect(() => {
     fetchInventoryData();
   }, [fetchInventoryData]);
 
-  const onSuccess = (successMessage: string) => {
-    notification.success({
-      message: 'สำเร็จ',
-      description: successMessage,
-    });
-  };
-
-  const onError = (errorMessage: string) => {
-    notification.error({
-      message: 'เกิดข้อผิดพลาด',
-      description: errorMessage,
-    });
-  };
-
-  const onFinish = (values: any) => {
-    const formValue: Inventory = {
+  const onFinish = (values: InventoryForm) => {
+    const request: InventoryRequest = {
       ...values,
       restockDate: values.restockDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
       InventoryService.updateInventory(
-        +inventoryId,
-        homeId,
-        formValue,
+        +inventoryId!,
+        homeId!,
+        request,
       ).subscribe({
-        next: (res) => {
+        next: () => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
         },
-        error: (err) => {
+        error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -132,11 +156,11 @@ const InventoryDetail: React.FC = () => {
         },
       });
     } else {
-      InventoryService.createInventory(formValue, homeId).subscribe({
-        next: (res) => {
+      InventoryService.createInventory(request, homeId!).subscribe({
+        next: () => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
         },
-        error: (err) => {
+        error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -155,7 +179,7 @@ const InventoryDetail: React.FC = () => {
   };
 
   const onReset = () => {
-    if (isEdit) {
+    if (isEdit && inventoryData) {
       form.setFieldsValue({
         name: inventoryData.name,
         brand: inventoryData.brand,
@@ -170,11 +194,11 @@ const InventoryDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    InventoryService.deleteInventory(+inventoryId, homeId).subscribe({
-      next: (res) => {
+    InventoryService.deleteInventory(+inventoryId!, homeId!).subscribe({
+      next: () => {
         onSuccess('ลบข้อมูลสำเร็จ');
       },
-      error: (err) => {
+      error: (err: AxiosError<unknown>) => {
         const status = err.response?.status;
         if (status === 404) {
           onError('ไม่พบข้อมูล');

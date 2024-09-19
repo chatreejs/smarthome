@@ -32,9 +32,9 @@ const { Header, Content, Sider } = AntLayout;
 const Layout: React.FC = () => {
   const navigate = useNavigate();
   const { width } = useWindowResize();
-  const [isHasHome, setIsHasHome] = useBrowserStorage(
+  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean | undefined>(
     'sh-hashome',
-    null,
+    undefined,
     'local',
   );
   const [collapsed, setCollapsed] = useState(false);
@@ -49,13 +49,13 @@ const Layout: React.FC = () => {
       setIsHasHome(false);
       navigate('/initial-setup');
     }
-  }, [isHasHome]);
+  }, [navigate, isHasHome, setIsHasHome]);
 
   useEffect(() => {
     if (width >= 992 && showOverlay) {
       setShowOverlay(false);
     }
-  }, [width]);
+  }, [width, showOverlay]);
 
   const onOverlayClick = () => {
     setShowOverlay(false);

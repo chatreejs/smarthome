@@ -1,6 +1,7 @@
 import { Observable, from, map } from 'rxjs';
 
 import { axiosInstance } from '@config';
+import { WarrantyRequest } from '@interfaces';
 import { Warranty } from '@models';
 
 export class WarrantyService {
@@ -18,27 +19,30 @@ export class WarrantyService {
     );
   }
 
-  static createWarranty(warranty: Warranty): Observable<any> {
-    return from(axiosInstance.post<any>(this.apiEndpoint, warranty)).pipe(
+  static createWarranty(warranty: WarrantyRequest): Observable<void> {
+    return from(axiosInstance.post<void>(this.apiEndpoint, warranty)).pipe(
       map((response) => response.data),
     );
   }
 
-  static updateWarranty(id: number, warranty: Warranty): Observable<any> {
+  static updateWarranty(
+    id: number,
+    warranty: WarrantyRequest,
+  ): Observable<void> {
     return from(
-      axiosInstance.put<any>(`${this.apiEndpoint}/${id}`, warranty),
+      axiosInstance.put<void>(`${this.apiEndpoint}/${id}`, warranty),
     ).pipe(map((response) => response.data));
   }
 
-  static deleteWarranty(id: number): Observable<any> {
-    return from(axiosInstance.delete<any>(`${this.apiEndpoint}/${id}`)).pipe(
+  static deleteWarranty(id: number): Observable<void> {
+    return from(axiosInstance.delete<void>(`${this.apiEndpoint}/${id}`)).pipe(
       map((response) => response.data),
     );
   }
 
-  static deleteMultipleWarranties(ids: number[]): Observable<any> {
+  static deleteMultipleWarranties(ids: number[]): Observable<void> {
     return from(
-      axiosInstance.delete<any>(this.apiEndpoint, {
+      axiosInstance.delete<void>(this.apiEndpoint, {
         data: {
           ids: ids.join(','),
         },

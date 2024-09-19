@@ -13,7 +13,7 @@ import {
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Warranty, WarrantyStatus } from '@models';
@@ -81,30 +81,33 @@ const WarrantyTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const loadData = () => {
+  const onError = useCallback(
+    (errorMessage: string) => {
+      notification.error({
+        message: 'เกิดข้อผิดพลาด',
+        description: errorMessage,
+      });
+    },
+    [notification],
+  );
+
+  const fetchWarrantyData = useCallback(() => {
     setLoading(true);
     WarrantyService.getAllWarranties().subscribe({
       next: (warranties) => {
         setWarrantiesData(warranties);
       },
-      error: (err) => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      error: () => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
       complete: () => setLoading(false),
     });
-  };
-
-  const onError = (errorMessage: string) => {
-    notification.error({
-      message: 'เกิดข้อผิดพลาด',
-      description: errorMessage,
-    });
-  };
+  }, [onError]);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    fetchWarrantyData();
+  }, [fetchWarrantyData]);
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: Warranty[]) => {
+    onChange: (_: React.Key[], selectedRows: Warranty[]) => {
       setSelectedWarranties(selectedRows);
     },
 
@@ -117,16 +120,15 @@ const WarrantyTable: React.FC = () => {
     navigate('new');
   };
 
-  const onConfirmDelete = (e: any) => {
+  const onConfirmDelete = () => {
     WarrantyService.deleteMultipleWarranties(
       selectedWarranties.map((warranty) => warranty.id),
     ).subscribe({
       next: () => {
         setSelectedWarranties([]);
-        loadData();
+        fetchWarrantyData();
       },
-      error: (err) => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
-      complete: () => {},
+      error: () => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
     });
   };
 

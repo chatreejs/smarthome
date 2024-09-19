@@ -13,7 +13,7 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  (config: InternalAxiosRequestConfig<AxiosRequestConfig>): any => {
+  (config: InternalAxiosRequestConfig<AxiosRequestConfig>) => {
     return new Promise((resolve) => {
       if (config.headers && !config.headers.Authorization) {
         const token = localStorage.getItem('sh-token');

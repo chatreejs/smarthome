@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useBrowserStorage } from '@hooks';
-import { HomeRequest } from '@models';
+import { HomeRequest } from '@interfaces';
 import { HomeService } from '@services';
+import { AxiosError } from 'axios';
 import HomeConfigForm from './components/HomeConfigForm';
 import HomeSummary from './components/HomeSummary';
 
@@ -27,40 +28,53 @@ const StepWrapper = styled.div`
   border-radius: 16px;
 `;
 
+interface HomeSetupForm {
+  name: string;
+  address: string;
+}
+
 const HomeSetup: React.FC = () => {
   const { tokenData } = useContext<IAuthContext>(AuthContext);
   const { token } = theme.useToken();
-  const [isHasHome, setIsHasHome] = useBrowserStorage(
+  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean | undefined>(
     'sh-hashome',
-    null,
+    undefined,
     'local',
   );
-  const [homeId, setHomeId] = useBrowserStorage(
+  const [homeId, setHomeId] = useBrowserStorage<number | undefined>(
     'sh-current-homeid',
-    null,
+    undefined,
     'local',
   );
   const navigate = useNavigate();
-  const [homeConfigForm] = Form.useForm();
+  const [homeConfigForm] = Form.useForm<HomeSetupForm>();
   const [current, setCurrent] = useState(0);
   const [homeData, setHomeData] = useState<HomeRequest>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (isHasHome) {
+    if (isHasHome && homeId) {
       navigate('/');
     } else {
       setIsHasHome(false);
     }
-  }, [isHasHome]);
+  }, [isHasHome, homeId, navigate, setIsHasHome]);
 
   const next = async () => {
     if (current === 0) {
       try {
         await homeConfigForm.validateFields();
-        setHomeData(homeConfigForm.getFieldsValue());
+        const homeData = homeConfigForm.getFieldsValue();
+        setHomeData({
+          ...homeData,
+          latitude: 0,
+          longitude: 0,
+          homePermission: 'food',
+        });
         setCurrent(current + 1);
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     } else {
       setCurrent(current + 1);
     }
@@ -72,14 +86,15 @@ const HomeSetup: React.FC = () => {
 
   const saveHome = () => {
     setLoading(true);
-    HomeService.createHome(homeData).subscribe({
+    HomeService.createHome(homeData!).subscribe({
       next: (home) => {
         setLoading(false);
         setHomeId(home.id);
         setIsHasHome(true);
       },
-      error: (error) => {
+      error: (err: AxiosError<unknown>) => {
         setLoading(false);
+        console.error(err);
       },
     });
   };
@@ -95,7 +110,7 @@ const HomeSetup: React.FC = () => {
     },
     {
       title: 'สิ้นสุด',
-      content: <HomeSummary homeData={homeData} />,
+      content: <HomeSummary homeData={homeData!} />,
     },
   ];
 
@@ -123,7 +138,8 @@ const HomeSetup: React.FC = () => {
             <div style={contentStyle}>{steps[current].content}</div>
             <div style={{ marginTop: 24 }}>
               {current < steps.length - 1 && (
-                <Button type="primary" onClick={() => next()}>
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                <Button type="primary" onClick={async () => await next()}>
                   ถัดไป
                 </Button>
               )}
@@ -137,7 +153,7 @@ const HomeSetup: React.FC = () => {
                 </Button>
               )}
               {current > 0 && (
-                <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                <Button style={{ margin: '0 8px' }} onClick={prev}>
                   ย้อนกลับ
                 </Button>
               )}

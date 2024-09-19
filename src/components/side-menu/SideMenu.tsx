@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -37,8 +37,6 @@ const SideMenu: React.FC = () => {
   const onClickMenu = (path: string) => {
     navigate(`/${path}`);
   };
-
-  useEffect(() => {});
 
   return (
     <Menu

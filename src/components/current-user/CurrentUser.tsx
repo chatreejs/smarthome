@@ -38,25 +38,29 @@ const DropdownMenuItemText = styled.span`
 
 const CurrentUser: React.FC = () => {
   const { tokenData, logOut } = useContext<IAuthContext>(AuthContext);
-  const [isHasHome, setIsHasHome] = useBrowserStorage(
+  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean | undefined>(
     'sh-hashome',
-    null,
+    undefined,
     'local',
   );
-  const [homeId, setHomeId] = useBrowserStorage(
+  const [homeId, setHomeId] = useBrowserStorage<number | undefined>(
     'sh-current-homeid',
-    null,
+    undefined,
     'local',
   );
   const navigate = useNavigate();
   const [currentUserName, setCurrentUserName] = useState<string>('');
   const [monogramColor, setMonogramColor] = useState<string>('');
   const [monogramTextColor, setMonogramTextColor] = useState<string>('');
-  const [notificationCount, setNotificationCount] = useState<number>(2);
+  const [notificationCount, setNotificationCount] = useState<number>(0);
 
   useEffect(() => {
-    const firstName = tokenData?.given_name;
-    const lastName = tokenData?.family_name;
+    setNotificationCount(3);
+  }, []);
+
+  useEffect(() => {
+    const firstName = tokenData?.given_name as string;
+    const lastName = tokenData?.family_name as string;
 
     if (firstName && lastName) {
       // Capitalize the first letter of the first name and last name.
@@ -71,7 +75,7 @@ const CurrentUser: React.FC = () => {
       setMonogramColor(monogramColor);
       setMonogramTextColor(monogramTextColor);
     }
-  });
+  }, [tokenData]);
 
   const generateMonogramText = (name: string) => {
     const nameSplit = name.split(' ');
@@ -137,7 +141,9 @@ const CurrentUser: React.FC = () => {
   const onLogout = () => {
     setHomeId(undefined);
     setIsHasHome(undefined);
-    logOut();
+    if (!homeId && !isHasHome) {
+      logOut();
+    }
   };
 
   return (

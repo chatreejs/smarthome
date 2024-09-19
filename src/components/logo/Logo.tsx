@@ -28,7 +28,7 @@ const EnvBadge = styled.div`
 `;
 
 const Logo: React.FC<LogoProps> = ({ systemName }) => {
-  const env = process.env.VITE_APP_ENV;
+  const env = process.env.VITE_APP_ENV ?? 'local';
   const isProduction = env === 'production';
 
   const getEnvironmentText = (env: string) => {

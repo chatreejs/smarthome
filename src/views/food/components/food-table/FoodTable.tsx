@@ -15,7 +15,7 @@ import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useBrowserStorage } from '@hooks';
@@ -86,20 +86,30 @@ const FoodTable: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  const onError = useCallback(
+    (errorMessage: string) => {
+      notification.error({
+        message: 'เกิดข้อผิดพลาด',
+        description: errorMessage,
+      });
+    },
+    [notification],
+  );
 
-  const loadData = () => {
+  const fetchFoodData = useCallback(() => {
     setLoading(true);
-    FoodService.getAllFoods(homeId).subscribe({
+    FoodService.getAllFoods(homeId!).subscribe({
       next: (res) => {
         setFoodsData(res);
       },
-      error: (err) => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      error: () => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
       complete: () => setLoading(false),
     });
-  };
+  }, [homeId, onError]);
+
+  useEffect(() => {
+    fetchFoodData();
+  }, [fetchFoodData]);
 
   const onSuccess = (successMessage: string) => {
     notification.success({
@@ -108,15 +118,8 @@ const FoodTable: React.FC = () => {
     });
   };
 
-  const onError = (errorMessage: string) => {
-    notification.error({
-      message: 'เกิดข้อผิดพลาด',
-      description: errorMessage,
-    });
-  };
-
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: Food[]) => {
+    onChange: (_: React.Key[], selectedRows: Food[]) => {
       setSelectedFoods(selectedRows);
     },
 
@@ -129,18 +132,17 @@ const FoodTable: React.FC = () => {
     navigate('new');
   };
 
-  const onConfirmDelete = (e: any) => {
+  const onConfirmDelete = () => {
     FoodService.deleteMultipleFoods(
       selectedFoods.map((food) => food.id),
-      homeId,
+      homeId!,
     ).subscribe({
       next: () => {
         setSelectedFoods([]);
-        loadData();
+        fetchFoodData();
         onSuccess('ลบข้อมูลสำเร็จ');
       },
-      error: (err) => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
-      complete: () => {},
+      error: () => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
     });
   };
 

@@ -1,7 +1,7 @@
 import { Flex, Typography } from 'antd';
 import React from 'react';
 
-import { HomeRequest } from '@models';
+import { HomeRequest } from '@interfaces';
 
 const { Title, Text } = Typography;
 

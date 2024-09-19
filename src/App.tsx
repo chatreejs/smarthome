@@ -1,5 +1,5 @@
 import { App as AntApp, ConfigProvider } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce';
 import Router from './config/routes';
 
@@ -7,60 +7,60 @@ import { SplashSpinner } from '@components';
 import { useBrowserStorage } from '@hooks';
 import { AccountRequest } from '@models';
 import { AccountService, HomeService } from '@services';
+import { AxiosError } from 'axios';
 
 const App: React.FC = () => {
-  const { token, tokenData, logIn, error } =
-    useContext<IAuthContext>(AuthContext);
-  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean>(
+  const { token, tokenData } = useContext<IAuthContext>(AuthContext);
+  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean | undefined>(
     'sh-hashome',
-    null,
+    undefined,
     'local',
   );
-  const [homeId, setHomeId] = useBrowserStorage<number>(
+  const [homeId, setHomeId] = useBrowserStorage<number | undefined>(
     'sh-current-homeid',
-    null,
+    undefined,
     'local',
   );
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (error) {
-      logIn();
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (!token) return;
+  const fetchUserInfo = useCallback(() => {
+    if (!token && !tokenData) return;
     AccountService.getUserInfo().subscribe({
       next: (account) => {
         setIsHasHome(account.hasHome);
         setLoading(false);
-        if (account.hasHome) {
+        if (account.hasHome || isHasHome) {
           HomeService.getAllHome().subscribe({
             next: (homes) => {
               if (!homeId && homes.length > 0) {
                 setHomeId(homes[0].id);
               }
             },
-            error: (error) => {},
+            error: () => {
+              console.error('Error when get all home');
+            },
           });
         }
       },
-      error: (error) => {
-        if (error.response.status === 404) {
+      error: (error: AxiosError<unknown>) => {
+        if (error.response?.status === 404) {
           // Create new account from token data
           const accountRequest: AccountRequest = {
-            username: tokenData.preferred_username,
-            firstName: tokenData.given_name,
-            lastName: tokenData.family_name,
-            email: tokenData.email,
+            username: tokenData!.preferred_username as string,
+            firstName: tokenData!.given_name as string,
+            lastName: tokenData!.family_name as string,
+            email: tokenData!.email as string,
           };
-          AccountService.createAccount(accountRequest).subscribe((res) => {}); // No need to handle response
+          AccountService.createAccount(accountRequest).subscribe(); // No need to handle response
         }
         setLoading(false);
       },
     });
-  }, [token, tokenData]);
+  }, [token, tokenData, isHasHome, homeId, setHomeId, setIsHasHome]);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [fetchUserInfo]);
 
   // Show a loading screen while we are checking the authentication status.
   if (loading || !tokenData) {

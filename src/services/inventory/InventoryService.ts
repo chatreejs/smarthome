@@ -1,6 +1,7 @@
 import { Observable, from, map } from 'rxjs';
 
 import { axiosInstance } from '@config';
+import { InventoryRequest } from '@interfaces';
 import { Inventory } from '@models';
 
 export class InventoryService {
@@ -23,46 +24,46 @@ export class InventoryService {
   }
 
   static createInventory(
-    inventory: Inventory,
+    inventory: InventoryRequest,
     homeId: number,
-  ): Observable<any> {
+  ): Observable<void> {
     const params = new URLSearchParams();
     params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.post<any>(this.apiEndpoint, inventory, { params }),
+      axiosInstance.post<void>(this.apiEndpoint, inventory, { params }),
     ).pipe(map((response) => response.data));
   }
 
   static updateInventory(
     id: number,
     homeId: number,
-    inventory: Inventory,
-  ): Observable<any> {
+    inventory: InventoryRequest,
+  ): Observable<void> {
     const params = new URLSearchParams();
     params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.put<any>(`${this.apiEndpoint}/${id}`, inventory, {
+      axiosInstance.put<void>(`${this.apiEndpoint}/${id}`, inventory, {
         params,
       }),
     ).pipe(map((response) => response.data));
   }
 
-  static deleteInventory(id: number, homeId: number): Observable<any> {
+  static deleteInventory(id: number, homeId: number): Observable<void> {
     const params = new URLSearchParams();
     params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.delete<any>(`${this.apiEndpoint}/${id}`, { params }),
+      axiosInstance.delete<void>(`${this.apiEndpoint}/${id}`, { params }),
     ).pipe(map((response) => response.data));
   }
 
   static deleteMultipleInventories(
     ids: number[],
     homeId: number,
-  ): Observable<any> {
+  ): Observable<void> {
     const params = new URLSearchParams();
     params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.delete<any>(this.apiEndpoint, {
+      axiosInstance.delete<void>(this.apiEndpoint, {
         data: {
           ids: ids.join(','),
         },

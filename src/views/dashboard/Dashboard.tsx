@@ -9,8 +9,8 @@ const Dashboard: React.FC = () => {
   const [fullName, setFullName] = useState<string>('');
 
   useEffect(() => {
-    const firstName = tokenData?.given_name;
-    const lastName = tokenData?.family_name;
+    const firstName = tokenData?.given_name as string;
+    const lastName = tokenData?.family_name as string;
 
     if (firstName && lastName) {
       // Capitalize the first letter of the first name and last name.

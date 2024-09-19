@@ -36,10 +36,7 @@ const authConfig: TAuthConfig = {
   storageKeyPrefix: 'sh-',
 };
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-);
-root.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <AuthProvider authConfig={authConfig}>
     <BrowserRouter basename="/smarthome">
       <App />

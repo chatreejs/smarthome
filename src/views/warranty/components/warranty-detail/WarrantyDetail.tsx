@@ -7,12 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { App, Button, Card, Form, Input, Skeleton, Typography } from 'antd';
 import locale from 'antd/lib/date-picker/locale/th_TH';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
+import { WarrantyRequest } from '@interfaces';
 import { Warranty } from '@models';
 import { WarrantyService } from '@services';
+import { AxiosError } from 'axios';
 import './WarrantyDetail.css';
 
 const { Title } = Typography;
@@ -33,15 +35,42 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
+interface WarrantyForm {
+  brand: string;
+  productName: string;
+  productNumber: string;
+  model: string;
+  serialNumber: string;
+  purchaseDate: dayjs.Dayjs;
+  warrantyDate: dayjs.Dayjs;
+}
+
 const WarrantyDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { warrantyId } = useParams();
-  const [warrantyData, setWarrantyData] = useState<Warranty>(null);
+  const [warrantyData, setWarrantyData] = useState<Warranty>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<WarrantyForm>();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const onSuccess = (successMessage: string) => {
+    notification.success({
+      message: 'สำเร็จ',
+      description: successMessage,
+    });
+  };
+
+  const onError = useCallback(
+    (errorMessage: string) => {
+      notification.error({
+        message: 'เกิดข้อผิดพลาด',
+        description: errorMessage,
+      });
+    },
+    [notification],
+  );
+
+  const fetchWarrantyData = useCallback(() => {
     if (warrantyId) {
       setIsEdit(true);
       WarrantyService.getWarrantyById(+warrantyId).subscribe({
@@ -57,7 +86,7 @@ const WarrantyDetail: React.FC = () => {
             warrantyDate: dayjs(warranty?.warrantyDate),
           });
         },
-        error: (err) => {
+        error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
           if (status === 404) {
             onError('ไม่พบข้อมูล');
@@ -74,35 +103,25 @@ const WarrantyDetail: React.FC = () => {
         },
       });
     }
-  }, [warrantyId]);
+  }, [warrantyId, form, navigate, onError]);
 
-  const onSuccess = (successMessage: string) => {
-    notification.success({
-      message: 'สำเร็จ',
-      description: successMessage,
-    });
-  };
+  useEffect(() => {
+    fetchWarrantyData();
+  }, [fetchWarrantyData]);
 
-  const onError = (errorMessage: string) => {
-    notification.error({
-      message: 'เกิดข้อผิดพลาด',
-      description: errorMessage,
-    });
-  };
-
-  const onFinish = (values: any) => {
-    const formValue: Warranty = {
+  const onFinish = (values: WarrantyForm) => {
+    const request: WarrantyRequest = {
       ...values,
       productNumber: values.productNumber ?? '-',
       purchaseDate: values.purchaseDate.format('YYYY-MM-DD'),
       warrantyDate: values.warrantyDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      WarrantyService.updateWarranty(+warrantyId, formValue).subscribe({
-        next: (res) => {
+      WarrantyService.updateWarranty(+warrantyId!, request).subscribe({
+        next: () => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
         },
-        error: (err) => {
+        error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -118,11 +137,11 @@ const WarrantyDetail: React.FC = () => {
         },
       });
     } else {
-      WarrantyService.createWarranty(formValue).subscribe({
-        next: (res) => {
+      WarrantyService.createWarranty(request).subscribe({
+        next: () => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
         },
-        error: (err) => {
+        error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
@@ -141,7 +160,7 @@ const WarrantyDetail: React.FC = () => {
   };
 
   const onReset = () => {
-    if (isEdit) {
+    if (isEdit && warrantyData) {
       form.setFieldsValue({
         brand: warrantyData.brand,
         productName: warrantyData.productName,
@@ -157,11 +176,11 @@ const WarrantyDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    WarrantyService.deleteWarranty(+warrantyId).subscribe({
-      next: (res) => {
+    WarrantyService.deleteWarranty(+warrantyId!).subscribe({
+      next: () => {
         onSuccess('ลบข้อมูลสำเร็จ');
       },
-      error: (err) => {
+      error: (err: AxiosError<unknown>) => {
         const status = err.response?.status;
         if (status === 500) {
           onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');

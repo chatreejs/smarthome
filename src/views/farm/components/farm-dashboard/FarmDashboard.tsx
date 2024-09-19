@@ -6,7 +6,7 @@ import {
   faShower,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Client } from '@stomp/stompjs';
+import { Client, IMessage } from '@stomp/stompjs';
 import {
   Card,
   Col,
@@ -55,25 +55,29 @@ const getDataPrefix = (prior: number, current: number) => {
 };
 
 const FarmDashboard: React.FC = () => {
-  const [weatherSensorData, setWeatherSensorData] =
-    useState<WeatherSensor>(null);
+  const [weatherSensorData, setWeatherSensorData] = useState<WeatherSensor>();
   const [weatherSensorPriorData, setWeatherSensorPriorData] =
-    useState<WeatherSensor>(null);
-  const [airQualityData, setAirQualityData] = useState<AirQuality>(null);
-  const [airQualityPriorData, setAirQualityPriorData] =
-    useState<AirQuality>(null);
+    useState<WeatherSensor>();
+  const [airQualityData, setAirQualityData] = useState<AirQuality>();
+  const [airQualityPriorData, setAirQualityPriorData] = useState<AirQuality>();
 
-  const handleWeatherSensorMessage = (message) => {
-    const body: WeatherSensor = JSON.parse(message.body);
-    setWeatherSensorPriorData(weatherSensorData);
-    setWeatherSensorData(body);
-  };
+  const handleWeatherSensorMessage = useCallback(
+    (message: IMessage) => {
+      const body: WeatherSensor = JSON.parse(message.body) as WeatherSensor;
+      setWeatherSensorPriorData(weatherSensorData);
+      setWeatherSensorData(body);
+    },
+    [weatherSensorData],
+  );
 
-  const handleAirQualityMessage = (message) => {
-    const body: AirQuality = JSON.parse(message.body);
-    setAirQualityPriorData(airQualityData);
-    setAirQualityData(body);
-  };
+  const handleAirQualityMessage = useCallback(
+    (message: IMessage) => {
+      const body: AirQuality = JSON.parse(message.body) as AirQuality;
+      setAirQualityPriorData(airQualityData);
+      setAirQualityData(body);
+    },
+    [airQualityData],
+  );
 
   const setupStompClient = useCallback(() => {
     const weatherStompClient = new Client({
@@ -95,9 +99,9 @@ const FarmDashboard: React.FC = () => {
     weatherStompClient.activate();
 
     return () => {
-      weatherStompClient.deactivate();
+      void weatherStompClient.deactivate();
     };
-  }, [weatherSensorData, airQualityData]);
+  }, [handleWeatherSensorMessage, handleAirQualityMessage]);
 
   useEffect(() => {
     const stompClient = setupStompClient();
@@ -115,8 +119,8 @@ const FarmDashboard: React.FC = () => {
               value={weatherSensorData?.temperature}
               precision={2}
               prefix={getDataPrefix(
-                weatherSensorPriorData?.temperature,
-                weatherSensorData?.temperature,
+                weatherSensorPriorData?.temperature ?? 0,
+                weatherSensorData?.temperature ?? 0,
               )}
               suffix="°C"
               loading={weatherSensorData?.temperature == null}
@@ -130,8 +134,8 @@ const FarmDashboard: React.FC = () => {
               value={weatherSensorData?.humidity}
               precision={2}
               prefix={getDataPrefix(
-                weatherSensorPriorData?.humidity,
-                weatherSensorData?.humidity,
+                weatherSensorPriorData?.humidity ?? 0,
+                weatherSensorData?.humidity ?? 0,
               )}
               suffix="%"
               loading={weatherSensorData?.humidity == null}
@@ -145,8 +149,8 @@ const FarmDashboard: React.FC = () => {
               value={weatherSensorData?.pressure}
               precision={2}
               prefix={getDataPrefix(
-                weatherSensorPriorData?.pressure,
-                weatherSensorData?.pressure,
+                weatherSensorPriorData?.pressure ?? 0,
+                weatherSensorData?.pressure ?? 0,
               )}
               suffix="hPa"
               loading={weatherSensorData?.pressure == null}
@@ -159,8 +163,8 @@ const FarmDashboard: React.FC = () => {
               title="Air Quality (PM2.5)"
               value={airQualityData?.pm25}
               prefix={getDataPrefix(
-                airQualityPriorData?.pm25,
-                airQualityData?.pm25,
+                airQualityPriorData?.pm25 ?? 0,
+                airQualityData?.pm25 ?? 0,
               )}
               suffix="μg/m³"
               loading={airQualityData?.pm25 == null}
@@ -181,9 +185,9 @@ const FarmDashboard: React.FC = () => {
               />
             }
             actions={[
-              <FontAwesomeIcon icon={faShower} />,
-              <FontAwesomeIcon icon={faBug} />,
-              <Dropdown menu={{ items }} trigger={['click']}>
+              <FontAwesomeIcon icon={faShower} key="watering" />,
+              <FontAwesomeIcon icon={faBug} key="disease" />,
+              <Dropdown menu={{ items }} trigger={['click']} key="menu-list">
                 <a onClick={(e) => e.preventDefault()}>
                   <FontAwesomeIcon icon={faEllipsis} />
                 </a>
@@ -210,9 +214,9 @@ const FarmDashboard: React.FC = () => {
               />
             }
             actions={[
-              <FontAwesomeIcon icon={faShower} />,
-              <FontAwesomeIcon icon={faBug} />,
-              <Dropdown menu={{ items }} trigger={['click']}>
+              <FontAwesomeIcon icon={faShower} key="watering" />,
+              <FontAwesomeIcon icon={faBug} key="disease" />,
+              <Dropdown menu={{ items }} trigger={['click']} key="menu-list">
                 <a onClick={(e) => e.preventDefault()}>
                   <FontAwesomeIcon icon={faEllipsis} />
                 </a>
@@ -239,9 +243,9 @@ const FarmDashboard: React.FC = () => {
               />
             }
             actions={[
-              <FontAwesomeIcon icon={faShower} />,
-              <FontAwesomeIcon icon={faBug} />,
-              <Dropdown menu={{ items }} trigger={['click']}>
+              <FontAwesomeIcon icon={faShower} key="watering" />,
+              <FontAwesomeIcon icon={faBug} key="disease" />,
+              <Dropdown menu={{ items }} trigger={['click']} key="menu-list">
                 <a onClick={(e) => e.preventDefault()}>
                   <FontAwesomeIcon icon={faEllipsis} />
                 </a>
@@ -268,9 +272,9 @@ const FarmDashboard: React.FC = () => {
               />
             }
             actions={[
-              <FontAwesomeIcon icon={faShower} />,
-              <FontAwesomeIcon icon={faBug} />,
-              <Dropdown menu={{ items }} trigger={['click']}>
+              <FontAwesomeIcon icon={faShower} key="watering" />,
+              <FontAwesomeIcon icon={faBug} key="disease" />,
+              <Dropdown menu={{ items }} trigger={['click']} key="menu-list">
                 <a onClick={(e) => e.preventDefault()}>
                   <FontAwesomeIcon icon={faEllipsis} />
                 </a>
