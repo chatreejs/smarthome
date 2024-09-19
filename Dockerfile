@@ -11,7 +11,7 @@ RUN yarn build:$BUILD_CONFIGURATION
 
 FROM nginxinc/nginx-unprivileged:1.23-alpine
 
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY comfig/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/build/ /usr/share/nginx/html
 
 EXPOSE 80
