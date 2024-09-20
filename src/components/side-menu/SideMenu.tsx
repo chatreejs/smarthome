@@ -6,9 +6,9 @@ import {
   faFaucet,
   faFileInvoiceDollar,
   faHouse,
+  faLeaf,
   faSuitcaseMedical,
   faUtensils,
-  faWheatAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
@@ -95,7 +95,7 @@ const SideMenu: React.FC = () => {
       <Menu.Divider />
       <Menu.ItemGroup title="ระบบ" />
       <Menu.Item key="smartfarm" onClick={() => onClickMenu('smartfarm')}>
-        <FontAwesomeIcon icon={faWheatAlt} className="fa-fw" />
+        <FontAwesomeIcon icon={faLeaf} className="fa-fw" />
         <MenuText>ฟาร์มอัจฉริยะ</MenuText>
       </Menu.Item>
     </Menu>

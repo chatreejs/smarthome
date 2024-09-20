@@ -15,16 +15,17 @@ import {
   Typography,
 } from 'antd';
 import locale from 'antd/lib/date-picker/locale/th_TH';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
-import { useBrowserStorage } from '@hooks';
+import { RootState } from '@config';
 import { FoodRequest } from '@interfaces';
 import { Food } from '@models';
 import { FoodService } from '@services';
-import { AxiosError } from 'axios';
 import './FoodDetail.css';
 
 const { Title, Text } = Typography;
@@ -61,7 +62,7 @@ interface FoodForm {
 const FoodDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { foodId } = useParams();
-  const [homeId] = useBrowserStorage('sh-current-homeid', null, 'local');
+  const homeId = useSelector((state: RootState) => state.home.id);
   const [foodData, setFoodData] = useState<Food>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm<FoodForm>();
@@ -87,7 +88,7 @@ const FoodDetail: React.FC = () => {
   const fetchFoodData = useCallback(() => {
     if (foodId) {
       setIsEdit(true);
-      FoodService.getFoodById(+foodId, homeId!).subscribe({
+      FoodService.getFoodById(+foodId, homeId).subscribe({
         next: (food) => {
           setFoodData(food);
           form.setFieldsValue({
@@ -129,7 +130,7 @@ const FoodDetail: React.FC = () => {
       expiryDate: values.expiryDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      FoodService.updateFood(+foodId!, request, homeId!).subscribe({
+      FoodService.updateFood(+foodId!, request, homeId).subscribe({
         next: () => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
         },
@@ -149,7 +150,7 @@ const FoodDetail: React.FC = () => {
         },
       });
     } else {
-      FoodService.createFood(request, homeId!).subscribe({
+      FoodService.createFood(request, homeId).subscribe({
         next: () => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
         },
@@ -187,7 +188,7 @@ const FoodDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    FoodService.deleteFood(+foodId!, homeId!).subscribe({
+    FoodService.deleteFood(+foodId!, homeId).subscribe({
       next: () => {
         onSuccess('ลบข้อมูลสำเร็จ');
       },

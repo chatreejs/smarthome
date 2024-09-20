@@ -18,14 +18,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import locale from 'antd/lib/date-picker/locale/th_TH';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 import { ThaiDatePicker } from '@components';
-import { useBrowserStorage } from '@hooks';
+import { RootState } from '@config';
 import { InventoryRequest } from '@interfaces';
 import { Inventory } from '@models';
 import { InventoryService } from '@services';
-import { AxiosError } from 'axios';
 
 const { Title, Text } = Typography;
 
@@ -61,11 +62,7 @@ interface InventoryForm {
 const InventoryDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { inventoryId } = useParams();
-  const [homeId] = useBrowserStorage<number | undefined>(
-    'sh-current-homeid',
-    undefined,
-    'local',
-  );
+  const homeId = useSelector((state: RootState) => state.home.id);
   const [inventoryData, setInventoryData] = useState<Inventory>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm<InventoryForm>();
@@ -91,7 +88,7 @@ const InventoryDetail: React.FC = () => {
   const fetchInventoryData = useCallback(() => {
     if (inventoryId) {
       setIsEdit(true);
-      InventoryService.getInventoryById(+inventoryId, homeId!).subscribe({
+      InventoryService.getInventoryById(+inventoryId, homeId).subscribe({
         next: (inventory) => {
           setInventoryData(inventory);
           form.setFieldsValue({
@@ -134,7 +131,7 @@ const InventoryDetail: React.FC = () => {
     if (isEdit) {
       InventoryService.updateInventory(
         +inventoryId!,
-        homeId!,
+        homeId,
         request,
       ).subscribe({
         next: () => {
@@ -156,7 +153,7 @@ const InventoryDetail: React.FC = () => {
         },
       });
     } else {
-      InventoryService.createInventory(request, homeId!).subscribe({
+      InventoryService.createInventory(request, homeId).subscribe({
         next: () => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
         },
@@ -194,7 +191,7 @@ const InventoryDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    InventoryService.deleteInventory(+inventoryId!, homeId!).subscribe({
+    InventoryService.deleteInventory(+inventoryId!, homeId).subscribe({
       next: () => {
         onSuccess('ลบข้อมูลสำเร็จ');
       },

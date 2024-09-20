@@ -16,9 +16,10 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/th';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useBrowserStorage } from '@hooks';
+import { RootState } from '@config';
 import { Food, FoodStatus } from '@models';
 import { FoodService } from '@services';
 import './FoodTable.css';
@@ -80,7 +81,7 @@ const columns: ColumnsType<Food> = [
 
 const FoodTable: React.FC = () => {
   const { notification } = App.useApp();
-  const [homeId] = useBrowserStorage('sh-current-homeid', null, 'local');
+  const homeId = useSelector((state: RootState) => state.home.id);
   const [foodsData, setFoodsData] = useState<Food[]>([]);
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(false);
@@ -98,7 +99,7 @@ const FoodTable: React.FC = () => {
 
   const fetchFoodData = useCallback(() => {
     setLoading(true);
-    FoodService.getAllFoods(homeId!).subscribe({
+    FoodService.getAllFoods(homeId).subscribe({
       next: (res) => {
         setFoodsData(res);
       },
@@ -135,7 +136,7 @@ const FoodTable: React.FC = () => {
   const onConfirmDelete = () => {
     FoodService.deleteMultipleFoods(
       selectedFoods.map((food) => food.id),
-      homeId!,
+      homeId,
     ).subscribe({
       next: () => {
         setSelectedFoods([]);

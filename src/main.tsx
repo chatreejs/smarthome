@@ -7,13 +7,15 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 import weekday from 'dayjs/plugin/weekday';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-
 import {
   AuthProvider,
   TAuthConfig,
   TRefreshTokenExpiredEvent,
 } from 'react-oauth2-code-pkce';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+
+import { store } from '@config';
 import App from './App';
 import './index.css';
 
@@ -39,7 +41,9 @@ const authConfig: TAuthConfig = {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <AuthProvider authConfig={authConfig}>
     <BrowserRouter basename="/smarthome">
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </AuthProvider>,
 );

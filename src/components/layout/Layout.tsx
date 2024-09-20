@@ -4,7 +4,9 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { CurrentUser, Footer, Logo, SideMenu } from '@components';
-import { useBrowserStorage, useWindowResize } from '@hooks';
+import { RootState } from '@config';
+import { useWindowResize } from '@hooks';
+import { useSelector } from 'react-redux';
 import './Layout.css';
 
 const ContentWrapper = styled.div`
@@ -32,11 +34,8 @@ const { Header, Content, Sider } = AntLayout;
 const Layout: React.FC = () => {
   const navigate = useNavigate();
   const { width } = useWindowResize();
-  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean | undefined>(
-    'sh-hashome',
-    undefined,
-    'local',
-  );
+  const isHasHome = useSelector((state: RootState) => state.account.isHasHome);
+  const homeName = useSelector((state: RootState) => state.home.name);
   const [collapsed, setCollapsed] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
@@ -46,10 +45,9 @@ const Layout: React.FC = () => {
 
   useEffect(() => {
     if (!isHasHome) {
-      setIsHasHome(false);
       navigate('/initial-setup');
     }
-  }, [navigate, isHasHome, setIsHasHome]);
+  }, [isHasHome, navigate]);
 
   useEffect(() => {
     if (width >= 992 && showOverlay) {
@@ -105,7 +103,7 @@ const Layout: React.FC = () => {
               }}
             >
               <HeaderWrapper>
-                <div>Some Menu</div>
+                <div>{homeName}</div>
                 <div
                   style={{
                     display: 'flex',

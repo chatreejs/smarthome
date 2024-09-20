@@ -9,8 +9,6 @@ import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useBrowserStorage } from '@hooks';
-
 const CurrentUserWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -38,16 +36,6 @@ const DropdownMenuItemText = styled.span`
 
 const CurrentUser: React.FC = () => {
   const { tokenData, logOut } = useContext<IAuthContext>(AuthContext);
-  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean | undefined>(
-    'sh-hashome',
-    undefined,
-    'local',
-  );
-  const [homeId, setHomeId] = useBrowserStorage<number | undefined>(
-    'sh-current-homeid',
-    undefined,
-    'local',
-  );
   const navigate = useNavigate();
   const [currentUserName, setCurrentUserName] = useState<string>('');
   const [monogramColor, setMonogramColor] = useState<string>('');
@@ -139,11 +127,7 @@ const CurrentUser: React.FC = () => {
   };
 
   const onLogout = () => {
-    setHomeId(undefined);
-    setIsHasHome(undefined);
-    if (!homeId && !isHasHome) {
-      logOut();
-    }
+    logOut();
   };
 
   return (

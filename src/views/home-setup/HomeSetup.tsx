@@ -4,10 +4,12 @@ import { AuthContext, IAuthContext } from 'react-oauth2-code-pkce';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { useBrowserStorage } from '@hooks';
+import { SplashSpinner } from '@components';
+import { RootState } from '@config';
 import { HomeRequest } from '@interfaces';
 import { HomeService } from '@services';
-import { AxiosError } from 'axios';
+import { setHomeId, setHomeName, setIsHasHome } from '@slices';
+import { useDispatch, useSelector } from 'react-redux';
 import HomeConfigForm from './components/HomeConfigForm';
 import HomeSummary from './components/HomeSummary';
 
@@ -34,18 +36,10 @@ interface HomeSetupForm {
 }
 
 const HomeSetup: React.FC = () => {
-  const { tokenData } = useContext<IAuthContext>(AuthContext);
+  const { tokenData, logOut } = useContext<IAuthContext>(AuthContext);
   const { token } = theme.useToken();
-  const [isHasHome, setIsHasHome] = useBrowserStorage<boolean | undefined>(
-    'sh-hashome',
-    undefined,
-    'local',
-  );
-  const [homeId, setHomeId] = useBrowserStorage<number | undefined>(
-    'sh-current-homeid',
-    undefined,
-    'local',
-  );
+  const isHasHome = useSelector((state: RootState) => state.account.isHasHome);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [homeConfigForm] = Form.useForm<HomeSetupForm>();
   const [current, setCurrent] = useState(0);
@@ -53,12 +47,10 @@ const HomeSetup: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (isHasHome && homeId) {
+    if (isHasHome) {
       navigate('/');
-    } else {
-      setIsHasHome(false);
     }
-  }, [isHasHome, homeId, navigate, setIsHasHome]);
+  }, [isHasHome, navigate]);
 
   const next = async () => {
     if (current === 0) {
@@ -89,12 +81,12 @@ const HomeSetup: React.FC = () => {
     HomeService.createHome(homeData!).subscribe({
       next: (home) => {
         setLoading(false);
-        setHomeId(home.id);
-        setIsHasHome(true);
+        dispatch(setIsHasHome(true));
+        dispatch(setHomeId(home.id));
+        dispatch(setHomeName(home.name));
       },
-      error: (err: AxiosError<unknown>) => {
+      error: () => {
         setLoading(false);
-        console.error(err);
       },
     });
   };
@@ -123,46 +115,54 @@ const HomeSetup: React.FC = () => {
     padding: '24px 16px 0 16px',
   };
 
-  return (
-    <HomeSetupWrapper>
-      <Flex vertical justify="center" style={{ height: '100%' }}>
-        <Title level={2} style={{ alignSelf: 'center', color: 'white' }}>
-          ยินดีต้อนรับคุณ {tokenData?.given_name} {tokenData?.family_name}
-        </Title>
-        <Text style={{ alignSelf: 'center', fontSize: 18, color: 'white' }}>
-          เพื่อเข้าใช้งานระบบ กรุณาตั้งค่าบ้านของคุณให้เรียบร้อย
-        </Text>
-        <Flex justify="center">
-          <StepWrapper>
-            <Steps current={current} items={items} />
-            <div style={contentStyle}>{steps[current].content}</div>
-            <div style={{ marginTop: 24 }}>
-              {current < steps.length - 1 && (
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                <Button type="primary" onClick={async () => await next()}>
-                  ถัดไป
-                </Button>
-              )}
-              {current === steps.length - 1 && (
-                <Button
-                  type="primary"
-                  loading={loading}
-                  onClick={() => saveHome()}
-                >
-                  บันทึก
-                </Button>
-              )}
-              {current > 0 && (
-                <Button style={{ margin: '0 8px' }} onClick={prev}>
-                  ย้อนกลับ
-                </Button>
-              )}
-            </div>
-          </StepWrapper>
+  if (!isHasHome) {
+    return (
+      <HomeSetupWrapper>
+        <Flex vertical justify="center" style={{ height: '100%' }}>
+          <Title level={2} style={{ alignSelf: 'center', color: 'white' }}>
+            ยินดีต้อนรับคุณ {tokenData?.given_name} {tokenData?.family_name}
+          </Title>
+          <Text style={{ alignSelf: 'center', fontSize: 18, color: 'white' }}>
+            เพื่อเข้าใช้งานระบบ กรุณาตั้งค่าบ้านของคุณให้เรียบร้อย
+          </Text>
+
+          <Flex justify="center">
+            <StepWrapper>
+              <Steps current={current} items={items} />
+              <div style={contentStyle}>{steps[current].content}</div>
+              <div style={{ marginTop: 24 }}>
+                {current < steps.length - 1 && (
+                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                  <Button type="primary" onClick={async () => await next()}>
+                    ถัดไป
+                  </Button>
+                )}
+                {current === steps.length - 1 && (
+                  <Button
+                    type="primary"
+                    loading={loading}
+                    onClick={() => saveHome()}
+                  >
+                    บันทึก
+                  </Button>
+                )}
+                {current > 0 && (
+                  <Button style={{ margin: '0 8px' }} onClick={prev}>
+                    ย้อนกลับ
+                  </Button>
+                )}
+              </div>
+            </StepWrapper>
+          </Flex>
+          <Flex justify="center" style={{ marginTop: '1rem' }}>
+            <Button onClick={() => logOut()}>ออกจากระบบ</Button>
+          </Flex>
         </Flex>
-      </Flex>
-    </HomeSetupWrapper>
-  );
+      </HomeSetupWrapper>
+    );
+  } else {
+    return <SplashSpinner />;
+  }
 };
 
 export default HomeSetup;

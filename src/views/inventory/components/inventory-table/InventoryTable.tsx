@@ -14,9 +14,10 @@ import {
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useBrowserStorage } from '@hooks';
+import { RootState } from '@config';
 import { Inventory, InventoryStatus } from '@models';
 import { InventoryService } from '@services';
 import './InventoryTable.css';
@@ -78,11 +79,7 @@ const columns: ColumnsType<Inventory> = [
 
 const InventoryTable: React.FC = () => {
   const { notification } = App.useApp();
-  const [homeId] = useBrowserStorage<number | undefined>(
-    'sh-current-homeid',
-    undefined,
-    'local',
-  );
+  const homeId = useSelector((state: RootState) => state.home.id);
   const [inventoriesData, setInventoriesData] = useState<Inventory[]>([]);
   const [selectedInventories, setSelectedInventories] = useState<Inventory[]>(
     [],
@@ -102,7 +99,7 @@ const InventoryTable: React.FC = () => {
 
   const fetchInventoryData = useCallback(() => {
     setLoading(true);
-    InventoryService.getAllInventories(homeId!).subscribe({
+    InventoryService.getAllInventories(homeId).subscribe({
       next: (response) => {
         setInventoriesData(response);
       },
@@ -132,7 +129,7 @@ const InventoryTable: React.FC = () => {
   const onConfirmDelete = () => {
     InventoryService.deleteMultipleInventories(
       selectedInventories.map((inventory) => inventory.id),
-      homeId!,
+      homeId,
     ).subscribe({
       next: () => {
         setSelectedInventories([]);
