@@ -91,7 +91,7 @@ pipeline {
 
     stage('Deploy to Kubernetes') {
       steps {
-        build job: 'Chatree.js/Develop/GitOps/smarthome-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${BUILD_VERSION}")]
+        build job: 'Chatree.js/Develop/GitOps/smarthome-manifest-dev', parameters: [string(name: 'WEB_IMAGE_TAG', value: "${BUILD_VERSION}")]
       }
     }
 
