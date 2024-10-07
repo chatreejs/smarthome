@@ -20,11 +20,11 @@ const App: React.FC = () => {
       AccountService.getUserInfo().subscribe({
         next: (account) => {
           dispatch(setIsHasHome(account.hasHome));
-          setLoading(false);
           if (account.hasHome) {
             HomeService.getAllHome().subscribe({
               next: (homes) => {
                 if (homes.length > 0) {
+                  setLoading(false);
                   // TODO: Implement default home selection
                   dispatch(setHomeId(homes[0].id));
                   dispatch(setHomeName(homes[0].name));
