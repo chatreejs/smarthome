@@ -1,4 +1,4 @@
-import { FoodStatus } from '@models';
+import { FoodStatus } from '@enums';
 
 export interface Food {
   id: number;

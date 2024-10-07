@@ -24,8 +24,7 @@ import { useSelector } from 'react-redux';
 
 import { ThaiDatePicker } from '@components';
 import { RootState } from '@config';
-import { InventoryRequest } from '@interfaces';
-import { Inventory } from '@models';
+import { Inventory, InventoryRequest } from '@interfaces';
 import { InventoryService } from '@services';
 
 const { Title, Text } = Typography;

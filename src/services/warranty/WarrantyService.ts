@@ -1,8 +1,7 @@
 import { Observable, from, map } from 'rxjs';
 
 import { axiosInstance } from '@config';
-import { WarrantyRequest } from '@interfaces';
-import { Warranty } from '@models';
+import { Warranty, WarrantyRequest } from '@interfaces';
 
 export class WarrantyService {
   private static apiEndpoint = '/warranties';

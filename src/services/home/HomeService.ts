@@ -1,8 +1,7 @@
 import { from, map, Observable } from 'rxjs';
 
 import { axiosInstance } from '@config';
-import { HomeRequest } from '@interfaces';
-import { Home } from '@models';
+import { Home, HomeRequest } from '@interfaces';
 
 export class HomeService {
   private static apiEndpoint = '/homes';

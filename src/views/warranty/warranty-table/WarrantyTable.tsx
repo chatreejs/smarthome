@@ -16,7 +16,8 @@ import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Warranty, WarrantyStatus } from '@models';
+import { WarrantyStatus } from '@enums';
+import { Warranty } from '@interfaces';
 import { WarrantyService } from '@services';
 import './WarrantyTable.css';
 

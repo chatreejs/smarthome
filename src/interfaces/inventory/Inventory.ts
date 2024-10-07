@@ -1,4 +1,4 @@
-import { InventoryStatus } from '@models';
+import { InventoryStatus } from '@enums';
 
 export interface Inventory {
   id: number;

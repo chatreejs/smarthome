@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { SplashSpinner } from '@components';
 import { AppRoutes as Router } from '@config';
-import { AccountRequest } from '@models';
+import { AccountRequest } from '@interfaces';
 import { AccountService, HomeService } from '@services';
 import { setHomeId, setHomeName, setIsHasHome } from '@slices';
 import { AxiosError } from 'axios';

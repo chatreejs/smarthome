@@ -20,7 +20,8 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { RootState } from '@config';
-import { Food, FoodStatus } from '@models';
+import { FoodStatus } from '@enums';
+import { Food } from '@interfaces';
 import { FoodService } from '@services';
 import './FoodTable.css';
 

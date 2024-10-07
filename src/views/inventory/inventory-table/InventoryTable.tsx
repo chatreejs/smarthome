@@ -18,7 +18,8 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { RootState } from '@config';
-import { Inventory, InventoryStatus } from '@models';
+import { InventoryStatus } from '@enums';
+import { Inventory } from '@interfaces';
 import { InventoryService } from '@services';
 import './InventoryTable.css';
 

@@ -1,8 +1,7 @@
 import { Observable, from, map } from 'rxjs';
 
 import { axiosInstance } from '@config';
-import { InventoryRequest } from '@interfaces';
-import { Inventory } from '@models';
+import { Inventory, InventoryRequest } from '@interfaces';
 
 export class InventoryService {
   private static apiEndpoint = '/inventories';

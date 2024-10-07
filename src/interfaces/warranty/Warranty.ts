@@ -1,4 +1,4 @@
-import { WarrantyStatus } from '@models';
+import { WarrantyStatus } from '@enums';
 
 export interface Warranty {
   id: number;

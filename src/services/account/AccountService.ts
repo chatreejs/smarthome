@@ -1,7 +1,7 @@
 import { from, map, Observable } from 'rxjs';
 
 import { axiosInstance } from '@config';
-import { Account, AccountRequest } from '@models';
+import { Account, AccountRequest } from '@interfaces';
 
 export class AccountService {
   private static apiEndpoint = '/accounts';

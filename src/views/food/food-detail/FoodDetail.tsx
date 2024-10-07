@@ -23,8 +23,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
 import { RootState } from '@config';
-import { FoodRequest } from '@interfaces';
-import { Food } from '@models';
+import { Food, FoodRequest } from '@interfaces';
 import { FoodService } from '@services';
 import './FoodDetail.css';
 

@@ -29,7 +29,6 @@
       "@interfaces": ["./src/interfaces"],
       "@enums": ["./src/enums"],
       "@hooks": ["./src/hooks"],
-      "@models": ["./src/models"],
       "@services": ["./src/services"],
       "@slices": ["./src/slices"],
       "@utils": ["./src/utils"],

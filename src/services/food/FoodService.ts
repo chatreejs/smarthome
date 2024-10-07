@@ -1,8 +1,7 @@
 import { Observable, from, map } from 'rxjs';
 
 import { axiosInstance } from '@config';
-import { FoodRequest } from '@interfaces';
-import { Food } from '@models';
+import { Food, FoodRequest } from '@interfaces';
 
 export class FoodService {
   private static apiEndpoint = '/foods';

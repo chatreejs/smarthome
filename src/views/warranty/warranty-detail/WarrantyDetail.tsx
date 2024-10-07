@@ -11,8 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
-import { WarrantyRequest } from '@interfaces';
-import { Warranty } from '@models';
+import { Warranty, WarrantyRequest } from '@interfaces';
 import { WarrantyService } from '@services';
 import { AxiosError } from 'axios';
 import './WarrantyDetail.css';

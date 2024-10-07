@@ -1,4 +1,4 @@
-export interface WeatherSensor {
+export interface Weather {
   timestamp?: string;
   temperature: number;
   humidity: number;
