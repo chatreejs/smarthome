@@ -6,6 +6,7 @@ export * from './account/weather/Weather';
 export * from './food/Food';
 export * from './food/FoodRequest';
 export * from './home/Home';
+export * from './home/HomeConfig';
 export * from './home/HomeRequest';
 export * from './home/HomeState';
 export * from './inventory/Inventory';

@@ -13,7 +13,10 @@ import {
 } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 
+import { RootState } from '@config';
 import { AirQuality, Weather } from '@interfaces';
+import { WeatherService } from '@services';
+import { useSelector } from 'react-redux';
 import './FarmDashboard.css';
 
 const { Title } = Typography;
@@ -43,6 +46,31 @@ const items: MenuProps['items'] = [
 const FarmDashboard: React.FC = () => {
   const [weatherData, setWeatherData] = useState<Weather>();
   const [airQualityData, setAirQualityData] = useState<AirQuality>();
+  const homeConfig = useSelector((state: RootState) => state.home.config);
+
+  const fetchAirQualityData = useCallback(() => {
+    if (!homeConfig.weatherApiEndpoint) {
+      return;
+    }
+    WeatherService.getRealtimeAirQuality(
+      homeConfig.weatherApiEndpoint,
+    ).subscribe({
+      next: (airQuality) => {
+        setAirQualityData(airQuality);
+      },
+    });
+  }, []);
+
+  const fetchWeatherData = useCallback(() => {
+    if (!homeConfig.weatherApiEndpoint) {
+      return;
+    }
+    WeatherService.getRealtimeWeather(homeConfig.weatherApiEndpoint).subscribe({
+      next: (weather) => {
+        setWeatherData(weather);
+      },
+    });
+  }, []);
 
   const handleWeatherMessage = (message: IMessage) => {
     const body: Weather = JSON.parse(message.body) as Weather;
@@ -55,8 +83,21 @@ const FarmDashboard: React.FC = () => {
   };
 
   const setupStompClient = useCallback(() => {
+    // replace https:// to wss:// or http:// to ws:// from homeConfig.weatherApiEndpoint
+    if (!homeConfig.weatherApiEndpoint) {
+      return;
+    }
+    const { weatherApiEndpoint } = homeConfig;
+    let weatherBrokerUrl;
+    if (weatherApiEndpoint.startsWith('https://')) {
+      weatherBrokerUrl = weatherApiEndpoint.replace('https://', 'wss://');
+    } else if (weatherApiEndpoint.startsWith('http://')) {
+      weatherBrokerUrl = weatherApiEndpoint.replace('http://', 'ws://');
+    } else {
+      return;
+    }
     const weatherStompClient = new Client({
-      brokerURL: process.env.VITE_APP_WEATHER_SOCKET,
+      brokerURL: `${weatherBrokerUrl}/ws`,
       reconnectDelay: 2000,
     });
 
@@ -77,6 +118,11 @@ const FarmDashboard: React.FC = () => {
       void weatherStompClient.deactivate();
     };
   }, []);
+
+  useEffect(() => {
+    fetchAirQualityData();
+    fetchWeatherData();
+  }, [fetchAirQualityData, fetchWeatherData]);
 
   useEffect(() => {
     const stompClient = setupStompClient();

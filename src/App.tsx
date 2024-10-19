@@ -7,7 +7,7 @@ import { SplashSpinner } from '@components';
 import { AppRoutes as Router } from '@config';
 import { AccountRequest } from '@interfaces';
 import { AccountService, HomeService } from '@services';
-import { setHomeId, setHomeName, setIsHasHome } from '@slices';
+import { setHomeConfig, setHomeId, setHomeName, setIsHasHome } from '@slices';
 import { AxiosError } from 'axios';
 
 const App: React.FC = () => {
@@ -28,6 +28,12 @@ const App: React.FC = () => {
                   // TODO: Implement default home selection
                   dispatch(setHomeId(homes[0].id));
                   dispatch(setHomeName(homes[0].name));
+                  dispatch(
+                    setHomeConfig({
+                      weatherApiEndpoint:
+                        process.env.VITE_APP_WEATHER_API_ENDPOINT,
+                    }),
+                  );
                 }
               },
               error: () => {
