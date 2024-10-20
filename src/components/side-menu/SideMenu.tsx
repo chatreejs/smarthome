@@ -1,6 +1,7 @@
 import {
   faBolt,
   faBoxesStacked,
+  faCalendarDays,
   faCertificate,
   faChartPie,
   faFaucet,
@@ -9,6 +10,7 @@ import {
   faLeaf,
   faSuitcaseMedical,
   faUtensils,
+  faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
@@ -50,6 +52,10 @@ const SideMenu: React.FC = () => {
         <FontAwesomeIcon icon={faChartPie} className="fa-fw" />
         <MenuText>แดชบอร์ด</MenuText>
       </Menu.Item>
+      <Menu.Item key="activities" onClick={() => onClickMenu('activities')}>
+        <FontAwesomeIcon icon={faCalendarDays} />
+        <MenuText>กิจกรรม</MenuText>
+      </Menu.Item>
       {permissions.includes(Permission.UTILITY) && (
         <Menu.SubMenu
           key="utilities"
@@ -87,6 +93,10 @@ const SideMenu: React.FC = () => {
       >
         <FontAwesomeIcon icon={faSuitcaseMedical} className="fa-fw" />
         <MenuText>ยา และ เวชภัณฑ์</MenuText>
+      </Menu.Item>
+      <Menu.Item key="maintenance" onClick={() => onClickMenu('maintenance')}>
+        <FontAwesomeIcon icon={faWrench} />
+        <MenuText>งานซ่อมบำรุง</MenuText>
       </Menu.Item>
       <Menu.Item key="warranty" onClick={() => onClickMenu('warranty')}>
         <FontAwesomeIcon icon={faCertificate} className="fa-fw" />
