@@ -17,7 +17,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { store } from '@config';
 import App from './App';
-import './index.css';
+import './assets/styles/global.css';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
