@@ -1,3 +1,4 @@
+export { default as ActionBar } from './action-bar/ActionBar';
 export { default as CurrentUser } from './current-user/CurrentUser';
 export { default as Footer } from './footer/Footer';
 export { default as Layout } from './layout/Layout';

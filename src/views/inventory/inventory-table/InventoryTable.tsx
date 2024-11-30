@@ -1,27 +1,15 @@
-import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  App,
-  Button,
-  Card,
-  Col,
-  Popconfirm,
-  Row,
-  Table,
-  Tag,
-  Typography,
-} from 'antd';
+import { App, Card, Table, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { ActionBar } from '@components';
 import { RootState } from '@config';
 import { InventoryStatus } from '@enums';
 import { Inventory } from '@interfaces';
 import { InventoryService } from '@services';
-import './InventoryTable.css';
 
 const { Title } = Typography;
 
@@ -143,38 +131,13 @@ const InventoryTable: React.FC = () => {
   return (
     <>
       <Title level={2}>ของใช้ในบ้าน</Title>
-      <Row gutter={8} className="action-bar">
-        <Col>
-          <Button
-            type="primary"
-            className="action-btn"
-            onClick={navigateToCreateInventory}
-          >
-            <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
-            เพิ่มของใช้ในบ้าน
-          </Button>
-          {selectedInventories.length > 0 && (
-            <Popconfirm
-              title="ยืนยันการลบ"
-              description={`คุณต้องการลบรายการของใช้ในบ้านจำนวน ${selectedInventories.length} รายการใช่หรือไม่?`}
-              onConfirm={onConfirmDelete}
-              okText="ยืนยัน"
-              cancelText="ยกเลิก"
-            >
-              <Button danger className="action-btn">
-                <FontAwesomeIcon
-                  icon={faTrashCan}
-                  style={{ marginRight: '0.25rem' }}
-                />
-                ลบ
-              </Button>
-            </Popconfirm>
-          )}
-        </Col>
-      </Row>
-      <Row gutter={8} className="action-bar">
-        <Col></Col>
-      </Row>
+      <ActionBar
+        resourceName="ของใช้ในบ้าน"
+        selectedItems={selectedInventories}
+        onAddClick={navigateToCreateInventory}
+        onConfirmDelete={onConfirmDelete}
+      />
+
       <Card>
         <Table
           rowSelection={{

@@ -1,16 +1,4 @@
-import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  App,
-  Button,
-  Card,
-  Col,
-  Popconfirm,
-  Row,
-  Table,
-  Tag,
-  Typography,
-} from 'antd';
+import { App, Card, Table, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
@@ -19,11 +7,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { ActionBar } from '@components';
 import { RootState } from '@config';
 import { FoodStatus } from '@enums';
 import { Food } from '@interfaces';
 import { FoodService } from '@services';
-import './FoodTable.css';
 
 const { Title } = Typography;
 
@@ -151,43 +139,12 @@ const FoodTable: React.FC = () => {
   return (
     <>
       <Title level={2}>อาหาร</Title>
-      <Row gutter={8} className="action-bar">
-        <Col>
-          <Button
-            type="primary"
-            className="action-btn"
-            onClick={navigateToCreateFood}
-          >
-            <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
-            เพิ่มอาหาร
-          </Button>
-          {selectedFoods.length > 0 && (
-            <Popconfirm
-              title="ยืนยันการลบ"
-              description={`คุณต้องการลบรายการอาหารจำนวน ${selectedFoods.length} รายการใช่หรือไม่?`}
-              onConfirm={onConfirmDelete}
-              okText="ยืนยัน"
-              cancelText="ยกเลิก"
-              disabled={selectedFoods.length === 0}
-            >
-              <Button
-                danger
-                className="action-btn"
-                disabled={selectedFoods.length === 0}
-              >
-                <FontAwesomeIcon
-                  icon={faTrashCan}
-                  style={{ marginRight: '0.25rem' }}
-                />
-                ลบ
-              </Button>
-            </Popconfirm>
-          )}
-        </Col>
-      </Row>
-      <Row gutter={8} className="action-bar">
-        <Col></Col>
-      </Row>
+      <ActionBar
+        resourceName="อาหาร"
+        selectedItems={selectedFoods}
+        onAddClick={navigateToCreateFood}
+        onConfirmDelete={onConfirmDelete}
+      />
       <Card>
         <Table
           rowSelection={{

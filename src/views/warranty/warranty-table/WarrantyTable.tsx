@@ -1,25 +1,13 @@
-import { faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  App,
-  Button,
-  Card,
-  Col,
-  Popconfirm,
-  Row,
-  Table,
-  Tag,
-  Typography,
-} from 'antd';
+import { App, Card, Table, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { ActionBar } from '@components';
 import { WarrantyStatus } from '@enums';
 import { Warranty } from '@interfaces';
 import { WarrantyService } from '@services';
-import './WarrantyTable.css';
 
 const { Title } = Typography;
 
@@ -32,7 +20,7 @@ const columns: ColumnsType<Warranty> = [
     ),
   },
   {
-    title: 'สถานะ',
+    title: 'สถานะประกัน',
     width: '90px',
     align: 'center',
     render: (warranty: Warranty) => {
@@ -135,44 +123,13 @@ const WarrantyTable: React.FC = () => {
 
   return (
     <>
-      <Title level={2}>การรับประกัน</Title>
-      <Row gutter={8} className="action-bar">
-        <Col>
-          <Button
-            type="primary"
-            className="action-btn"
-            onClick={navigateToCreateWarranty}
-          >
-            <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
-            เพิ่มการรับประกัน
-          </Button>
-          {selectedWarranties.length > 0 && (
-            <Popconfirm
-              title="ยืนยันการลบ"
-              description={`คุณต้องการลบรายการการรับประกันจำนวน ${selectedWarranties.length} รายการใช่หรือไม่?`}
-              onConfirm={onConfirmDelete}
-              okText="ยืนยัน"
-              cancelText="ยกเลิก"
-              disabled={selectedWarranties.length === 0}
-            >
-              <Button
-                danger
-                className="action-btn"
-                disabled={selectedWarranties.length === 0}
-              >
-                <FontAwesomeIcon
-                  icon={faTrashCan}
-                  style={{ marginRight: '0.25rem' }}
-                />
-                ลบ
-              </Button>
-            </Popconfirm>
-          )}
-        </Col>
-      </Row>
-      <Row gutter={8} className="action-bar">
-        <Col></Col>
-      </Row>
+      <Title level={2}>เครื่องใช้ไฟฟ้า</Title>
+      <ActionBar
+        resourceName="เครื่องใช้ไฟฟ้า"
+        selectedItems={selectedWarranties}
+        onAddClick={navigateToCreateWarranty}
+        onConfirmDelete={onConfirmDelete}
+      />
       <Card>
         <Table
           rowSelection={{
