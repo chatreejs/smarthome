@@ -4,7 +4,7 @@ import { axiosInstance } from '@config';
 import { Inventory, InventoryRequest } from '@interfaces';
 
 export class InventoryService {
-  private static apiEndpoint = '/inventories';
+  private static readonly apiEndpoint = '/inventories';
 
   static getAllInventories(homeId: number): Observable<Inventory[]> {
     const params = new URLSearchParams();

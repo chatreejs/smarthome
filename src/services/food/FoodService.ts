@@ -4,7 +4,7 @@ import { axiosInstance } from '@config';
 import { Food, FoodRequest } from '@interfaces';
 
 export class FoodService {
-  private static apiEndpoint = '/foods';
+  private static readonly apiEndpoint = '/foods';
 
   static getAllFoods(homeId: number): Observable<Food[]> {
     const params = new URLSearchParams();

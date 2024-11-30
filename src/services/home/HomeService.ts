@@ -4,7 +4,7 @@ import { axiosInstance } from '@config';
 import { Home, HomeRequest } from '@interfaces';
 
 export class HomeService {
-  private static apiEndpoint = '/homes';
+  private static readonly apiEndpoint = '/homes';
 
   static getAllHome(): Observable<Home[]> {
     return from(axiosInstance.get<Home[]>(this.apiEndpoint)).pipe(

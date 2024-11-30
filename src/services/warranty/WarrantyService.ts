@@ -4,7 +4,7 @@ import { axiosInstance } from '@config';
 import { Warranty, WarrantyRequest } from '@interfaces';
 
 export class WarrantyService {
-  private static apiEndpoint = '/warranties';
+  private static readonly apiEndpoint = '/warranties';
 
   static getAllWarranties(): Observable<Warranty[]> {
     return from(axiosInstance.get<Warranty[]>(this.apiEndpoint)).pipe(

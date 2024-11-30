@@ -4,7 +4,7 @@ import { axiosInstance } from '@config';
 import { Account, AccountRequest } from '@interfaces';
 
 export class AccountService {
-  private static apiEndpoint = '/accounts';
+  private static readonly apiEndpoint = '/accounts';
 
   static getUserInfo(): Observable<Account> {
     return from(
