@@ -35,10 +35,10 @@ const AppRoutes: React.FC = () => {
           <Route path="new" element={<InventoryDetail />} />
           <Route path=":inventoryId" element={<InventoryDetail />} />
         </Route>
-        <Route path="warranty" element={<Warranty />}>
+        <Route path="electric-appliances" element={<Warranty />}>
           <Route index element={<WarrantyTable />} />
           <Route path="new" element={<WarrantyDetail />} />
-          <Route path=":warrantyId" element={<WarrantyDetail />} />
+          <Route path=":electricApplianceId" element={<WarrantyDetail />} />
         </Route>
         <Route path="smartfarm" element={<Farm />}>
           <Route index element={<FarmDashboard />} />

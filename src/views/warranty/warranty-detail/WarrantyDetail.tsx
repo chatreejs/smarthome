@@ -46,7 +46,7 @@ interface WarrantyForm {
 
 const WarrantyDetail: React.FC = () => {
   const { notification } = App.useApp();
-  const { warrantyId } = useParams();
+  const { electricApplianceId } = useParams();
   const [warrantyData, setWarrantyData] = useState<Warranty>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm<WarrantyForm>();
@@ -70,9 +70,9 @@ const WarrantyDetail: React.FC = () => {
   );
 
   const fetchWarrantyData = useCallback(() => {
-    if (warrantyId) {
+    if (electricApplianceId) {
       setIsEdit(true);
-      WarrantyService.getWarrantyById(+warrantyId).subscribe({
+      WarrantyService.getWarrantyById(+electricApplianceId).subscribe({
         next: (warranty) => {
           setWarrantyData(warranty);
           form.setFieldsValue({
@@ -102,7 +102,7 @@ const WarrantyDetail: React.FC = () => {
         },
       });
     }
-  }, [warrantyId, form, navigate, onError]);
+  }, [electricApplianceId, form, navigate, onError]);
 
   useEffect(() => {
     fetchWarrantyData();
@@ -116,7 +116,7 @@ const WarrantyDetail: React.FC = () => {
       warrantyDate: values.warrantyDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      WarrantyService.updateWarranty(+warrantyId!, request).subscribe({
+      WarrantyService.updateWarranty(+electricApplianceId!, request).subscribe({
         next: () => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
         },
@@ -175,7 +175,7 @@ const WarrantyDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    WarrantyService.deleteWarranty(+warrantyId!).subscribe({
+    WarrantyService.deleteWarranty(+electricApplianceId!).subscribe({
       next: () => {
         onSuccess('ลบข้อมูลสำเร็จ');
       },

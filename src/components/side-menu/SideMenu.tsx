@@ -98,9 +98,12 @@ const SideMenu: React.FC = () => {
         <FontAwesomeIcon icon={faWrench} />
         <MenuText>งานซ่อมบำรุง</MenuText>
       </Menu.Item>
-      <Menu.Item key="warranty" onClick={() => onClickMenu('warranty')}>
+      <Menu.Item
+        key="electric-appliances"
+        onClick={() => onClickMenu('electric-appliances')}
+      >
         <FontAwesomeIcon icon={faCertificate} className="fa-fw" />
-        <MenuText>การรับประกัน</MenuText>
+        <MenuText>เครื่องใช้ไฟฟ้า</MenuText>
       </Menu.Item>
       <Menu.Divider />
       <Menu.ItemGroup title="ระบบ" />
