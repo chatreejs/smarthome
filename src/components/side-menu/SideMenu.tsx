@@ -53,7 +53,7 @@ const SideMenu: React.FC = () => {
         <MenuText>แดชบอร์ด</MenuText>
       </Menu.Item>
       <Menu.Item key="activities" onClick={() => onClickMenu('activities')}>
-        <FontAwesomeIcon icon={faCalendarDays} />
+        <FontAwesomeIcon icon={faCalendarDays} className="fa-fw" />
         <MenuText>กิจกรรม</MenuText>
       </Menu.Item>
       {permissions.includes(Permission.UTILITY) && (
@@ -95,7 +95,7 @@ const SideMenu: React.FC = () => {
         <MenuText>ยา และ เวชภัณฑ์</MenuText>
       </Menu.Item>
       <Menu.Item key="maintenance" onClick={() => onClickMenu('maintenance')}>
-        <FontAwesomeIcon icon={faWrench} />
+        <FontAwesomeIcon icon={faWrench} className="fa-fw" />
         <MenuText>งานซ่อมบำรุง</MenuText>
       </Menu.Item>
       <Menu.Item
