@@ -4,15 +4,25 @@ import { axiosInstance } from '@config';
 import { AirQuality, Weather } from '@interfaces';
 
 export class WeatherService {
-  static getCurrentAirQuality(apiEndpoint: string): Observable<AirQuality> {
+  static getCurrentAirQuality(
+    apiEndpoint: string,
+    probeId: string,
+  ): Observable<AirQuality> {
     return from(
-      axiosInstance.get<AirQuality>(`${apiEndpoint}/air-quality/current`),
+      axiosInstance.get<AirQuality>(
+        `${apiEndpoint}/air-quality/current/${probeId}`,
+      ),
     ).pipe(map((response) => response.data));
   }
 
-  static getRealtimeAirQuality(apiEndpoint: string): Observable<AirQuality> {
+  static getRealtimeAirQuality(
+    apiEndpoint: string,
+    probeId: string,
+  ): Observable<AirQuality> {
     return from(
-      axiosInstance.get<AirQuality>(`${apiEndpoint}/air-quality/realtime`),
+      axiosInstance.get<AirQuality>(
+        `${apiEndpoint}/air-quality/realtime/${probeId}`,
+      ),
     ).pipe(map((response) => response.data));
   }
 

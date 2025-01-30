@@ -21,6 +21,8 @@ import './FarmDashboard.css';
 
 const { Title } = Typography;
 
+const probeId = 'TH-10-0001';
+
 const items: MenuProps['items'] = [
   {
     label: 'แก้ไขข้อมูล',
@@ -54,6 +56,7 @@ const FarmDashboard: React.FC = () => {
     }
     WeatherService.getRealtimeAirQuality(
       homeConfig.weatherApiEndpoint,
+      probeId,
     ).subscribe({
       next: (airQuality) => {
         setAirQualityData(airQuality);
@@ -117,7 +120,7 @@ const FarmDashboard: React.FC = () => {
     return () => {
       void weatherStompClient.deactivate();
     };
-  }, []);
+  }, [homeConfig]);
 
   useEffect(() => {
     fetchAirQualityData();
