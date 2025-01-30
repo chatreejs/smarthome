@@ -11,7 +11,7 @@ const Footer: React.FC<FooterProps> = (props) => {
     <Layout.Footer
       style={{ textAlign: 'center', backgroundColor: 'rgb(250, 250, 251)' }}
     >
-      Smarthome ©2024 made with ❤️ by{' '}
+      Smarthome ©2025 made with ❤️ by{' '}
       <a href={props.githubUrl} target="_blank" rel="noopener noreferrer">
         {props.githubUsername}
       </a>
