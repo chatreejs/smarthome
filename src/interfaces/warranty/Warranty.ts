@@ -10,4 +10,6 @@ export interface Warranty {
   purchaseDate: string;
   warrantyDate: string;
   status: WarrantyStatus;
+  updateBy: string;
+  updateDate: Date;
 }

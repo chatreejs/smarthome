@@ -8,15 +8,17 @@ import { App, Button, Card, Form, Input, Skeleton, Typography } from 'antd';
 import locale from 'antd/lib/date-picker/locale/th_TH';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ThaiDatePicker } from '@components';
+import { RootState } from '@config';
 import { Warranty, WarrantyRequest } from '@interfaces';
 import { WarrantyService } from '@services';
 import { AxiosError } from 'axios';
 import './WarrantyDetail.css';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const formItemLayout = {
   labelCol: {
@@ -47,6 +49,7 @@ interface WarrantyForm {
 const WarrantyDetail: React.FC = () => {
   const { notification } = App.useApp();
   const { electricApplianceId } = useParams();
+  const homeId = useSelector((state: RootState) => state.home.id);
   const [warrantyData, setWarrantyData] = useState<Warranty>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [form] = Form.useForm<WarrantyForm>();
@@ -72,7 +75,7 @@ const WarrantyDetail: React.FC = () => {
   const fetchWarrantyData = useCallback(() => {
     if (electricApplianceId) {
       setIsEdit(true);
-      WarrantyService.getWarrantyById(+electricApplianceId).subscribe({
+      WarrantyService.getWarrantyById(+electricApplianceId, homeId).subscribe({
         next: (warranty) => {
           setWarrantyData(warranty);
           form.setFieldsValue({
@@ -116,7 +119,11 @@ const WarrantyDetail: React.FC = () => {
       warrantyDate: values.warrantyDate.format('YYYY-MM-DD'),
     };
     if (isEdit) {
-      WarrantyService.updateWarranty(+electricApplianceId!, request).subscribe({
+      WarrantyService.updateWarranty(
+        +electricApplianceId!,
+        request,
+        homeId,
+      ).subscribe({
         next: () => {
           onSuccess('แก้ไขข้อมูลสำเร็จ');
         },
@@ -131,12 +138,12 @@ const WarrantyDetail: React.FC = () => {
         },
         complete: () => {
           setTimeout(() => {
-            navigate('/warranty');
+            navigate('/electric-appliances');
           }, 500);
         },
       });
     } else {
-      WarrantyService.createWarranty(request).subscribe({
+      WarrantyService.createWarranty(request, homeId).subscribe({
         next: () => {
           onSuccess('เพิ่มข้อมูลสำเร็จ');
         },
@@ -151,7 +158,7 @@ const WarrantyDetail: React.FC = () => {
         },
         complete: () => {
           setTimeout(() => {
-            navigate('/warranty');
+            navigate('/electric-appliances');
           }, 500);
         },
       });
@@ -175,7 +182,7 @@ const WarrantyDetail: React.FC = () => {
   };
 
   const onDelete = () => {
-    WarrantyService.deleteWarranty(+electricApplianceId!).subscribe({
+    WarrantyService.deleteWarranty(+electricApplianceId!, homeId).subscribe({
       next: () => {
         onSuccess('ลบข้อมูลสำเร็จ');
       },
@@ -254,6 +261,17 @@ const WarrantyDetail: React.FC = () => {
                 format="DD MMMM BBBB"
               />
             </Form.Item>
+            {isEdit && (
+              <Form.Item {...tailLayout}>
+                <Text italic>
+                  แก้ไขล่าสุดเมื่อ{' '}
+                  {dayjs(warrantyData?.updateDate)
+                    .locale('th')
+                    .format('D MMMM BBBB')}{' '}
+                  โดย {warrantyData?.updateBy}
+                </Text>
+              </Form.Item>
+            )}
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit">
                 <FontAwesomeIcon icon={faFloppyDisk} />

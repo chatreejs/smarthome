@@ -2,9 +2,11 @@ import { App, Card, Table, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { ActionBar } from '@components';
+import { RootState } from '@config';
 import { WarrantyStatus } from '@enums';
 import { Warranty } from '@interfaces';
 import { WarrantyService } from '@services';
@@ -65,6 +67,7 @@ const columns: ColumnsType<Warranty> = [
 
 const WarrantyTable: React.FC = () => {
   const { notification } = App.useApp();
+  const homeId = useSelector((state: RootState) => state.home.id);
   const [warrantiesData, setWarrantiesData] = useState<Warranty[]>([]);
   const [selectedWarranties, setSelectedWarranties] = useState<Warranty[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -82,7 +85,7 @@ const WarrantyTable: React.FC = () => {
 
   const fetchWarrantyData = useCallback(() => {
     setLoading(true);
-    WarrantyService.getAllWarranties().subscribe({
+    WarrantyService.getAllWarranties(homeId).subscribe({
       next: (warranties) => {
         setWarrantiesData(warranties);
       },
@@ -112,6 +115,7 @@ const WarrantyTable: React.FC = () => {
   const onConfirmDelete = () => {
     WarrantyService.deleteMultipleWarranties(
       selectedWarranties.map((warranty) => warranty.id),
+      homeId,
     ).subscribe({
       next: () => {
         setSelectedWarranties([]);
