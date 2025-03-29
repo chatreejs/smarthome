@@ -1,4 +1,6 @@
 export { default as Dashboard } from './dashboard/Dashboard';
+export { default as Earthquake } from './earthquakes/Earthquake';
+export { default as EarthquakesDashboard } from './earthquakes/earthquakes-dashboard/EarthquakesDashboard';
 export { default as Farm } from './farm/Farm';
 export { default as FarmDashboard } from './farm/farm-dashboard/FarmDashboard';
 export { default as Food } from './food/Food';

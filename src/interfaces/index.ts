@@ -1,8 +1,6 @@
 export * from './account/Account';
 export * from './account/AccountRequest';
 export * from './account/AccountState';
-export * from './account/weather/AirQuality';
-export * from './account/weather/Weather';
 export * from './food/Food';
 export * from './food/FoodRequest';
 export * from './home/Home';
@@ -13,3 +11,5 @@ export * from './inventory/Inventory';
 export * from './inventory/InventoryRequest';
 export * from './warranty/Warranty';
 export * from './warranty/WarrantyRequest';
+export * from './weather/AirQuality';
+export * from './weather/Weather';
