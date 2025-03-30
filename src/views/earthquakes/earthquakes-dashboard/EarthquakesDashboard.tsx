@@ -15,47 +15,37 @@ const GraphWrapper = styled.div`
 `;
 
 const EarthqualesDashboard: React.FC = () => {
-  const station = 'R0ED0';
+  const station = 'S150A';
+
   return (
     <>
       <Title level={2}>Real-Time Seismogram Data</Title>
       <Flex>
         <GraphWrapper>
-          <Title level={4}>{station} EHZ</Title>
           <iframe
-            className="frame"
             title="ehz"
-            height={300}
-            src={`https://dataview.raspberryshake.org/#/embed/AM/${station}/00/EHZ`}
-          ></iframe>
-        </GraphWrapper>
-        <GraphWrapper>
-          <Title level={4}>{station} ENE</Title>
-          <iframe
-            className="frame"
-            title="ene"
-            height={300}
-            src={`https://dataview.raspberryshake.org/#/embed/AM/${station}/00/ENE`}
+            height={window.innerHeight * 0.5 - 48}
+            src={`https://stationview.raspberryshake.org/#/?lat=19.63792&lon=100.62396&zoom=5.5`}
           ></iframe>
         </GraphWrapper>
       </Flex>
       <Flex>
         <GraphWrapper>
-          <Title level={4}>{station} ENN</Title>
+          <Title level={5}>{station} EHZ</Title>
           <iframe
             className="frame"
-            title="enn"
-            height={300}
-            src={`https://dataview.raspberryshake.org/#/embed/AM/${station}/00/ENN`}
+            title="ehz"
+            height={250}
+            src={`https://dataview.raspberryshake.org/#/embed/AM/${station}/00/EHZ`}
           ></iframe>
         </GraphWrapper>
         <GraphWrapper>
-          <Title level={4}>{station} ENZ</Title>
+          <Title level={5}>{station} HDF</Title>
           <iframe
             className="frame"
-            title="enz"
-            height={300}
-            src={`https://dataview.raspberryshake.org/#/embed/AM/${station}/00/ENZ`}
+            title="hdf"
+            height={250}
+            src={`https://dataview.raspberryshake.org/#/embed/AM/${station}/00/HDF`}
           ></iframe>
         </GraphWrapper>
       </Flex>
