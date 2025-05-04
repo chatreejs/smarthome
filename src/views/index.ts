@@ -11,6 +11,8 @@ export { default as Inventory } from './inventory/Inventory';
 export { default as InventoryDetail } from './inventory/inventory-detail/InventoryDetail';
 export { default as InventoryTable } from './inventory/inventory-table/InventoryTable';
 export { default as Electricity } from './utility/electricity/Electricity';
+export { default as Waterworks } from './utility/waterworks/Waterworks';
+export { default as WaterworksSummary } from './utility/waterworks/waterworks-summary/WaterworksSummary';
 export { default as Warranty } from './warranty/Warranty';
 export { default as WarrantyDetail } from './warranty/warranty-detail/WarrantyDetail';
 export { default as WarrantyTable } from './warranty/warranty-table/WarrantyTable';

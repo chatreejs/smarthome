@@ -11,5 +11,6 @@ export * from './inventory/Inventory';
 export * from './inventory/InventoryRequest';
 export * from './warranty/Warranty';
 export * from './warranty/WarrantyRequest';
+export * from './waterworks/Waterworks';
 export * from './weather/AirQuality';
 export * from './weather/Weather';

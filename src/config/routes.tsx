@@ -18,6 +18,8 @@ import {
   Warranty,
   WarrantyDetail,
   WarrantyTable,
+  Waterworks,
+  WaterworksSummary,
 } from '@views';
 
 const AppRoutes: React.FC = () => {
@@ -27,6 +29,9 @@ const AppRoutes: React.FC = () => {
         <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="electricity" element={<Electricity />} />
+        <Route path="waterworks" element={<Waterworks />}>
+          <Route index element={<WaterworksSummary />} />
+        </Route>
         <Route path="food" element={<Food />}>
           <Route index element={<FoodTable />} />
           <Route path="new" element={<FoodDetail />} />

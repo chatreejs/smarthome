@@ -4,4 +4,5 @@ export * from './food/FoodService';
 export * from './home/HomeService';
 export * from './inventory/InventoryService';
 export * from './warranty/WarrantyService';
+export * from './waterworks/WaterworksService';
 export * from './weather/WeatherService';
