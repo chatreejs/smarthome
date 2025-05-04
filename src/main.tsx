@@ -1,4 +1,4 @@
-import '@fontsource/sarabun';
+import '@fontsource/noto-sans-thai';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';

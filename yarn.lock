@@ -1378,10 +1378,10 @@
   dependencies:
     levn "^0.4.1"
 
-"@fontsource/sarabun@^5.0.3":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/sarabun/-/sarabun-5.1.0.tgz#d65c0d22a7b05c96deeb206f181828844a1f1497"
-  integrity sha512-mFP6JgA++2RZQMbASKjMQQG5+EOfljDyBJX2fEQqxU2ilyaQSLqhe1ddCfy1W/CAn9vZI15B2NMYsHJwSynPEA==
+"@fontsource/noto-sans-thai@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-thai/-/noto-sans-thai-5.2.5.tgz#36b4417cdee7f8bdeac3d9c731b66c0077f6113f"
+  integrity sha512-uUTitMoslTT139P69zf9F1+OYGO0ViIoFHHjCqSOrhJlvsERKM+1+5r9637qD6xvoiw57dmbrvYO/Lad2qJByQ==
 
 "@fortawesome/fontawesome-common-types@6.6.0":
   version "6.6.0"
