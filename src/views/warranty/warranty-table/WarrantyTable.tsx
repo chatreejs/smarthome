@@ -89,8 +89,10 @@ const WarrantyTable: React.FC = () => {
       next: (warranties) => {
         setWarrantiesData(warranties);
       },
-      error: () => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
-      complete: () => setLoading(false),
+      error: () => {
+        onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
+        setLoading(false);
+      },
     });
   }, [onError]);
 

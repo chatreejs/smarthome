@@ -91,9 +91,12 @@ const InventoryTable: React.FC = () => {
     InventoryService.getAllInventories(homeId).subscribe({
       next: (response) => {
         setInventoriesData(response);
+        setLoading(false);
       },
-      error: () => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
-      complete: () => setLoading(false),
+      error: () => {
+        onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
+        setLoading(false);
+      },
     });
   }, [homeId, onError]);
 

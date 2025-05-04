@@ -91,9 +91,12 @@ const FoodTable: React.FC = () => {
     FoodService.getAllFoods(homeId).subscribe({
       next: (res) => {
         setFoodsData(res);
+        setLoading(false); // Moved setLoading(false) here to ensure loading state is updated after data is fetched
       },
-      error: () => onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
-      complete: () => setLoading(false),
+      error: () => {
+        onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
+        setLoading(false);
+      },
     });
   }, [homeId, onError]);
 
