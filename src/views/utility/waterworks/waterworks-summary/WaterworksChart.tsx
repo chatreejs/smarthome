@@ -10,6 +10,11 @@ interface Props {
 
 const WaterworksChart: React.FC<Props> = ({ data }) => {
   const options: Highcharts.Options = {
+    chart: {
+      style: {
+        fontFamily: 'Noto Sans Thai',
+      },
+    },
     title: {
       text: 'ประวัติการใช้น้ำ',
     },

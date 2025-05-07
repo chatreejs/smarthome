@@ -7,6 +7,7 @@ import { App, Button, Card, Skeleton, Typography } from 'antd';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import WaterworksChart from './WaterworksChart';
 
 const { Title } = Typography;
@@ -16,6 +17,7 @@ const WaterworksSummary: React.FC = () => {
   const homeId = useSelector((state: RootState) => state.home.id);
   const [waterworksData, setWaterworksData] = React.useState<Waterworks[]>([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onError = useCallback(
     (errorMessage: string) => {
@@ -48,13 +50,13 @@ const WaterworksSummary: React.FC = () => {
   return (
     <>
       <Title level={2}>ค่าน้ำ</Title>
-      <Button type="primary">
+      <Button type="primary" onClick={() => navigate('new')}>
         <FontAwesomeIcon icon={faPlus} style={{ marginRight: '0.25rem' }} />
         เพิ่มบิลค่าน้ำ
       </Button>
-      <Card>
+      <Card style={{ marginTop: '1rem' }}>
         {loading && <Skeleton active />}
-        <WaterworksChart data={waterworksData} />
+        {!loading && <WaterworksChart data={waterworksData} />}
       </Card>
     </>
   );
