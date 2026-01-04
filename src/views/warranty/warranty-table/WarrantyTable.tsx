@@ -88,13 +88,14 @@ const WarrantyTable: React.FC = () => {
     WarrantyService.getAllWarranties(homeId).subscribe({
       next: (warranties) => {
         setWarrantiesData(warranties);
+        setLoading(false);
       },
       error: () => {
         onError('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง');
         setLoading(false);
       },
     });
-  }, [onError]);
+  }, [homeId, onError]);
 
   useEffect(() => {
     fetchWarrantyData();

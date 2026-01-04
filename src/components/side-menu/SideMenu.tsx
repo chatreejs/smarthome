@@ -104,7 +104,7 @@ const SideMenu: React.FC = () => {
         onClick={() => onClickMenu('electric-appliances')}
       >
         <FontAwesomeIcon icon={faCertificate} className="fa-fw" />
-        <MenuText>เครื่องใช้ไฟฟ้า</MenuText>
+        <MenuText>การรับประกัน</MenuText>
       </Menu.Item>
       <Menu.Divider />
       <Menu.ItemGroup title="ระบบ" />
