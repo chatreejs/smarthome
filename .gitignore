@@ -11,6 +11,14 @@
 # production
 /build
 
+# typescript build artifacts
+*.tsbuildinfo
+
+# runtime config — only config/web/config.example.js is committed;
+# real config files are copied from it locally and never tracked
+/config/web/config.*.js
+!/config/web/config.example.js
+
 # misc
 .DS_Store
 .env.local

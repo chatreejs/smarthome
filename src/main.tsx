@@ -15,7 +15,7 @@ import {
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import { store } from '@config';
+import { Config, store } from '@config';
 import App from './App';
 import './assets/styles/global.css';
 
@@ -27,11 +27,11 @@ dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
 
 const authConfig: TAuthConfig = {
-  clientId: `${process.env.VITE_APP_OAUTH_CLIENT_ID}`,
-  authorizationEndpoint: `${process.env.VITE_APP_OAUTH_URL}/protocol/openid-connect/auth`,
-  tokenEndpoint: `${process.env.VITE_APP_OAUTH_URL}/protocol/openid-connect/token`,
-  redirectUri: `${process.env.VITE_APP_BASE_URL}`,
-  logoutEndpoint: `${process.env.VITE_APP_OAUTH_URL}/protocol/openid-connect/logout`,
+  clientId: `${Config.oauth2ClientId}`,
+  authorizationEndpoint: `${Config.oauth2Url}/protocol/openid-connect/auth`,
+  tokenEndpoint: `${Config.oauth2Url}/protocol/openid-connect/token`,
+  redirectUri: `${Config.baseUrl}`,
+  logoutEndpoint: `${Config.oauth2Url}/protocol/openid-connect/logout`,
   scope: 'openid',
   onRefreshTokenExpire: (event: TRefreshTokenExpiredEvent) =>
     event.logIn(undefined, undefined, 'popup'),

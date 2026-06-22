@@ -1,13 +1,11 @@
 FROM node:18-alpine AS builder
 
-ARG BUILD_CONFIGURATION
-
 WORKDIR /app
 COPY package.json yarn.lock ./
 
 RUN yarn
 COPY ./ /app/
-RUN yarn build:$BUILD_CONFIGURATION
+RUN yarn build
 
 FROM nginxinc/nginx-unprivileged:1.23-alpine
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { Config } from '@config';
 import './Logo.css';
 
 interface LogoProps {
@@ -28,7 +29,7 @@ const EnvBadge = styled.div`
 `;
 
 const Logo: React.FC<LogoProps> = ({ systemName }) => {
-  const env = process.env.VITE_APP_ENV ?? 'local';
+  const env = Config.env ?? 'local';
   const isProduction = env === 'production';
 
   const getEnvironmentText = (env: string) => {

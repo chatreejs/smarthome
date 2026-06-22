@@ -5,8 +5,10 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
+import Config from './Config';
+
 export const axiosInstance = axios.create({
-  baseURL: process.env.VITE_APP_BASE_API,
+  baseURL: Config.baseApiUrl,
   headers: {
     'Content-Type': 'application/json',
   },
