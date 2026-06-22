@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { HomeConfig, HomeState } from '@interfaces';
+import { HomeState } from '@interfaces';
 
 const initialState: HomeState = {
   id: -1,
   name: '',
-  config: {},
 };
 
 const homeSlice = createSlice({
@@ -18,11 +17,8 @@ const homeSlice = createSlice({
     setHomeName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
-    setHomeConfig: (state, action: PayloadAction<HomeConfig>) => {
-      state.config = action.payload;
-    },
   },
 });
 
 export default homeSlice.reducer;
-export const { setHomeId, setHomeName, setHomeConfig } = homeSlice.actions;
+export const { setHomeId, setHomeName } = homeSlice.actions;

@@ -3,11 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout, PageResult } from '@components';
 import {
   Dashboard,
-  Earthquake,
-  EarthquakesDashboard,
   Electricity,
-  Farm,
-  FarmDashboard,
   Food,
   FoodDetail,
   FoodTable,
@@ -15,6 +11,7 @@ import {
   Inventory,
   InventoryDetail,
   InventoryTable,
+  Setting,
   Warranty,
   WarrantyDetail,
   WarrantyTable,
@@ -50,11 +47,8 @@ const AppRoutes: React.FC = () => {
           <Route path="new" element={<WarrantyDetail />} />
           <Route path=":electricApplianceId" element={<WarrantyDetail />} />
         </Route>
-        <Route path="smartfarm" element={<Farm />}>
-          <Route index element={<FarmDashboard />} />
-        </Route>
-        <Route path="earthquakes" element={<Earthquake />}>
-          <Route index element={<EarthquakesDashboard />} />
+        <Route path="setting" element={<Setting />}>
+          <Route index element={<Setting />} />
         </Route>
         <Route path="*" element={<PageResult status="500" />} />
       </Route>

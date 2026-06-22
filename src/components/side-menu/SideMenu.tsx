@@ -7,9 +7,7 @@ import {
   faFaucet,
   faFileInvoiceDollar,
   faHouse,
-  faLeaf,
   faSuitcaseMedical,
-  faTowerBroadcast,
   faUtensils,
   faWrench,
 } from '@fortawesome/free-solid-svg-icons';
@@ -107,15 +105,6 @@ const SideMenu: React.FC = () => {
         <MenuText>การรับประกัน</MenuText>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.ItemGroup title="ระบบ" />
-      <Menu.Item key="smartfarm" onClick={() => onClickMenu('smartfarm')}>
-        <FontAwesomeIcon icon={faLeaf} className="fa-fw" />
-        <MenuText>ฟาร์มอัจฉริยะ</MenuText>
-      </Menu.Item>
-      <Menu.Item key="earthquakes" onClick={() => onClickMenu('earthquakes')}>
-        <FontAwesomeIcon icon={faTowerBroadcast} className="fa-fw" />
-        <MenuText>ตรวจจับแผ่นดินไหว</MenuText>
-      </Menu.Item>
     </Menu>
   );
 };

@@ -28,10 +28,10 @@ const Dashboard: React.FC = () => {
       <Title level={2}>ยินดีต้อนรับ {fullName}</Title>
       <Row gutter={[8, 8]}>
         <Col xs={12} sm={12} md={6} lg={6}>
-          <Card>
-            <h4>55</h4>
-            <span>PM 2.5</span>
-          </Card>
+          <Card title="Monthly Cost">asd</Card>
+        </Col>
+        <Col xs={12} sm={12} md={6} lg={6}>
+          <Card title="Next Matintenance">asaas</Card>
         </Col>
       </Row>
     </>

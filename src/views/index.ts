@@ -1,8 +1,4 @@
 export { default as Dashboard } from './dashboard/Dashboard';
-export { default as Earthquake } from './earthquakes/Earthquake';
-export { default as EarthquakesDashboard } from './earthquakes/earthquakes-dashboard/EarthquakesDashboard';
-export { default as Farm } from './farm/Farm';
-export { default as FarmDashboard } from './farm/farm-dashboard/FarmDashboard';
 export { default as Food } from './food/Food';
 export { default as FoodDetail } from './food/food-detail/FoodDetail';
 export { default as FoodTable } from './food/food-table/FoodTable';
@@ -10,6 +6,7 @@ export { default as HomeSetup } from './home-setup/HomeSetup';
 export { default as Inventory } from './inventory/Inventory';
 export { default as InventoryDetail } from './inventory/inventory-detail/InventoryDetail';
 export { default as InventoryTable } from './inventory/inventory-table/InventoryTable';
+export { default as Setting } from './setting/Setting';
 export { default as Electricity } from './utility/electricity/Electricity';
 export { default as Waterworks } from './utility/waterworks/Waterworks';
 export { default as WaterworksDetail } from './utility/waterworks/waterworks-detail/WaterworksDetail';
