@@ -4,7 +4,6 @@ pipeline {
   environment {
     VERSION = "0.1.0"
     IMAGE_URL = "chatreejs/smarthome"
-    BUILD_PROFILE = 'develop'
   }
 
   stages {
@@ -49,7 +48,7 @@ pipeline {
         script {
           currentBuild.displayName += " version ${BUILD_VERSION}"
         }
-        sh 'docker build --build-arg BUILD_CONFIGURATION=${BUILD_PROFILE} -f Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
+        sh 'docker build -f Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
       }
     }
 
