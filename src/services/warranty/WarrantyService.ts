@@ -4,21 +4,19 @@ import { axiosInstance } from '@config';
 import { Warranty, WarrantyRequest } from '@interfaces';
 
 export class WarrantyService {
-  private static readonly apiEndpoint = '/warranties';
+  private static apiEndpoint(homeId: number): string {
+    return `/homes/${homeId}/warranties`;
+  }
 
   static getAllWarranties(homeId: number): Observable<Warranty[]> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
-    return from(
-      axiosInstance.get<Warranty[]>(this.apiEndpoint, { params }),
-    ).pipe(map((response) => response.data));
+    return from(axiosInstance.get<Warranty[]>(this.apiEndpoint(homeId))).pipe(
+      map((response) => response.data),
+    );
   }
 
   static getWarrantyById(id: number, homeId: number): Observable<Warranty> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.get<Warranty>(`${this.apiEndpoint}/${id}`, { params }),
+      axiosInstance.get<Warranty>(`${this.apiEndpoint(homeId)}/${id}`),
     ).pipe(map((response) => response.data));
   }
 
@@ -26,10 +24,8 @@ export class WarrantyService {
     warranty: WarrantyRequest,
     homeId: number,
   ): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.post<void>(this.apiEndpoint, warranty, { params }),
+      axiosInstance.post<void>(this.apiEndpoint(homeId), warranty),
     ).pipe(map((response) => response.data));
   }
 
@@ -38,20 +34,14 @@ export class WarrantyService {
     warranty: WarrantyRequest,
     homeId: number,
   ): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.put<void>(`${this.apiEndpoint}/${id}`, warranty, {
-        params,
-      }),
+      axiosInstance.put<void>(`${this.apiEndpoint(homeId)}/${id}`, warranty),
     ).pipe(map((response) => response.data));
   }
 
   static deleteWarranty(id: number, homeId: number): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.delete<void>(`${this.apiEndpoint}/${id}`, { params }),
+      axiosInstance.delete<void>(`${this.apiEndpoint(homeId)}/${id}`),
     ).pipe(map((response) => response.data));
   }
 
@@ -59,17 +49,14 @@ export class WarrantyService {
     ids: number[],
     homeId: number,
   ): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.delete<void>(this.apiEndpoint, {
+      axiosInstance.delete<void>(this.apiEndpoint(homeId), {
         data: {
           ids: ids.join(','),
         },
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        params,
       }),
     ).pipe(map((response) => response.data));
   }

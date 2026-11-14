@@ -138,6 +138,9 @@ const FoodDetail: React.FC = () => {
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
           }
+          if (status === 404) {
+            onError('ไม่พบข้อมูล');
+          }
           if (status === 500) {
             onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
           }
