@@ -105,7 +105,7 @@ const WarrantyDetail: React.FC = () => {
         },
       });
     }
-  }, [electricApplianceId, form, navigate, onError]);
+  }, [electricApplianceId, homeId, form, navigate, onError]);
 
   useEffect(() => {
     fetchWarrantyData();
