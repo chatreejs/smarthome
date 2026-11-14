@@ -13,30 +13,48 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 // In deployed environments config.js is injected at runtime (not built), so this plugin
 // only applies to `serve` and is never part of `vite build`.
 function localConfigPlugin(mode: string): Plugin {
+  const resolvedId = '\0local-config';
+  let configUrl = '/config.js';
+
+  const readConfig = (): string | undefined => {
+    const candidates = [
+      `config/web/config.${mode}.js`,
+      'config/web/config.local.js',
+    ];
+    for (const rel of candidates) {
+      try {
+        return readFileSync(resolve(process.cwd(), rel), 'utf-8');
+      } catch {
+        // file missing — try the next candidate
+      }
+    }
+    return undefined;
+  };
+
   return {
     name: 'local-config',
     apply: 'serve',
+    configResolved(config) {
+      configUrl = `${config.base}config.js`;
+    },
+    // Vite pre-transforms the <script src> in index.html without going through the middleware
+    // below, so resolve the URL here too, or it logs "Failed to load url /smarthome/config.js"
+    resolveId(id) {
+      return id === configUrl ? resolvedId : undefined;
+    },
+    load(id) {
+      return id === resolvedId ? readConfig() : undefined;
+    },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const path = (req.url ?? '').split('?')[0];
-        if (!path.endsWith('/config.js')) return next();
+        if (path !== configUrl) return next();
 
-        const candidates = [
-          `config/web/config.${mode}.js`,
-          'config/web/config.local.js',
-        ];
-        for (const rel of candidates) {
-          try {
-            const body = readFileSync(resolve(process.cwd(), rel));
-            res.setHeader('Content-Type', 'application/javascript');
-            res.setHeader('Cache-Control', 'no-store');
-            res.end(body);
-            return;
-          } catch {
-            // file missing — try the next candidate
-          }
-        }
-        return next();
+        const body = readConfig();
+        if (body === undefined) return next();
+        res.setHeader('Content-Type', 'application/javascript');
+        res.setHeader('Cache-Control', 'no-store');
+        res.end(body);
       });
     },
   };
