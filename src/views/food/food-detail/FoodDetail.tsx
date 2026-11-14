@@ -25,6 +25,7 @@ import { ThaiDatePicker } from '@components';
 import { RootState } from '@config';
 import { Food, FoodRequest } from '@interfaces';
 import { FoodService } from '@services';
+import { FORBIDDEN_MESSAGE } from '@utils';
 import './FoodDetail.css';
 
 const { Title, Text } = Typography;
@@ -101,6 +102,9 @@ const FoodDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 404) {
             onError('ไม่พบข้อมูล');
             setTimeout(() => {
@@ -135,6 +139,9 @@ const FoodDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
           }
@@ -158,6 +165,9 @@ const FoodDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
           }
@@ -196,6 +206,9 @@ const FoodDetail: React.FC = () => {
       },
       error: (err: AxiosError<unknown>) => {
         const status = err.response?.status;
+        if (status === 403) {
+          onError(FORBIDDEN_MESSAGE);
+        }
         if (status === 404) {
           onError('ไม่พบข้อมูล');
         }
