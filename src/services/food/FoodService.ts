@@ -4,30 +4,26 @@ import { axiosInstance } from '@config';
 import { Food, FoodRequest } from '@interfaces';
 
 export class FoodService {
-  private static readonly apiEndpoint = '/foods';
+  private static apiEndpoint(homeId: number): string {
+    return `/homes/${homeId}/foods`;
+  }
 
   static getAllFoods(homeId: number): Observable<Food[]> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
-    return from(axiosInstance.get<Food[]>(this.apiEndpoint, { params })).pipe(
+    return from(axiosInstance.get<Food[]>(this.apiEndpoint(homeId))).pipe(
       map((response) => response.data),
     );
   }
 
   static getFoodById(id: number, homeId: number): Observable<Food> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.get<Food>(`${this.apiEndpoint}/${id}`, { params }),
+      axiosInstance.get<Food>(`${this.apiEndpoint(homeId)}/${id}`),
     ).pipe(map((response) => response.data));
   }
 
   static createFood(food: FoodRequest, homeId: number): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
-    return from(
-      axiosInstance.post<void>(this.apiEndpoint, food, { params }),
-    ).pipe(map((response) => response.data));
+    return from(axiosInstance.post<void>(this.apiEndpoint(homeId), food)).pipe(
+      map((response) => response.data),
+    );
   }
 
   static updateFood(
@@ -35,35 +31,26 @@ export class FoodService {
     food: FoodRequest,
     homeId: number,
   ): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.put<void>(`${this.apiEndpoint}/${id}`, food, {
-        params,
-      }),
+      axiosInstance.put<void>(`${this.apiEndpoint(homeId)}/${id}`, food),
     ).pipe(map((response) => response.data));
   }
 
   static deleteFood(id: number, homeId: number): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.delete<void>(`${this.apiEndpoint}/${id}`, { params }),
+      axiosInstance.delete<void>(`${this.apiEndpoint(homeId)}/${id}`),
     ).pipe(map((response) => response.data));
   }
 
   static deleteMultipleFoods(ids: number[], homeId: number): Observable<void> {
-    const params = new URLSearchParams();
-    params.append('homeId', homeId.toString());
     return from(
-      axiosInstance.delete<void>(this.apiEndpoint, {
+      axiosInstance.delete<void>(this.apiEndpoint(homeId), {
         data: {
           ids: ids.join(','),
         },
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        params,
       }),
     ).pipe(map((response) => response.data));
   }
