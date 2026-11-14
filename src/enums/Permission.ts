@@ -3,5 +3,4 @@ export enum Permission {
   FOOD = 'FOOD',
   INVENTORY = 'INVENTORY',
   MEDICAL_SUPPLIES = 'MEDICAL_SUPPLIES',
-  SMART_FARM = 'SMART_FARM',
 }
