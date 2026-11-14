@@ -26,6 +26,7 @@ import { ThaiDatePicker } from '@components';
 import { RootState } from '@config';
 import { Inventory, InventoryRequest } from '@interfaces';
 import { InventoryService } from '@services';
+import { FORBIDDEN_MESSAGE } from '@utils';
 
 const { Title, Text } = Typography;
 
@@ -101,6 +102,9 @@ const InventoryDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 404) {
             onError('ไม่พบข้อมูล');
             setTimeout(() => {
@@ -138,6 +142,9 @@ const InventoryDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
           }
@@ -161,6 +168,9 @@ const InventoryDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
           }
@@ -199,6 +209,9 @@ const InventoryDetail: React.FC = () => {
       },
       error: (err: AxiosError<unknown>) => {
         const status = err.response?.status;
+        if (status === 403) {
+          onError(FORBIDDEN_MESSAGE);
+        }
         if (status === 404) {
           onError('ไม่พบข้อมูล');
         }

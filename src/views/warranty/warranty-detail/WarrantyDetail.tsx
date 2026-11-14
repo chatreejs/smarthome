@@ -15,6 +15,7 @@ import { ThaiDatePicker } from '@components';
 import { RootState } from '@config';
 import { Warranty, WarrantyRequest } from '@interfaces';
 import { WarrantyService } from '@services';
+import { FORBIDDEN_MESSAGE } from '@utils';
 import { AxiosError } from 'axios';
 import './WarrantyDetail.css';
 
@@ -90,6 +91,9 @@ const WarrantyDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 404) {
             onError('ไม่พบข้อมูล');
             setTimeout(() => {
@@ -129,6 +133,9 @@ const WarrantyDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
           }
@@ -152,6 +159,9 @@ const WarrantyDetail: React.FC = () => {
         },
         error: (err: AxiosError<unknown>) => {
           const status = err.response?.status;
+          if (status === 403) {
+            onError(FORBIDDEN_MESSAGE);
+          }
           if (status === 400) {
             onError('ข้อมูลไม่ถูกต้อง');
           }
@@ -191,6 +201,9 @@ const WarrantyDetail: React.FC = () => {
       },
       error: (err: AxiosError<unknown>) => {
         const status = err.response?.status;
+        if (status === 403) {
+          onError(FORBIDDEN_MESSAGE);
+        }
         if (status === 500) {
           onError('เกิดข้อผิดพลาดบนเซิร์ฟเวอร์');
         }
