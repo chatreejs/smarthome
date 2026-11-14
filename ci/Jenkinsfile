@@ -56,15 +56,15 @@ pipeline {
           agent {
             docker {
               // Keep in sync with .tool-versions and the Dockerfile
-              image 'node:18.19.1-alpine'
+              image 'oven/bun:1.4.3-alpine'
               args '-u root'
               reuseNode true
             }
           }
           steps {
-            sh 'yarn install --frozen-lockfile'
-            sh 'yarn lint'
-            sh 'yarn format:check'
+            sh 'bun install --frozen-lockfile'
+            sh 'bun run lint'
+            sh 'bun run format:check'
           }
         }
 

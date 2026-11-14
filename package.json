@@ -22,10 +22,11 @@
     "preview": "vite preview",
     "check-types": "tsc --noemit",
     "eslint": "eslint",
-    "lint": "npm run eslint && npm run check-types",
+    "lint": "bun run eslint && bun run check-types",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "commitlint": "commitlint"
   },
   "dependencies": {
     "@fontsource/noto-sans-thai": "^5.2.5",
@@ -75,5 +76,6 @@
     "vite-plugin-environment": "^1.1.3",
     "vite-plugin-pwa": "^0.17.4",
     "vite-tsconfig-paths": "^4.2.1"
-  }
+  },
+  "packageManager": "bun@1.4.3"
 }

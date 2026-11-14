@@ -8,22 +8,20 @@ Smarthome is a React SPA for tracking household resources (electricity, water, f
 
 ## Commands
 
-Package manager is **yarn** (see `yarn.lock`, Dockerfile). Node 18 is pinned via `.tool-versions`.
+Package manager is **bun** (see `bun.lock`, Dockerfile). Bun 1.4.3 is pinned via `.tool-versions` and `packageManager` in `package.json`. Always use `bun run <script>`: `bun build` is bun's own bundler, not the `build` script.
 
 ```bash
-yarn                      # install dependencies
-yarn start                # dev server on :3000 using .env (local)
-yarn start:develop        # dev server using .env.develop
-yarn build                # tsc type-check + vite build -> build/
-yarn build:develop        # build with .env.develop
-yarn build:prod           # build with .env.prod
-yarn preview              # preview a production build
+bun install                   # install dependencies
+bun run start                 # dev server on :3000, config from config/web/config.local.js
+bun run start:develop         # dev server, config from config/web/config.develop.js
+bun run build                 # tsc type-check + vite build -> build/
+bun run preview               # preview a production build
 
-yarn lint                 # eslint + check-types (tsc --noemit) — run together
-yarn eslint               # eslint only
-yarn check-types          # tsc --noemit only
-yarn format:check         # prettier check
-yarn format:write         # prettier write
+bun run lint                  # eslint + check-types (tsc --noemit) — run together
+bun run eslint                # eslint only
+bun run check-types           # tsc --noemit only
+bun run format:check          # prettier check
+bun run format:write          # prettier write
 ```
 
 There is **no test framework** configured in this project.
@@ -33,7 +31,7 @@ Environment files (`.env`, `.env.develop`, `.env.prod`) are selected via `env-cm
 ## Git / commits
 
 Husky hooks enforce:
-- **pre-commit**: runs `yarn lint` and `yarn format:check` (commits fail on lint/type/format errors).
+- **pre-commit**: runs `bun run lint` and `bun run format:check` (commits fail on lint/type/format errors).
 - **commit-msg**: commitlint with conventional-commit rules. Allowed types: `build, ci, chore, docs, feat, fix, perf, refactor, revert, style, test`.
 
 ## Architecture
@@ -58,4 +56,4 @@ Husky hooks enforce:
 
 ## Build & deploy
 
-`vite build` outputs to `build/` (not `dist/`). The Dockerfile is a two-stage build (node:18-alpine → nginx-unprivileged) taking a `BUILD_CONFIGURATION` arg (`develop`/`prod`) that selects which `build:*` script runs; nginx config lives in `config/nginx/`.
+`vite build` outputs to `build/` (not `dist/`). The Dockerfile is a two-stage build (oven/bun → nginx-unprivileged) that builds one image for every environment; nginx config lives in `config/nginx/`. Keep the bun version in sync across `.tool-versions`, `packageManager`, the Dockerfile and the Test stage of `ci/Jenkinsfile`.

@@ -8,8 +8,8 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 // Dev-only: serve /config.js from config/web/config.<mode>.js so the runtime config can be
 // swapped per command without shipping any of these files in the production build:
-//   yarn start          -> mode "development" -> falls back to config/web/config.local.js
-//   yarn start:develop  -> mode "develop"     -> config/web/config.develop.js
+//   bun run start           -> mode "development" -> falls back to config/web/config.local.js
+//   bun run start:develop   -> mode "develop"     -> config/web/config.develop.js
 // In deployed environments config.js is injected at runtime (not built), so this plugin
 // only applies to `serve` and is never part of `vite build`.
 function localConfigPlugin(mode: string): Plugin {

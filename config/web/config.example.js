@@ -1,4 +1,4 @@
-// Local dev config — served at /config.js by the Vite dev server for `yarn start`.
+// Local dev config — served at /config.js by the Vite dev server for `bun run start`.
 // DEV ONLY: this file is never included in the production build (deploy injects its own config.js).
 globalThis.__CONFIG__ = {
   env: 'local',

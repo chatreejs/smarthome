@@ -1,11 +1,12 @@
-FROM node:18-alpine AS builder
+# Keep the tag in sync with .tool-versions and the Test stage of ci/Jenkinsfile
+FROM oven/bun:1.4.3-alpine AS builder
 
 WORKDIR /app
-COPY package.json yarn.lock ./
+COPY package.json bun.lock ./
 
-RUN yarn
+RUN bun install --frozen-lockfile
 COPY ./ /app/
-RUN yarn build
+RUN bun run build
 
 FROM nginxinc/nginx-unprivileged:1.23-alpine
 
