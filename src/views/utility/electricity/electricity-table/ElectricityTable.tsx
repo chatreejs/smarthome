@@ -1,4 +1,4 @@
-import { App, Card, Table, Typography } from 'antd';
+import { App, Card, Skeleton, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
@@ -11,6 +11,7 @@ import { ActionBar } from '@components';
 import { RootState } from '@config';
 import { Electricity } from '@interfaces';
 import { ElectricityService } from '@services';
+import ElectricityChart from './ElectricityChart';
 
 const { Title } = Typography;
 
@@ -122,6 +123,13 @@ const ElectricityTable: React.FC = () => {
   return (
     <>
       <Title level={2}>ค่าไฟ</Title>
+      <Card style={{ marginBottom: '1rem' }}>
+        {loading ? (
+          <Skeleton active />
+        ) : (
+          <ElectricityChart data={electricityData} />
+        )}
+      </Card>
       <ActionBar
         resourceName="บิลค่าไฟ"
         selectedItems={selectedElectricity}
