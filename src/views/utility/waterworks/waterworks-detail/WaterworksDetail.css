@@ -1,0 +1,12 @@
+.ant-btn {
+  margin-right: 8px;
+}
+
+.ant-picker,
+.ant-input-number {
+  width: 100%;
+}
+
+button > svg {
+  margin-right: 0.5em;
+}
