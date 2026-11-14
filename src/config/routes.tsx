@@ -4,6 +4,8 @@ import { Layout, PageResult } from '@components';
 import {
   Dashboard,
   Electricity,
+  ElectricityDetail,
+  ElectricityTable,
   Food,
   FoodDetail,
   FoodTable,
@@ -26,7 +28,11 @@ const AppRoutes: React.FC = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="electricity" element={<Electricity />} />
+        <Route path="electricity" element={<Electricity />}>
+          <Route index element={<ElectricityTable />} />
+          <Route path="new" element={<ElectricityDetail />} />
+          <Route path=":electricityId" element={<ElectricityDetail />} />
+        </Route>
         <Route path="waterworks" element={<Waterworks />}>
           <Route index element={<WaterworksSummary />} />
           <Route path="new" element={<WaterworksDetail />} />
