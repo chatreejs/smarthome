@@ -10,6 +10,8 @@ export * from './inventory/Inventory';
 export * from './inventory/InventoryRequest';
 export * from './warranty/Warranty';
 export * from './warranty/WarrantyRequest';
+export * from './electricity/Electricity';
+export * from './electricity/ElectricityRequest';
 export * from './waterworks/Waterworks';
 export * from './waterworks/WaterworksRequest';
 export * from './weather/AirQuality';

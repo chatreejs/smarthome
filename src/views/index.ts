@@ -8,6 +8,8 @@ export { default as InventoryDetail } from './inventory/inventory-detail/Invento
 export { default as InventoryTable } from './inventory/inventory-table/InventoryTable';
 export { default as Setting } from './setting/Setting';
 export { default as Electricity } from './utility/electricity/Electricity';
+export { default as ElectricityDetail } from './utility/electricity/electricity-detail/ElectricityDetail';
+export { default as ElectricityTable } from './utility/electricity/electricity-table/ElectricityTable';
 export { default as Waterworks } from './utility/waterworks/Waterworks';
 export { default as WaterworksDetail } from './utility/waterworks/waterworks-detail/WaterworksDetail';
 export { default as WaterworksSummary } from './utility/waterworks/waterworks-summary/WaterworksSummary';
