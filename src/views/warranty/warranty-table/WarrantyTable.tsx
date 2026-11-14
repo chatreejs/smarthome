@@ -1,5 +1,6 @@
 import { App, Card, Table, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,6 +11,7 @@ import { RootState } from '@config';
 import { WarrantyStatus } from '@enums';
 import { Warranty } from '@interfaces';
 import { WarrantyService } from '@services';
+import { bulkDeleteErrorMessage } from '@utils';
 
 const { Title } = Typography;
 
@@ -124,7 +126,12 @@ const WarrantyTable: React.FC = () => {
         setSelectedWarranties([]);
         fetchWarrantyData();
       },
-      error: () => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      error: (err: AxiosError<unknown>) => {
+        onError(bulkDeleteErrorMessage(err));
+        if (err.response?.status === 404) {
+          fetchWarrantyData();
+        }
+      },
     });
   };
 
