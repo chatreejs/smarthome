@@ -1,5 +1,6 @@
 import { App, Card, Table, Tag, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
@@ -12,6 +13,7 @@ import { RootState } from '@config';
 import { FoodStatus } from '@enums';
 import { Food } from '@interfaces';
 import { FoodService } from '@services';
+import { bulkDeleteErrorMessage } from '@utils';
 
 const { Title } = Typography;
 
@@ -135,7 +137,12 @@ const FoodTable: React.FC = () => {
         fetchFoodData();
         onSuccess('ลบข้อมูลสำเร็จ');
       },
-      error: () => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      error: (err: AxiosError<unknown>) => {
+        onError(bulkDeleteErrorMessage(err));
+        if (err.response?.status === 404) {
+          fetchFoodData();
+        }
+      },
     });
   };
 

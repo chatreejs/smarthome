@@ -1,5 +1,6 @@
 import { App, Card, Skeleton, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
@@ -11,6 +12,7 @@ import { ActionBar } from '@components';
 import { RootState } from '@config';
 import { Electricity } from '@interfaces';
 import { ElectricityService } from '@services';
+import { bulkDeleteErrorMessage } from '@utils';
 import ElectricityChart from './ElectricityChart';
 
 const { Title } = Typography;
@@ -116,7 +118,12 @@ const ElectricityTable: React.FC = () => {
         fetchElectricityData();
         onSuccess('ลบข้อมูลสำเร็จ');
       },
-      error: () => onError('ไม่สามารถลบข้อมูลได้ กรุณาลองใหม่อีกครั้ง'),
+      error: (err: AxiosError<unknown>) => {
+        onError(bulkDeleteErrorMessage(err));
+        if (err.response?.status === 404) {
+          fetchElectricityData();
+        }
+      },
     });
   };
 
