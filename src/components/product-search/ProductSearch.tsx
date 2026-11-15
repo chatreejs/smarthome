@@ -105,7 +105,8 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ type, onSelect }) => {
         data-testid="product-search-input"
         placeholder="ค้นหาด้วยชื่อหรือบาร์โค้ด"
         prefix={<FontAwesomeIcon icon={faMagnifyingGlass} />}
-        // Always render the suffix so toggling loading doesn't remount the input and drop focus.
+        // antd remounts the input when the suffix appears or disappears, and the input
+        // loses focus. Rendering the spinner every time avoids that.
         suffix={<Spin size="small" spinning={loading} />}
         allowClear
         onKeyDown={onKeyDown}
