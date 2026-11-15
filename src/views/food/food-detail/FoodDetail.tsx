@@ -21,9 +21,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { ThaiDatePicker } from '@components';
+import { ProductSearch, ThaiDatePicker } from '@components';
 import { RootState } from '@config';
-import { Food, FoodRequest } from '@interfaces';
+import { ProductType } from '@enums';
+import { Food, FoodRequest, Product } from '@interfaces';
 import { FoodService } from '@services';
 import { FORBIDDEN_MESSAGE } from '@utils';
 import './FoodDetail.css';
@@ -184,6 +185,17 @@ const FoodDetail: React.FC = () => {
     }
   };
 
+  const onProductSelect = (product: Product) => {
+    const values: Partial<FoodForm> = { name: product.name };
+    if (product.brand !== null) {
+      values.brand = product.brand;
+    }
+    if (product.unit !== null) {
+      values.unit = product.unit;
+    }
+    form.setFieldsValue(values);
+  };
+
   const onReset = () => {
     if (isEdit && foodData) {
       form.setFieldsValue({
@@ -239,6 +251,14 @@ const FoodDetail: React.FC = () => {
             onFinish={onFinish}
             style={{ maxWidth: 576 }}
           >
+            {!foodId && (
+              <Form.Item label="ค้นหาสินค้า">
+                <ProductSearch
+                  type={ProductType.FOOD}
+                  onSelect={onProductSelect}
+                />
+              </Form.Item>
+            )}
             <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
               <Input data-testid="name-input" />
             </Form.Item>
