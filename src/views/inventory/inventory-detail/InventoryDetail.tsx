@@ -22,9 +22,10 @@ import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 
-import { ThaiDatePicker } from '@components';
+import { ProductSearch, ThaiDatePicker } from '@components';
 import { RootState } from '@config';
-import { Inventory, InventoryRequest } from '@interfaces';
+import { ProductType } from '@enums';
+import { Inventory, InventoryRequest, Product } from '@interfaces';
 import { InventoryService } from '@services';
 import { FORBIDDEN_MESSAGE } from '@utils';
 
@@ -187,6 +188,20 @@ const InventoryDetail: React.FC = () => {
     }
   };
 
+  const onProductSelect = (product: Product) => {
+    const values: Partial<InventoryForm> = { name: product.name };
+    if (product.brand !== null) {
+      values.brand = product.brand;
+    }
+    if (product.unit !== null) {
+      values.unit = product.unit;
+    }
+    if (product.maxQuantity !== null) {
+      values.maxQuantity = product.maxQuantity;
+    }
+    form.setFieldsValue(values);
+  };
+
   const onReset = () => {
     if (isEdit && inventoryData) {
       form.setFieldsValue({
@@ -242,6 +257,14 @@ const InventoryDetail: React.FC = () => {
             onFinish={onFinish}
             style={{ maxWidth: 576 }}
           >
+            {!inventoryId && (
+              <Form.Item label="ค้นหาสินค้า">
+                <ProductSearch
+                  type={ProductType.INVENTORY}
+                  onSelect={onProductSelect}
+                />
+              </Form.Item>
+            )}
             <Form.Item name="name" label="ชื่อ" rules={[{ required: true }]}>
               <Input data-testid="name-input" />
             </Form.Item>

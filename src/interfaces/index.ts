@@ -8,6 +8,7 @@ export * from './home/HomeRequest';
 export * from './home/HomeState';
 export * from './inventory/Inventory';
 export * from './inventory/InventoryRequest';
+export * from './product/Product';
 export * from './warranty/Warranty';
 export * from './warranty/WarrantyRequest';
 export * from './electricity/Electricity';

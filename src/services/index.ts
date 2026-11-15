@@ -3,6 +3,7 @@ export * from './config/ConfigurationService';
 export * from './food/FoodService';
 export * from './home/HomeService';
 export * from './inventory/InventoryService';
+export * from './product/ProductService';
 export * from './warranty/WarrantyService';
 export * from './electricity/ElectricityService';
 export * from './waterworks/WaterworksService';
