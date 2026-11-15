@@ -1,4 +1,6 @@
-import { AutoComplete, Input, Typography } from 'antd';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AutoComplete, Input, Spin, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Subject, catchError, debounceTime, of, switchMap } from 'rxjs';
 
@@ -99,10 +101,12 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ type, onSelect }) => {
       onSelect={onProductSelect}
       notFoundContent={showNotFound ? 'ไม่พบสินค้า' : null}
     >
-      <Input.Search
+      <Input
         data-testid="product-search-input"
         placeholder="ค้นหาด้วยชื่อหรือบาร์โค้ด"
-        loading={loading}
+        prefix={<FontAwesomeIcon icon={faMagnifyingGlass} />}
+        // Always render the suffix so toggling loading doesn't remount the input and drop focus.
+        suffix={<Spin size="small" spinning={loading} />}
         allowClear
         onKeyDown={onKeyDown}
       />
