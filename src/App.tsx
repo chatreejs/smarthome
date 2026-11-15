@@ -16,15 +16,17 @@ import { AppRoutes as Router } from '@config';
 import { AccountRequest, Home } from '@interfaces';
 import { AccountService, HomeService } from '@services';
 import { setHomeId, setHomeName, setIsHasHome } from '@slices';
+import { isServiceUnavailable } from '@utils';
 
 type BootstrapResult = { hasHome: false } | { hasHome: true; home: Home };
+type BootstrapError = 'unavailable' | 'failed';
 
 const App: React.FC = () => {
   const { token, tokenData, error, loginInProgress, logIn } =
     useContext<IAuthContext>(AuthContext);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [bootstrapFailed, setBootstrapFailed] = useState(false);
+  const [bootstrapError, setBootstrapError] = useState<BootstrapError>();
 
   // Each token refresh creates a new tokenData object. Reading it through a ref
   // keeps a refresh from re-running the bootstrap, which would reset the selected home.
@@ -47,11 +49,16 @@ const App: React.FC = () => {
 
   const bootstrap = useCallback(() => {
     setLoading(true);
-    setBootstrapFailed(false);
+    setBootstrapError(undefined);
 
     return AccountService.getUserInfo()
       .pipe(
         switchMap((account): Observable<BootstrapResult> => {
+          // A proxy can answer 200 with an HTML page when the API is down. Without this
+          // check, hasHome would be undefined and the user would land on /initial-setup.
+          if (typeof account?.hasHome !== 'boolean') {
+            throw new Error('Unexpected userinfo response');
+          }
           if (!account.hasHome) {
             return of({ hasHome: false });
           }
@@ -88,7 +95,11 @@ const App: React.FC = () => {
             return;
           }
           console.error('Error when bootstrapping the app', err);
-          setBootstrapFailed(true);
+          setBootstrapError(
+            err instanceof AxiosError && !isServiceUnavailable(err)
+              ? 'failed'
+              : 'unavailable',
+          );
           setLoading(false);
         },
       });
@@ -120,12 +131,21 @@ const App: React.FC = () => {
     return <SplashSpinner />;
   }
 
-  if (bootstrapFailed) {
+  if (bootstrapError) {
+    const unavailable = bootstrapError === 'unavailable';
     return (
       <Result
         status="500"
-        title="ไม่สามารถโหลดข้อมูลผู้ใช้ได้"
-        subTitle="กรุณาลองใหม่อีกครั้ง"
+        title={
+          unavailable
+            ? '503 Service Unavailable'
+            : 'ไม่สามารถโหลดข้อมูลผู้ใช้ได้'
+        }
+        subTitle={
+          unavailable
+            ? 'ระบบไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ในขณะนี้ กรุณาลองใหม่อีกครั้งภายหลัง'
+            : 'กรุณาลองใหม่อีกครั้ง'
+        }
         extra={
           <Button type="primary" onClick={() => bootstrap()}>
             ลองใหม่
