@@ -90,6 +90,7 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ type, onSelect }) => {
 
   return (
     <AutoComplete
+      style={{ width: '100%' }}
       value={searchText}
       options={options}
       filterOption={false}
