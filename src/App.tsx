@@ -32,6 +32,12 @@ const App: React.FC = () => {
   // keeps a refresh from re-running the bootstrap, which would reset the selected home.
   const tokenDataRef = useRef(tokenData);
   tokenDataRef.current = tokenData;
+  // AuthProvider creates a new logIn function on every render, and a token refresh
+  // renders it several times. Reading logIn through a ref keeps it out of bootstrap's
+  // dependencies, so a refresh doesn't re-run the bootstrap. A re-run would show the
+  // splash screen and unmount the page the user is on.
+  const logInRef = useRef(logIn);
+  logInRef.current = logIn;
   const isAuthenticated = Boolean(token);
 
   const createAccountFromToken = (): Observable<BootstrapResult> => {
@@ -91,7 +97,7 @@ const App: React.FC = () => {
         error: (err: unknown) => {
           // A 401 means the API rejected the token, so log in again to get a new one.
           if (err instanceof AxiosError && err.response?.status === 401) {
-            logIn();
+            logInRef.current();
             return;
           }
           console.error('Error when bootstrapping the app', err);
@@ -103,7 +109,7 @@ const App: React.FC = () => {
           setLoading(false);
         },
       });
-  }, [dispatch, logIn]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
